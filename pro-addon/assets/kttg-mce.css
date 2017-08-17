@@ -1,0 +1,6 @@
+/*to be loaded only in admin side*/
+
+/*images alt begins with*/
+img[alt^="KTTG"] {
+    border-bottom: 4px red dotted;
+}
