@@ -1,4 +1,6 @@
 //once keywords fetched (highlihted)
+var currentHoveredKeyword = false;
+
 jQuery(document).on("keywordsFetched",function() {
 	var keyw=[];
 	jQuery("body .bluet_tooltip").each(function(){
@@ -25,6 +27,11 @@ jQuery(document).on("keywordsFetched",function() {
 jQuery(document).on("keywordsLoaded",function() {
 	jQuery('#loading_tooltip').remove();
 
+	if(currentHoveredKeyword){
+		// To show the current tooltip if a kayword is hevered
+		currentHoveredKeyword.trigger('mouseover');
+		currentHoveredKeyword = 'done';
+	}
 	//for [audio] and [video] shortcodes to generate audio after keywords load
 	jQuery('.tooltipy-pop .wp-audio-shortcode[style*="visibility:hidden"], .tooltipy-pop .wp-video-shortcode[style*="visibility:hidden"]').mediaelementplayer();
 	jQuery('.tooltipy-pop .wp-audio-shortcode[style*="visibility: hidden"], .tooltipy-pop .wp-video-shortcode[style*="visibility: hidden"]').mediaelementplayer();

@@ -30,8 +30,12 @@ function bluet_placeTooltips(inlineClass,position,loading){
 
 	// add listeners to inline keywords on mouseover
 	jQuery(inlineClass).mouseover(function(){
-		//id of the posttype in concern
 
+		if( currentHoveredKeyword != 'done' ){
+			currentHoveredKeyword = jQuery(this);
+		}
+
+		//id of the posttype in concern
 		id_post_type=jQuery(this).data("tooltip-id");
 		if (loading){
 			id_post_type=0;
