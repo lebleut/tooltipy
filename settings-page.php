@@ -24,7 +24,7 @@ function bluet_kw_load_scripts() {
 	}
 	
 	//
-	wp_enqueue_script( 'kttg-settings-functions-script', plugins_url('assets/settings-functions-v3.js',__FILE__), array('jquery'), false, true );
+	wp_enqueue_script( 'kttg-settings-functions-script', plugins_url('assets/settings-functions-v3.js',__FILE__), array('jquery'), TOOLTIPY_VERSION, true );
 	
 	//
 	wp_enqueue_script( 'kttg-admin-tooltips-functions-script', plugins_url('assets/kttg-tooltip-functions.js',__FILE__), array('jquery'), TOOLTIPY_VERSION, true );
@@ -43,7 +43,7 @@ function bluet_kw_add_color_picker($hook) {
         wp_enqueue_style( 'wp-color-picker' ); 
          
         // Include our custom jQuery file with WordPress Color Picker dependency
-        wp_enqueue_script( 'kttg-colorpicker-custom-script', plugins_url( 'assets/colorpicker-custom-script.js', __FILE__ ), array( 'wp-color-picker','jquery'), false, true ); 
+        wp_enqueue_script( 'kttg-colorpicker-custom-script', plugins_url( 'assets/colorpicker-custom-script.js', __FILE__ ), array( 'wp-color-picker','jquery'), TOOLTIPY_VERSION, true ); 
     }
 }
 

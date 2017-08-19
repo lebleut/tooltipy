@@ -1,6 +1,6 @@
 <?php
 function kttg_load_keywords_js() {
-	wp_enqueue_script( 'kttg_load_keywords_script', plugins_url('assets/ajax/load-keywords.js',__FILE__), array('jquery'), '1.0', true );
+	wp_enqueue_script( 'kttg_load_keywords_script', plugins_url('assets/ajax/load-keywords.js',__FILE__), array('jquery'), TOOLTIPY_VERSION, true );
 
 	// pass Ajax Url to script.js
 	wp_localize_script('kttg_load_keywords_script', 'kttg_ajax_load', admin_url( 'admin-ajax.php' ) );
