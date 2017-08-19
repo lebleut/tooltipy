@@ -115,7 +115,9 @@ function bluet_kttg_glossary(){
  		$found_letter_class='bluet_glossary_found_letter';
 		$current_letter_class='';
 
-        $link_to_the_letter_page='javascript: document.location.href=changeQueryStringParameter(document.location.href,"letter","'.$chara.'")';
+        //$link_to_the_letter_page='javascript: document.location.href=changeQueryStringParameter(document.location.href,"letter","'.$chara.'")';
+        $current_glossary_page_url = get_permalink();
+        $link_to_the_letter_page = add_query_arg( 'letter', $chara, $current_glossary_page_url );
         //add_query_arg( array('letter' => $chara), get_the_permalink());
 		if(!empty($_GET["letter"]) and $_GET["letter"]==$chara){
 			$current_letter_class='bluet_glossary_current_letter';
