@@ -16,6 +16,15 @@ require_once dirname( __FILE__ ) . '/meta-boxes.php';
 require_once dirname( __FILE__ ) . '/glossary-shortcode.php';
 require_once dirname( __FILE__ ) . '/functions.php';
 
+if( !defined('TOOLTIPY_PLUGIN_FILE_PATH') ){
+	define('TOOLTIPY_PLUGIN_FILE_PATH', __FILE__);
+}
+
+$tooltipy_plugin_data = get_plugin_data(TOOLTIPY_PLUGIN_FILE_PATH);
+
+if( !defined('TOOLTIPY_VERSION') ){
+	define('TOOLTIPY_VERSION', $tooltipy_plugin_data["Version"]);
+}
 
 $bluet_kw_capability=apply_filters('bluet_kw_capability','manage_options');
 
@@ -545,7 +554,7 @@ function bluet_kw_load_scripts_front() {
 		wp_enqueue_style( 'kttg-tooltips-animations-styles', plugins_url('assets/animate.css',__FILE__), array(), false);
 	}
 	//load jQuery once to avoid conflict
-	wp_enqueue_script( 'kttg-tooltips-functions-script', plugins_url('assets/kttg-tooltip-functionsv2.6.1.js',__FILE__), array('jquery'), '4.5.5', true );
+	wp_enqueue_script( 'kttg-tooltips-functions-script', plugins_url('assets/kttg-tooltip-functions.js',__FILE__), array('jquery'), TOOLTIPY_VERSION, true );
 		
 	//load mediaelement.js for audio and video shortcodes
 	//change this to make it load only when shortcodes are loaded with keywords
