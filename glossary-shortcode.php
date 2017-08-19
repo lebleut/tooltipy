@@ -119,7 +119,6 @@ function bluet_kttg_glossary(){
  		$found_letter_class='bluet_glossary_found_letter';
 		$current_letter_class='';
 
-        //$link_to_the_letter_page='javascript: document.location.href=changeQueryStringParameter(document.location.href,"letter","'.$chara.'")';
         $current_glossary_page_url = get_permalink();
         $link_to_the_letter_page = add_query_arg( 'letter', $chara, $current_glossary_page_url );
         
@@ -209,7 +208,8 @@ function bluet_kttg_glossary(){
 
                 //echo(substr(get_the_title(),0,1).'<br>');
                 if((strtoupper(mb_substr(get_the_title(),0,1,'utf-8'))==$chosen_letter) or $chosen_letter==null){                    
-                	$fam_action='javascript:document.location.href=changeQueryStringParameter(document.location.href,"cat","'.trim($families_string).'");';
+
+                	$fam_action = add_query_arg( 'cat', trim($families_string), $current_glossary_page_url );
                     $ret.='<li class="kttg_glossary_element" style="list-style-type: none;">
 							<h2 class="kttg_glossary_element_title">'.get_the_title()." ".(count($families_list)>0 ? "<sub>[<a href=".$fam_action.">".$families_string."</a>]</sub>":"" ).'</h2>
 							<div class="kttg_glossary_element_content">
