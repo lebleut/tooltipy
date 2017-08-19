@@ -38,8 +38,12 @@ function bluet_kttg_glossary(){
 	if(empty($_GET["letter"])){
 			$current_letter_class='bluet_glossary_current_letter';
 	}
-	$all_link='javascript: document.location.href=removeUrlParam("letter",document.location.href)';
+	$all_link = get_permalink();
 
+	if(!empty($_GET['cat']) ){
+		$all_link = add_query_arg( 'cat', $_GET['cat'], $all_link );
+	}
+	
 	/*dropdown*/
 	/*begin*/
 		$ret="<div class='kttg_glossary_div'>";
