@@ -189,7 +189,8 @@ function bluet_kttg_glossary(){
 			while ( $the_query->have_posts() ) :
                 $the_query->the_post();
 
-				$families_list = wp_get_post_terms(get_the_id(), 'keywords_family', array("fields" => "names"));
+				$families_list = wp_get_post_terms(get_the_id(), 'keywords_family', array("fields" => "slugs"));
+
 				$families_string="";
 				foreach ($families_list as $family_name) {
 					$families_string.=$family_name." ";
@@ -211,7 +212,7 @@ function bluet_kttg_glossary(){
 
                 	$fam_action = add_query_arg( 'cat', trim($families_string), $current_glossary_page_url );
                     $ret.='<li class="kttg_glossary_element" style="list-style-type: none;">
-							<h2 class="kttg_glossary_element_title">'.get_the_title()." ".(count($families_list)>0 ? "<sub>[<a href=".$fam_action.">".$families_string."</a>]</sub>":"" ).'</h2>
+							<h2 class="kttg_glossary_element_title">'.get_the_title()." ".(count($families_list)>0 ? "<sub>[<a href='".$fam_action."'>".$families_string."</a>]</sub>":"" ).'</h2>
 							<div class="kttg_glossary_element_content">
 							'.$tooltipy_glossary_thumb.get_the_content().'</div>
 						</li>';
