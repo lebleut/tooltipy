@@ -3,7 +3,7 @@ Contributors: lebleut
 Tags: inline, responsive, tooltips, tooltip, highlight, widget, image, style, keyword, post, page, glossary, localization, description, definition, term, word, interactive, link, wpml
 Requires at least: 3.9
 Tested up to: 4.7.1
-Stable tag: 3.3.9
+Stable tag: 3.4
 License: GPLv2 or later
 Donate Link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LPKWCDNECSVWJ
 
@@ -116,6 +116,11 @@ The plugin is available in these languages :
 11. Glossary settings page
 
 == Changelog ==
+
+= 3.4 =
+* Fix the Ajax load before showing the selected tooltip
+* Fix the Glossary page links behaviour
+* Update the js files caching version depending on the plugin version
 
 = 3.3.9 =
 * fix data-tooltip conflict, using data-tooltip-id instead
