@@ -43,7 +43,7 @@ function bluet_kttg_glossary(){
 	if(!empty($_GET['cat']) ){
 		$all_link = add_query_arg( 'cat', $_GET['cat'], $all_link );
 	}
-	
+
 	/*dropdown*/
 	/*begin*/
 		$ret="<div class='kttg_glossary_div'>";
@@ -122,7 +122,11 @@ function bluet_kttg_glossary(){
         //$link_to_the_letter_page='javascript: document.location.href=changeQueryStringParameter(document.location.href,"letter","'.$chara.'")';
         $current_glossary_page_url = get_permalink();
         $link_to_the_letter_page = add_query_arg( 'letter', $chara, $current_glossary_page_url );
-        //add_query_arg( array('letter' => $chara), get_the_permalink());
+        
+        if(!empty($_GET["cat"])){
+        	$link_to_the_letter_page = add_query_arg( 'cat', $_GET["cat"], $link_to_the_letter_page );
+        }
+
 		if(!empty($_GET["letter"]) and $_GET["letter"]==$chara){
 			$current_letter_class='bluet_glossary_current_letter';
 		}
