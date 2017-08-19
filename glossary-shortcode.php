@@ -47,7 +47,7 @@ function bluet_kttg_glossary(){
 	/*dropdown*/
 	/*begin*/
 		$ret="<div class='kttg_glossary_div'>";
-		$ret.="<div class='kttg_glossary_families'><label>".__('Select a family','bluet-kw')." : </label><select name='kttg-glossary-family' onchange='document.location.href=changeQueryStringParameter(document.location.href,\"cat\",this.options[this.selectedIndex].value);'>";
+		$ret.="<div class='kttg_glossary_families'><label>".__('Select a family','bluet-kw')." : </label><select name='kttg-glossary-family' onchange='document.location.href=changeQueryStringParameter(\"".get_permalink()."\",\"cat\",this.options[this.selectedIndex].value);'>";
 	 	$ret.="<option value='all_families'>".__('All families','bluet-kw')."</option>";
 
 		$families = get_categories(array(
