@@ -19,6 +19,11 @@ require_once dirname( __FILE__ ) . '/functions.php';
 if( !defined('TOOLTIPY_PLUGIN_FILE_PATH') ){
 	define('TOOLTIPY_PLUGIN_FILE_PATH', __FILE__);
 }
+if( !defined('TOOLTIPY_URL') ){
+	define('TOOLTIPY_URL', plugin_dir_url(__FILE__));
+}
+if(!defined('TOOLTIPY_DIR'))
+	define('TOOLTIPY_DIR', plugin_dir_path(__FILE__));
 
 $tooltipy_plugin_data = get_plugin_data(TOOLTIPY_PLUGIN_FILE_PATH);
 
@@ -57,6 +62,13 @@ function tooltipy_init_func(){
 	//create posttype for keywords	
 	new bluet_keyword();
 
+}
+
+// Before VC Init - include the new vc element file
+add_action( 'vc_before_init', 'tooltipy_vc_before_init_actions' );
+function tooltipy_vc_before_init_actions() {
+    // Require new custom Element
+    require_once( TOOLTIPY_DIR.'visual-composer/tooltipy-glossary-element.php' ); 
 }
 
 add_action('wp_enqueue_scripts', 'bluet_kw_load_scripts_front' );
