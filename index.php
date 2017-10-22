@@ -561,7 +561,8 @@ function tooltipy_prepare_content_to_filter_func(){
 /* enqueue js functions for the front side*/
 function bluet_kw_load_scripts_front() {
 	$options = get_option( 'bluet_kw_settings' );
-	$anim_type=$options['bt_kw_animation_type'];
+	$anim_type =( !empty($options['bt_kw_animation_type'])? $options['bt_kw_animation_type'] : null);
+	
 	if(!empty($anim_type) and $anim_type!="none"){
 		wp_enqueue_style( 'kttg-tooltips-animations-styles', plugins_url('assets/animate.css',__FILE__), array(), false);
 	}
