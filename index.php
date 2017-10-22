@@ -562,7 +562,7 @@ function tooltipy_prepare_content_to_filter_func(){
 function bluet_kw_load_scripts_front() {
 	$options = get_option( 'bluet_kw_settings' );
 	$anim_type =( !empty($options['bt_kw_animation_type'])? $options['bt_kw_animation_type'] : null);
-	
+
 	if(!empty($anim_type) and $anim_type!="none"){
 		wp_enqueue_style( 'kttg-tooltips-animations-styles', plugins_url('assets/animate.css',__FILE__), array(), false);
 	}
@@ -876,3 +876,20 @@ function kttg_filter_posttype($cont){
 	$cont=$html_tooltips_to_add.$cont;
 	return do_shortcode($cont);//do_shortcode to return content after executing shortcodes
 }
+
+/**
+*	tooltipy_remove_plugins_filters : Removes the filters applied on the tooltip contents (advanced feature)
+*/
+function tooltipy_remove_plugins_filters() {
+    global $post;
+    $options = get_option( 'bluet_kw_settings' );
+
+    $prevent_plugins_filters_option = (!empty($options['prevent_plugins_filters']) ? $options['prevent_plugins_filters'] : false );
+
+    if( $prevent_plugins_filters_option == "on" ){
+	    if ( 'my_keywords' == $post->post_type ){
+			remove_all_filters( 'the_content', 10 );
+	    }
+    }
+}
+add_action( 'the_post', 'tooltipy_remove_plugins_filters' );

@@ -199,6 +199,15 @@ function tooltipy_settings_registration_func() {
 		'style_section'					
 	);
 	
+	// tooltipy_prevent_plugins_filters
+	add_settings_field(
+		'tooltipy_prevent_plugins_filters',
+		__('Prevent other plugins filters','bluet-kw'),
+		'bt_tooltipy_prevent_plugins_filters_display',
+		'my_keywords_settings',
+		'concern_section'
+	);
+
 	/******************* registrations */
 	//for settings options
 	register_setting(
@@ -318,6 +327,13 @@ function bluet_kw_style_display(){
 }
 function bluet_kw_highlight_fetch_mode_display(){
 	_e('Style for the highlight fetch mode.','bluet-kw');
+}
+
+function bt_tooltipy_prevent_plugins_filters_display(){
+		$options = get_option( 'bluet_kw_settings' ); //to get the ['bt_kw_fetch_mode']
+	?>
+	<input type="checkbox" name="bluet_kw_settings[prevent_plugins_filters]" <?php if(!empty($options['prevent_plugins_filters']) and $options['prevent_plugins_filters']) echo 'checked'; ?> /> Prevent any 3rd party plugin to filter or change the keywords content
+	<?php
 }
 
 function kttg_tooltip_post_types_display(){
