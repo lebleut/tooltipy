@@ -220,6 +220,13 @@ function tooltipy_settings_registration_func() {
 		'settings_group',					// The name of the group of settings
 		'bluet_kw_style'					// The name of the actual option (or setting)
 	);	
+	
+	//for settings options
+	register_setting(
+		'settings_group',					// The name of the group of settings
+		'bluet_kw_advanced'					// The name of the actual option (or setting)
+	);
+	
 
 }
 
@@ -330,9 +337,9 @@ function bluet_kw_highlight_fetch_mode_display(){
 }
 
 function bt_tooltipy_prevent_plugins_filters_display(){
-		$options = get_option( 'bluet_kw_settings' ); //to get the ['bt_kw_fetch_mode']
+		$options = get_option( 'bluet_kw_advanced' ); //to get the ['bt_kw_fetch_mode']
 	?>
-	<input type="checkbox" name="bluet_kw_settings[prevent_plugins_filters]" <?php if(!empty($options['prevent_plugins_filters']) and $options['prevent_plugins_filters']) echo 'checked'; ?> /> Prevent any 3rd party plugin to filter or change the keywords content
+	<input type="checkbox" name="bluet_kw_advanced[prevent_plugins_filters]" <?php if(!empty($options['prevent_plugins_filters']) and $options['prevent_plugins_filters']) echo 'checked'; ?> /> Prevent any 3rd party plugin to filter or change the keywords content
 	<?php
 }
 

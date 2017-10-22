@@ -221,7 +221,7 @@ function bluet_kw_adv_enqueue_scripts() {
 }
 function bluet_kw_adv_enqueue() {
 	$adv_opt_tmp=get_option('bluet_kw_advanced');
-	$kttg_custom_style=$adv_opt_tmp['bt_kw_adv_style']['custom_style_sheet'];
+	$kttg_custom_style = ( !empty($adv_opt_tmp['bt_kw_adv_style']['custom_style_sheet'])? $adv_opt_tmp['bt_kw_adv_style']['custom_style_sheet'] : '');
 	if(!empty($adv_opt_tmp['bt_kw_adv_style']['apply_custom_style_sheet'])){
 		$kttg_apply_custom_style=$adv_opt_tmp['bt_kw_adv_style']['apply_custom_style_sheet'];
 	}else{

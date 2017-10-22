@@ -882,7 +882,7 @@ function kttg_filter_posttype($cont){
 */
 function tooltipy_remove_plugins_filters() {
     global $post;
-    $options = get_option( 'bluet_kw_settings' );
+    $options = get_option( 'bluet_kw_advanced' );
 
     $prevent_plugins_filters_option = (!empty($options['prevent_plugins_filters']) ? $options['prevent_plugins_filters'] : false );
 
