@@ -2,24 +2,23 @@
 defined('ABSPATH') or die("No script kiddies please!");
 
 /*place metabox after the Title*/ 
-add_action('edit_form_after_title', 'tooltipy_place_metabox_after_title_func');
-/**/
-function tooltipy_place_metabox_after_title_func() {
+add_action('edit_form_after_title', function() {
     global $post, $wp_meta_boxes,$post_type;
     
 	do_meta_boxes($post_type,'after_title',$post);
 	//echo("<pre>");print_r($post_type);echo("</pre>");
 	
-}
-add_action('do_meta_boxes', 'tooltipy_edit_page_metaboxes_func');
+});
+/**/
 
-function tooltipy_edit_page_metaboxes_func(){
+add_action('do_meta_boxes',function(){
+	global $tooltipy_post_type_name;
 //for keywords
 		add_meta_box(
 			'bluet_kw_settings_meta',
 			__('Keyword Settings','bluet-kw'),
 			'bluet_keyword_settings_render',
-			'my_keywords',
+			$tooltipy_post_type_name,
 			'after_title',
 			'high'
 		);
@@ -28,7 +27,7 @@ function tooltipy_edit_page_metaboxes_func(){
 	$screens = array();
 	$all_post_types=get_post_types();
 	foreach ($all_post_types as $key => $pt) {
-		if($pt!='my_keywords'){
+		if($pt!=$tooltipy_post_type_name){
 			array_push($screens,$pt);
 		}
 	}
@@ -45,7 +44,7 @@ function tooltipy_edit_page_metaboxes_func(){
 		);
 	}
 		
-}
+});
 
 function bluet_keyword_settings_render(){
 	?>
@@ -76,15 +75,21 @@ function bluet_keyword_settings_render(){
 		bluet_video_metabox();
 	}
 	
+	/*for a specific use icon extention*/
+	if(function_exists('bluet_icon_metabox')){
+		bluet_icon_metabox();
+	}
+	
+	
 }
 
 function bluet_keywords_related_render(){
 //exclude checkbox to exclode the current post from being matched
-	global $post;
+	global $post, $tooltipy_post_type_name;
 
 	$current_post_id=$post->ID;
 	$exclude_me = get_post_meta($current_post_id,'bluet_exclude_post_from_matching',true);
-	$exclude_keywords_string = "";
+	$exclude_keywords_string = get_post_meta($current_post_id,'bluet_exclude_keywords_from_matching',true);
 
 	//get excluded terms and sanitize them
 	/*begin*/
@@ -92,7 +97,13 @@ function bluet_keywords_related_render(){
 		$my_excluded_keywords=array_map('trim',$my_excluded_keywords);
 		$my_excluded_keywords=array_map('strtolower',$my_excluded_keywords);
 		
-		$my_excluded_keywords=array_filter($my_excluded_keywords,'tooltipy_remove_empty_string_func');
+		$my_excluded_keywords=array_filter($my_excluded_keywords,function($val){
+			$ret=array();
+			if($val!=""){
+				array_push($ret,$val);
+			}
+			return $ret;
+		});
 	/*end*/
 
 	?>
@@ -147,26 +158,39 @@ function bluet_keywords_related_render(){
 	?>
 		<h3><?php _e('Keywords to exclude','bluet-kw'); ?></h3>			
 		<!-- test -->
-		<?php
-			$kttg_pro_link="<a href='http://www.tooltipy.com/downloads/kttg-pro'>KTTG PRO</a>";
-		?>
-		This section is available only on <?php echo($kttg_pro_link); ?>		
+		<div class="easy_tags">		
+			<div class="easy_tags-content" onclick="jQuery('#bluet_cover_areas_id').focus()"> <!-- content before add button -->
+				<div class="easy_tags-list tagchecklist" id="cover_areas_list" >	<!-- list before field -->
+				</div>
+				
+				<input class="easy_tags-field" type="text" style="max-width:250px;" id="bluet_cover_areas_id" placeholder="<?php _e('keyword...','bluet-kw'); ?>"> <!-- field -->
+					<input class="easy_tags-to_send" type="hidden" name="bluet_exclude_keywords_from_matching_name" id="exclude-keywords-field" value="<?php echo $exclude_keywords_string; ?>" > <!-- hidden text to send -->
+			</div>
+
+			<input class="easy_tags-add button tagadd" type="button" value="<?php _e('Add'); ?>" id="cover_class_add" > <!-- add button -->
+		</div>
 	<!-- end -->
+	<script>
+	jQuery(document).ready(function(){
+		field=easy_tags.construct(",");
+
+		field.init(".easy_tags");		
+		field.fill_classes(".easy_tags");
+	});
+	</script>
 	<?php
 
-	echo('<p><a href="'.get_admin_url().'edit.php?post_type=my_keywords">');
+	echo('<p><a href="'.get_admin_url().'edit.php?post_type='.$tooltipy_post_type_name.'">');
 	echo(__('Manage KeyWords','bluet-kw').' >>');
 	echo('</a></p>');
 		echo('</div>');
 	echo "</div>";
 }
 
-
-add_action('save_post', 'tooltipy_process_when_saving_func');
-
-function tooltipy_process_when_saving_func(){
+add_action('save_post',function(){
+	global $tooltipy_post_type_name;
 	//saving synonyms
-	if(!empty($_POST['post_type']) and $_POST['post_type']=='my_keywords'){
+	if(!empty($_POST['post_type']) and $_POST['post_type']==$tooltipy_post_type_name){
 		//do sanitisation and validation
 		
 		//synonyms
@@ -194,16 +218,84 @@ function tooltipy_process_when_saving_func(){
 			if(function_exists('bluet_video_save')){
 				bluet_video_save();
 			}
+	
+			// for a specific use icon extention
+			if(function_exists('bluet_icon_save')){
+				bluet_icon_save();
+			}
+			
 		}
 		
 		
 	}else{
 		if(!empty($_POST['action']) and $_POST['action'] =='editpost'){
+
 			$exclude_me=$_POST['bluet_exclude_post_from_matching_name'];
 			$exclude_keywords_string=$_POST['bluet_exclude_keywords_from_matching_name'];
-			
-			//save exclude post from matching
+
+			// save exclude post from matching
 			update_post_meta($_POST['post_ID'],'bluet_exclude_post_from_matching',$exclude_me);
+			
+			//get list if excluded posts
+			$tooltipy_excluded_posts = get_option("tooltipy_excluded_posts_from_matching");
+
+			// if the post is excluded
+			if( $exclude_me == "on"){
+
+				// insert excluded post into an option instead of a post meta
+				// in order to get them much faster using the "bluet_kw_fetch_excluded_posts()" function
+				// this will prevent it from seeking all the posts and pages meta boxes each time
+				
+				// this post info
+				$tooltipy_this_post_info = array(
+					'id' 	=> 	$_POST['post_ID'],
+					'title' => 	$_POST['post_title'],
+					'slug' 	=> 	$_POST['post_name'],
+				);
+				if( is_array($tooltipy_excluded_posts) ){
+					// since option is there
+					// add this post inf as excluded "update_option()" if not
+					
+					foreach ($tooltipy_excluded_posts as $key => $excluded_post) {
+						// look if it is allready there
+						if( $excluded_post['id'] == $_POST['post_ID'] ){
+							// remove it from array so to puch it with new data later with " array_push() "
+							unset($tooltipy_excluded_posts[$key]);
+						}
+					}
+
+					array_push( $tooltipy_excluded_posts, $tooltipy_this_post_info );
+
+					update_option( "tooltipy_excluded_posts_from_matching" , $tooltipy_excluded_posts );
+
+				}else{
+					// option is not yet created
+					//	add it ( create it ) "add_option()"
+					//	add this post inf as excluded
+					$tooltipy_excluded_posts= 	array(
+													$tooltipy_this_post_info
+												);
+					add_option( "tooltipy_excluded_posts_from_matching" , $tooltipy_excluded_posts );
+				}
+			}else{
+				if( is_array($tooltipy_excluded_posts) ){
+					// if not excluded remove it from the "tooltipy_excluded_posts_from_matching" option
+					foreach ($tooltipy_excluded_posts as $key => $excluded_post) {
+						// look if it is allready there
+						if( $excluded_post['id'] == $_POST['post_ID'] ){
+							// remove it from array
+							unset($tooltipy_excluded_posts[$key]);
+						}
+					}
+
+					update_option( "tooltipy_excluded_posts_from_matching" , $tooltipy_excluded_posts );
+				}else{
+					$tooltipy_excluded_posts= array();
+					add_option( "tooltipy_excluded_posts_from_matching" , $tooltipy_excluded_posts );
+				}
+			}
+
+			// 
 			update_post_meta($_POST['post_ID'],'bluet_exclude_keywords_from_matching',$exclude_keywords_string);
 
 			$matchable_keywords=$_POST['matchable_keywords'];
@@ -219,4 +311,10 @@ function tooltipy_process_when_saving_func(){
 			update_post_meta($_POST['post_ID'],'bluet_matching_keywords_field',$arr_match);
 		}	
 	}
-}
+}); 
+
+/*
+add_action('save_post',function(){
+	var_dump($_POST);
+	die();
+});*/

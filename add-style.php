@@ -47,28 +47,36 @@ function bluet_kw_custom_style(){
 		//apply keyword style only if keywords are Fetched
 		jQuery(document).on("keywordsFetched",function(){
 			jQuery(".bluet_tooltip").each(function(){
-				jQuery(this).css({
-					"text-decoration": "none",
-					"color": "<?php echo $tooltip_color; ?>",
-					
-					<?php
-						if(!$bt_kw_on_background){
-							echo('"background": "'.$tooltip_bg_color.'",');
-							
-							echo('"padding": "1px 5px 3px 5px",');
-							echo('"font-size": "1em"');
-						}else{
-							echo('"border-bottom": "1px dotted",');
-							echo('"border-bottom-color": "'.$tooltip_color.'"');
-						}
-					?>
-				});
+
+//console.log(jQuery(this).prop("tagName"));
+
+				if(jQuery(this).prop("tagName")!="IMG"){
+					jQuery(this).css({
+						"text-decoration": "none",
+						"color": "<?php echo $tooltip_color; ?>",
+						
+						<?php
+							if(!$bt_kw_on_background){
+								echo('"background": "'.$tooltip_bg_color.'",');
+								
+								echo('"padding": "1px 5px 3px 5px",');
+								echo('"font-size": "1em"');
+							}else{
+								echo('"border-bottom": "1px dotted",');
+								echo('"border-bottom-color": "'.$tooltip_color.'"');
+							}
+						?>
+					});
+				}
+
 			});
 		});
 	</script>
 
 	<style>
-
+	.bluet_tooltip img {
+		max-width: 20px;
+	}
 	/*for alt images tooltips*/
 	.bluet_tooltip_alt{
 		max-width: 250px;
@@ -120,8 +128,8 @@ function bluet_kw_custom_style(){
 	}
 	
 	img.bluet_tooltip {
-	  border: none;
-	  width:<?php echo $desc_font_size; ?>px;
+	  /*border: none;
+	  width:<?php echo $desc_font_size; ?>px;*/
 	}
 
 	.bluet_text_content p:last-child {
@@ -258,7 +266,7 @@ function bluet_kw_custom_style(){
 			left: 0px;
 			right: 0px;
 			max-width: 100% !important;
-			max-height: 95% !important;			
+    		max-height: 95% !important;
 			padding: 0px !important;
 			overflow: auto;
 		}
@@ -297,7 +305,8 @@ function bluet_kw_custom_style(){
 		padding-left: 15px;	
 		margin-right: 10px !important;	  
 	}
-	#cover_areas_list .elem_class {
+	#cover_areas_list .elem_class,
+	#cover_tags_list .elem_class{
 	  background-color: cornflowerblue;
 	}
 	#exclude_areas_list .elem_class {
@@ -346,6 +355,10 @@ function bluet_kw_custom_style(){
 	#kttg_exclude_headings_zone h6 {
 	    margin: 0px !important;
 	    padding: 0px !important;
+	}
+	
+	.bluet_block_footer {
+	    padding: 0 10px;
 	}
 	</style>
 	<?php

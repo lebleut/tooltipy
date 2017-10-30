@@ -39,12 +39,12 @@ function bluetImgAltTooltip(imgElem){
 
 	  tooltipElem.innerHTML =imgElem.alt;
 		
-	  tooltipElem.style.opacity="1.0";
-	  tooltipElem.style.display="block";
 	  var newLeft=(rectLeft+(wd/2)-(tooltipElem.offsetWidth)/2);
 
 	  //change style
 	  tooltipElem.style.left= newLeft+"px";
+	  tooltipElem.style.opacity="1.0";
+	  tooltipElem.style.display="block";
 
 	  //disappears when the mouse leaves the img
 	  imgElem.addEventListener("mouseleave",function(){tooltipElem.style.display='none';});

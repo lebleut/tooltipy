@@ -23,7 +23,8 @@
 					if(newKw!=null){ //if not cancel
 						if(newKw!=""){
 							img_obj.children().first().attr("alt","KTTG: "+newKw);
-							
+							jQuery(img_obj.children().first()).addClass("bluet_tooltip");
+
 							//eliminates old and new elems first
 							jQuery(editor_doc).find("#bluet_kw_img_tt_"+newKw).first().remove();
 							jQuery(editor_doc).find("#bluet_kw_img_tt_"+old_kw).first().remove();
@@ -32,6 +33,8 @@
 						}else{
 							jQuery(editor_doc).find("#bluet_kw_img_tt_"+old_kw).first().remove();
 							img_obj.children().first().attr("alt","");
+
+                            jQuery(img_obj.children().first()).removeClass("bluet_tooltip");
 						}
 					}
 

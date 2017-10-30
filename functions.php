@@ -26,7 +26,7 @@ $kttg_title_layout='';
     }	
 	$kttg_footer='';
 	
-		$layout_ret='<span class="bluet_block_to_show" data-tooltip-id="'.$id.'">'
+		$layout_ret='<span class="bluet_block_to_show" data-tooltip="'.$id.'">'
 						.'<img src="'.plugin_dir_url(__FILE__).'assets/close_button.png" class="bluet_hide_tooltip_button" />'
 						.'<div class="bluet_block_container">'
 							.'<div class="bluet_img_in_tooltip">'.$img.'</div>'
@@ -124,12 +124,13 @@ function kttg_get_related_keywords($my_post_id){
 		}
 		
 		$content_to_check=strip_tags($content_to_check);//strip_tags eliminates HTML tags before passing in pregmatch
-		
-		if(preg_match($term, $content_to_check)){ 
-			$post_have_kws[]=$term_id;
-		}		
 
+		
+		if(preg_match($term,$content_to_check)){ 
+			$post_have_kws[]=$term_id;
+		}										
 	}
+
 	return $post_have_kws;
 }
 
@@ -143,17 +144,20 @@ function elim_apostrophes($chaine){
 	return $resultat;
 }
 
+
 /* BEGIN -- Edit keywords page */
 add_action( 'restrict_manage_posts', 'tooltipy_families_admin_posts_filter_restrict_manage_posts' );
 function tooltipy_families_admin_posts_filter_restrict_manage_posts(){
+	global $tooltipy_post_type_name, $tooltipy_cat_name;
+
     $type = 'post';
     if (isset($_GET['post_type'])) {
         $type = $_GET['post_type'];
     }
 
     //only add filter to post type you want
-    if ('my_keywords' == $type){
-        $tax_families = get_terms( "keywords_family");        
+    if ($tooltipy_post_type_name == $type){
+        $tax_families = get_terms( $tooltipy_cat_name );        
         ?>
         <select name="tooltipy_family" id='tooltipy_filter_by_family'>
         <option value=""><?php _e('Filter by Family','bluet-kw'); ?></option>
@@ -177,14 +181,15 @@ function tooltipy_families_admin_posts_filter_restrict_manage_posts(){
 
 add_filter( 'parse_query', 'tooltipy_families_posts_filter' );
 function tooltipy_families_posts_filter($query){
-    global $pagenow;
+    global $pagenow, $tooltipy_post_type_name, $tooltipy_cat_name;
+
     $type = 'post';
     if (isset($_GET['post_type'])) {
         $type = $_GET['post_type'];
     }
 
-    if ('my_keywords' == $type && is_admin() && $pagenow=='edit.php' && isset($_GET['tooltipy_family']) && $_GET['tooltipy_family'] != ''){
-        $query->query_vars['keywords_family'] = $_GET['tooltipy_family'];
+    if ($tooltipy_post_type_name == $type && is_admin() && $pagenow=='edit.php' && isset($_GET['tooltipy_family']) && $_GET['tooltipy_family'] != ''){
+        $query->query_vars[$tooltipy_cat_name] = $_GET['tooltipy_family'];
     }
 }
 /* END -- Edit keywords page */

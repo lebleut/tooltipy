@@ -1,7 +1,7 @@
 <?php
 defined('ABSPATH') or die("No script kiddies please!");
 
-function tooltipy_glossary_admin_init_func(){
+add_action( 'admin_init',function () {
 
 	// section
 	add_settings_section(
@@ -27,7 +27,6 @@ function tooltipy_glossary_admin_init_func(){
 		'my_keywords_glossary_settings',				// The page on which we'll be rendering this field
 		'glossary_section'					// The section to which we're adding the setting
 	);
-		
 	// Define view glossary thumbnail
     add_settings_field( 
         'bluet_kttg_glossary_show_thumb',                    
@@ -37,7 +36,7 @@ function tooltipy_glossary_admin_init_func(){
         'glossary_section'
     );      
  
-         // Define view glossary page field
+		 // Define view glossary page field
     add_settings_field( 
         'bluet_kttg_show_glossary_link',                    
         __('Glossary link page','bluet-kw'),            
@@ -45,15 +44,14 @@ function tooltipy_glossary_admin_init_func(){
         'my_keywords_glossary_settings',                // The page on which we'll be rendering this field
         'glossary_section'                  // The section to which we're adding the setting                    
     );
-
+	
 	/*for glossary options*/
 	register_setting(
 		'settings_group',					// The name of the group of settings
 		'bluet_glossary_options'					// The name of the actual option (or setting)
-	);	
-}
-
-add_action( 'admin_init','tooltipy_glossary_admin_init_func');
+	);
+	
+});
 
 function kttg_glossary_kws_per_page_display(){
 	$options = get_option( 'bluet_glossary_options' );
@@ -100,7 +98,7 @@ function bt_kw_show_glossary_link_display(){
     
     <?php
 }
- 
+
 function bt_kw_show_glossary_show_thumb(){
     $glossary_options = get_option('bluet_glossary_options');
     ?>

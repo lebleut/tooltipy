@@ -3,10 +3,19 @@
 Plugin Name: Tooltipy
 Description: This plugin allows you automatically create tooltip boxes for your technical keywords in order to explain them for your site visitors making surfing more comfortable.
 Author: Jamel Zarga
-Version: 3.4
+Version: 5.0
 Author URI: http://www.tooltipy.com/about-us
 */
 defined('ABSPATH') or die("No script kiddies please!");
+
+//Tooltipy post_type name
+$tooltipy_post_type_name=get_option("tooltipy_post_type_name");
+$default_tooltipy_post_type_name="my_keywords";
+
+$tooltipy_cat_name=$tooltipy_post_type_name."_cat";
+if($tooltipy_post_type_name==$default_tooltipy_post_type_name){
+	$tooltipy_cat_name="keywords_family";
+}
 
 require_once dirname( __FILE__ ) . '/pro-addon/pro-index.php'; //pro addon
 require_once dirname( __FILE__ ) . '/keyword-posttype.php'; //contain the class that handles the new custom post
@@ -17,29 +26,57 @@ require_once dirname( __FILE__ ) . '/glossary-shortcode.php';
 require_once dirname( __FILE__ ) . '/functions.php';
 
 if( !defined('TOOLTIPY_PLUGIN_FILE_PATH') ){
-	define('TOOLTIPY_PLUGIN_FILE_PATH', __FILE__);
+    define('TOOLTIPY_PLUGIN_FILE_PATH', __FILE__);
 }
-if( !defined('TOOLTIPY_URL') ){
-	define('TOOLTIPY_URL', plugin_dir_url(__FILE__));
-}
-if(!defined('TOOLTIPY_DIR'))
-	define('TOOLTIPY_DIR', plugin_dir_path(__FILE__));
 
 $tooltipy_plugin_data = get_plugin_data(TOOLTIPY_PLUGIN_FILE_PATH);
 
 if( !defined('TOOLTIPY_VERSION') ){
-	define('TOOLTIPY_VERSION', $tooltipy_plugin_data["Version"]);
+    define('TOOLTIPY_VERSION', $tooltipy_plugin_data["Version"]);
 }
 
 $bluet_kw_capability=apply_filters('bluet_kw_capability','manage_options');
+
 
 /*init settings*/
 register_activation_hook(__FILE__,'bluet_kw_activation');
 
 //pour traiter les termes lors de l'activation de l'ajout d'un nouveau terme ou nouveau post (keyword) publish_{my_keywords}
+add_action( 'save_post', 'tooltipy_delete_transient_when_post_saved' );
 
-add_action('init','tooltipy_init_func');
-function tooltipy_init_func(){
+function tooltipy_delete_transient_when_post_saved(){
+	/*
+		Delete cached query once a post or page is saved or edited
+	*/
+	delete_transient( "tooltipy_keywords_titles_ids" );
+}
+add_action('init',function(){	
+	//Tooltipy post_type name get from options
+	global $tooltipy_post_type_name, $default_tooltipy_post_type_name;
+
+	if(empty($tooltipy_post_type_name) || $tooltipy_post_type_name=="") {		
+
+		update_option('tooltipy_post_type_name', $default_tooltipy_post_type_name); 
+
+		$tooltipy_post_type_name=$default_tooltipy_post_type_name;
+
+		$tooltipy_cat_name=$tooltipy_post_type_name."_cat";
+		if($tooltipy_post_type_name==$default_tooltipy_post_type_name){
+			$tooltipy_cat_name="keywords_family";
+		}
+
+	}elseif($tooltipy_post_type_name==false){
+		
+		add_option('tooltipy_post_type_name'); 
+		update_option('tooltipy_post_type_name', $default_tooltipy_post_type_name); 
+
+		$tooltipy_post_type_name=$default_tooltipy_post_type_name;
+
+		$tooltipy_cat_name=$tooltipy_post_type_name."_cat";
+		if($tooltipy_post_type_name==$default_tooltipy_post_type_name){
+			$tooltipy_cat_name="keywords_family";
+		}
+	}
 	/**** localization ****/
 	load_plugin_textdomain('bluet-kw', false, dirname( plugin_basename( __FILE__ ) ).'/languages/');
 
@@ -57,46 +94,33 @@ function tooltipy_init_func(){
 
 
 	if(empty($tooltip_post_types) OR !is_array($tooltip_post_types) OR count($tooltip_post_types)<1){
-		$tooltip_post_types=array('my_keywords');
+		$tooltip_post_types=array($tooltipy_post_type_name);
 	}
 	//create posttype for keywords	
 	new bluet_keyword();
 
-}
-
-// Before VC Init - include the new vc element file
-add_action( 'vc_before_init', 'tooltipy_vc_before_init_actions' );
-function tooltipy_vc_before_init_actions() {
-    // Require new custom Element
-    require_once( TOOLTIPY_DIR.'visual-composer/tooltipy-glossary-element.php' ); 
-}
+});
 
 add_action('wp_enqueue_scripts', 'bluet_kw_load_scripts_front' );
 
 add_action('wp_footer','bluet_kttg_place_tooltips');
 add_action('admin_footer','bluet_kttg_place_tooltips');
-add_action('wp_head','tooltipy_load_findandreplacedomtext_func');
-
-function tooltipy_load_findandreplacedomtext_func(){
-	echo('<script type="text/javascript" src="'.plugins_url('pro-addon/assets/findandreplacedomtext.js',__FILE__).'"></script>');
-}	
-
-function tooltipy_remove_empty_string_func($val){
-	$ret=array();
-	if($val!=""){
-		array_push($ret,$val);
-	}
-	return $ret;
-}
-
+add_action('wp_head',function(){
+	//if(function_exists('bluet_kttg_pro_addon')){
+		//$pro_addon_dir=plugins_url("bluet_kttg_pro_addon");
+		echo('<script type="text/javascript" src="'.plugins_url('pro-addon/assets/findandreplacedomtext.js',__FILE__).'"></script>');
+	//}
+});
+	
 function bluet_kttg_place_tooltips(){
-	global $tooltip_post_types;
+	global $tooltip_post_types, $tooltipy_cat_name;
 
 	$exclude_me = get_post_meta(get_the_id(),'bluet_exclude_post_from_matching',true);			
 	//exclusions
 	if(is_singular() and $exclude_me == 'on'){
 		return;
 	}
+	
 	if(is_admin()){
 		return;
 	}
@@ -105,14 +129,20 @@ function bluet_kttg_place_tooltips(){
 	$my_excluded_keywords=array();
 
 	if(is_singular()){
-		$exclude_keywords_string = "";
+		$exclude_keywords_string = get_post_meta(get_the_id(),'bluet_exclude_keywords_from_matching',true);
 
 		//get excluded terms and sanitize them
 		$my_excluded_keywords=explode(',',$exclude_keywords_string);
 		$my_excluded_keywords=array_map('trim',$my_excluded_keywords);
 		$my_excluded_keywords=array_map('strtolower',$my_excluded_keywords);
 		
-		$my_excluded_keywords=array_filter($my_excluded_keywords,'tooltipy_remove_empty_string_func');
+		$my_excluded_keywords=array_filter($my_excluded_keywords,function($val){
+			$ret=array();
+			if($val!=""){
+				array_push($ret,$val);
+			}
+			return $ret;
+		});
 	}
 
 
@@ -130,7 +160,8 @@ function bluet_kttg_place_tooltips(){
 	}else{
 		$animation_speed="";
 	}
-	
+
+	if(false === ( $the_wk_query = get_transient( "tooltipy_keywords_titles_ids" ) ) ){
 	//get the keywords title and ids
 	// The Query                                                                          
 		$wk_args=array(
@@ -139,7 +170,10 @@ function bluet_kttg_place_tooltips(){
 		);
 		
 		$the_wk_query = new WP_Query( $wk_args );
-
+		
+		set_transient( "tooltipy_keywords_titles_ids", $the_wk_query, 24 * HOUR_IN_SECONDS );
+		//don't forget to delete the transient when a new keyword is added or edited
+	}
 		// The Loop
 		if ( $the_wk_query->have_posts() ) {
 
@@ -155,28 +189,53 @@ function bluet_kttg_place_tooltips(){
 						'pref'=>false,
 						'syns'=>get_post_meta(get_the_id(),'bluet_synonyms_keywords',true),
 						'youtube'=>get_post_meta(get_the_id(),'bluet_youtube_video_id',true),
-						'dfn'=>get_the_content(),
+						/*'dfn'=>get_the_content(),*/
 						'img'=>get_the_post_thumbnail(get_the_id(),'medium')
 					);
 					
 					if(get_post_meta(get_the_id(),'bluet_case_sensitive_word',true)=="on"){
 						$tmp_array_kw['case']=true;
 					}
-					
 					//categories or families
-					$tooltipy_families_arr = wp_get_post_terms(get_the_id(),'keywords_family',array("fields" => "ids"));
-					foreach ($tooltipy_families_arr as $key => $value) {
-					 	$tooltipy_families_arr[$key]="tooltipy-kw-cat-".$value;
-					}
-				  	$tooltipy_families_class=implode(" ",$tooltipy_families_arr);
-				  	$tmp_array_kw['families_class']=$tooltipy_families_class;
+                    $tooltipy_families_arr = wp_get_post_terms(get_the_id(),$tooltipy_cat_name,array("fields" => "ids"));
+                    foreach ($tooltipy_families_arr as $key => $value) {
+                        $tooltipy_families_arr[$key]="tooltipy-kw-cat-".$value;
+                    }
+                    $tooltipy_families_class=implode(" ",$tooltipy_families_arr);
+                    $tmp_array_kw['families_class']=$tooltipy_families_class;
 
 					//if prefix addon activated
 					if(function_exists('bluet_prefix_metabox')){
 						if(get_post_meta(get_the_id(),'bluet_prefix_keywords',true)=="on"){
 							$tmp_array_kw['pref']=true;
 						}
-					}					
+					}
+					
+					/* icon ext */
+
+					//choose
+					$choose_icon_type_name=get_post_meta( get_the_id(), 'kttg_choose_icon_type', true );
+
+					//url image
+					$kttg_icon_url = get_post_meta( get_the_id(), 'kttg_icon_url', true );
+					if(empty($kttg_icon_url)){		
+						$kttg_icon_url="";
+					}
+					$kttg_icon_id=get_post_meta(get_the_id(),'kttg_icon_id',true);
+					if(empty($kttg_icon_id)){		
+						$kttg_icon_id="";
+					}
+
+					if(!empty($choose_icon_type_name)){
+						if($choose_icon_type_name=='url'){
+							$tmp_array_kw['icon']=$kttg_icon_url;
+						}else{
+							$tmp_img=wp_get_attachment_image_src($kttg_icon_id,"full");
+							$tmp_array_kw['icon']=$tmp_img[0];
+						}
+					}else{
+						$tmp_array_kw['icon']="";
+					}
 
 					$my_keywords_terms[]=$tmp_array_kw;
 				}							
@@ -192,8 +251,8 @@ function bluet_kttg_place_tooltips(){
 			/*
 			<?php	var_dump($my_excluded_keywords); ?>
 			*/
-			var kttg_tab=[
-			<?php foreach($my_keywords_terms as $my_kw){
+			window.kttg_tab=[
+			<?php foreach($my_keywords_terms as $my_kw){ 
 
 				//for apostrophe issues :)
 				$my_kw['term']=preg_replace('/\&\#8217;/','’',$my_kw['term']);
@@ -201,11 +260,11 @@ function bluet_kttg_place_tooltips(){
 
 					echo("[");
 					
+						//term
 						echo('"'.preg_replace('/([-[\]{}()*+?.,\\/^$|#\s])/','\\\\\\\\$1',$my_kw['term']));
-						//echo('"'.$my_kw['term']); //fixed by (Alrik Gadkowsky)
-						if(!empty($my_kw['syns'])){
-							echo('|'.preg_replace('/([-[\]{}()*+?.,\\/^$#\s])/','\\\\\\\\$1',$my_kw['syns']).'"');
-						}else{
+                        if(!empty($my_kw['syns'])){
+                            echo('|'.preg_replace('/([-[\]{}()*+?.,\\/^$#\s])/','\\\\\\\\$1',$my_kw['syns']).'"');
+                        }else{
 							echo('"');
 						}
 						
@@ -224,14 +283,20 @@ function bluet_kttg_place_tooltips(){
 						}
 
 						//categories class
-						echo(",'".$my_kw['families_class']."'");
+                        echo(",'".$my_kw['families_class']."'");
+ 
+                        //if there is a video put a video class
+                        if(strlen($my_kw['youtube'])>5){
+                            echo(",'tooltipy-kw-youtube'");
+                        }else{
+                            echo(",''");
+                        }
 
-						//if there is a video put a video class
-						if(strlen($my_kw['youtube'])>5){
-							echo(",'tooltipy-kw-youtube'");
-						}else{
-							echo(",''");
-						}
+						//icon	
+						echo(",'".$my_kw['icon']."'");
+
+                        //number of times the keyword is fetched
+						echo(",0");
 						
 					echo("]");
 				?>,
@@ -242,35 +307,63 @@ function bluet_kttg_place_tooltips(){
 				"<?php echo($my_kw['kw_id']) ?>",
 			<?php } ?>
 			];
+			
 			//include or fetch zone
 			<?php
 			$settings= get_option('bluet_kw_settings');
 			
 			$options = get_option('bluet_kw_advanced');
-			$kttg_cover_areas='';
+			
+			$kttg_cover_class='';
 			$kttg_exclude_areas='';
 		
-			?>
+			if(!empty($options['kttg_cover_areas'])){
+				$kttg_cover_class=$options['kttg_cover_areas'];
+				$kttg_cover_class=explode(" ",$kttg_cover_class);
+			}
 
-			//console.log(tab);
+			$kttg_cover_tags = '';
+		
+			if(!empty($options['kttg_cover_tags'])){
+				$kttg_cover_tags = $options['kttg_cover_tags'];
+				$kttg_cover_tags = explode(" ",$kttg_cover_tags);
+			}
+
+			if(!empty($options['kttg_exclude_areas'])){
+				$kttg_exclude_areas=$options['kttg_exclude_areas'];
+				$kttg_exclude_areas=explode(" ",$kttg_exclude_areas);
+				
+			}
+			?>
 			var class_to_cover=[
 						<?php
-						if(!empty($kttg_cover_areas)){
-							foreach($kttg_cover_areas as $cover_area){
+						if(!empty($kttg_cover_class)){
+							foreach($kttg_cover_class as $cover_area){
 								if($cover_area!=""){
 									echo('".'.$cover_area.'",');
 								}
 							}
 						}
 						?>];
+			var tags_to_cover=[
+						<?php
+						if(!empty($kttg_cover_tags)){
+							foreach($kttg_cover_tags as $cover_tag){
+								if($cover_tag!=""){
+									echo( '"'.$cover_tag.'",');
+								}
+							}
+						}
+						?>];
+			var areas_to_cover = class_to_cover.concat( tags_to_cover );
 
-				if(class_to_cover.length==0){//if no classes mentioned
-					class_to_cover.push("body");
-				}
+			if(areas_to_cover.length==0){//if no classes mentioned
+				areas_to_cover.push("body");
+			}
 
-				fetch_all="<?php if(!empty($settings["bt_kw_match_all"]) and $settings["bt_kw_match_all"]=='on'){
-						echo('g');
-				}?>";
+			fetch_all="<?php if(!empty($settings["bt_kw_match_all"]) and $settings["bt_kw_match_all"]=='on'){
+					echo('g');
+			}?>";
 
 
 			//exclude zone block			
@@ -287,15 +380,41 @@ function bluet_kttg_place_tooltips(){
 								}
 							}
 							?>];
-				//exclude only h1 for free version
-				zones_to_exclude.push("h1");
-				zones_to_exclude.push("header");
-				zones_to_exclude.push("nav");
+				<?php
+				$kttg_exclude_anchor_tags=false;
+				
+				$kttg_exclude_heading_tags=array(false,false,false,false,false,false);
+				$adv_options = get_option('bluet_kw_advanced');
+
+				if(!empty($adv_options['kttg_exclude_anchor_tags']) and $adv_options['kttg_exclude_anchor_tags']=="on"){
+					$kttg_exclude_anchor_tags=true;
+				}
+
+				if(!empty($adv_options['kttg_exclude_heading_tags'])){
+					//heding h1 to h6
+					$kttg_exclude_heading_tags=$adv_options['kttg_exclude_heading_tags'];
+				}
+
+				//if exclude anchor tags			
+				if($kttg_exclude_anchor_tags){
+					?>
+						zones_to_exclude.push("a");
+					<?php
+				}
+
+				for($i=1;$i<7;$i++){
+					if(!empty($kttg_exclude_heading_tags["h".$i]) and $kttg_exclude_heading_tags["h".$i]=="on"){
+					?>
+						zones_to_exclude.push("h"+<?php echo($i); ?>);
+					<?php 
+					}
+				}
+				?>
 			}
 
-				for(var j=0 ; j<class_to_cover.length ; j++){					
+				for(var j=0 ; j<areas_to_cover.length ; j++){					
 					/*test overlapping classes*/
-					var tmp_classes=class_to_cover.slice(); //affectation par valeur
+					var tmp_classes=areas_to_cover.slice(); //affectation par valeur
 					//remove current elem from tmp tab
 					tmp_classes.splice(j,1);
 
@@ -303,15 +422,15 @@ function bluet_kttg_place_tooltips(){
 						if(
 							tmp_classes.length>0
 							&&
-							jQuery(class_to_cover[j]).parents(tmp_classes.join(",")).length>0
+							jQuery(areas_to_cover[j]).parents(tmp_classes.join(",")).length>0
 						){
 							continue;
 						}
 					/*end : test overlapping classes*/
 
 
-					for(var cls=0 ; cls<jQuery(class_to_cover[j]).length ; cls++){	
-						zone=jQuery(class_to_cover[j])[cls];
+					for(var cls=0 ; cls<jQuery(areas_to_cover[j]).length ; cls++){	
+						zone=jQuery(areas_to_cover[j])[cls];
 						//to prevent errors in unfound classes
 						if (zone==undefined) {
 							continue;
@@ -322,23 +441,21 @@ function bluet_kttg_place_tooltips(){
 							suffix='';
 							if(kttg_tab[i][2]==true){//if is prefix
 								suffix='\\w*';
-							}							
+							}
 							txt_to_find=kttg_tab[i][0];
-							var text_sep='[\\s<>,;:!$^*=\\-()\'"&?.\\/§%£¨+°~#{}\\[\\]|`\\\^@¤]'; //text separator
+							var text_sep='[\\s<>,;:!$^*=\\-()\'"&?.\\/§%£¨+°~#{}\\[\\]|`\\\^@¤]'; //text separator							
 							
 							//families for class
-							tooltipy_families_class=kttg_tab[i][3];
-
-							//video class
-							tooltipy_video_class=kttg_tab[i][4];
-
+                            tooltipy_families_class=kttg_tab[i][3];
+ 
+                            //video class
+                            tooltipy_video_class=kttg_tab[i][4];
 
 							/*test japanese and chinese*/
 							var japanese_chinese=/[\u3000-\u303F]|[\u3040-\u309F]|[\u30A0-\u30FF]|[\uFF00-\uFFEF]|[\u4E00-\u9FAF]|[\u2605-\u2606]|[\u2190-\u2195]|\u203B/;
 						    var jc_reg = new RegExp(japanese_chinese);
     						
 							if(jc_reg.test(txt_to_find)){
-								//console.log(txt_to_find+" is chinese or japanese!");
 								//change pattern if japanese or chinese text
 								text_sep=""; //no separator for japanese and chinese
 							}
@@ -354,9 +471,8 @@ function bluet_kttg_place_tooltips(){
 							if (typeof findAndReplaceDOMText == 'function') { //if function exists
 							  findAndReplaceDOMText(zone, {
 									<?php
-									if(!empty($settings["bt_kw_match_all"]) and $settings['bt_kw_match_all']=='on'){
 										echo("preset: 'prose',");
-									}	?>							
+										?>							
 									find: reg,
 									replace: function(portion) {
 
@@ -379,7 +495,18 @@ function bluet_kttg_place_tooltips(){
 										){
 											return portion.text;
 										}
-
+										//number of appearence
+										<?php
+							if(!(!empty($settings["bt_kw_match_all"]) and $settings['bt_kw_match_all']=='on')){
+										?>
+										if(kttg_tab[i][6]==1){
+											return portion.text;
+										}
+										<?php
+							}
+										?>
+										
+										kttg_tab[i][6]++;
 
 										if(splitted[0]!=undefined){ before_kw=splitted[0]; }else{before_kw="";}
 										if(splitted[1]!=undefined){ after_kw=splitted[1]; }else{after_kw="";}
@@ -402,24 +529,30 @@ function bluet_kttg_place_tooltips(){
 															before_kw="";
 													}
 
-													if(suffix!=""){
-														//console.log("'"+suffix+"'");
+													//extract icon if present
+													kttg_icon='';
+
+													if(kttg_tab[i][5]!=""){
+														kttg_icon='<img src="'+kttg_tab[i][5]+'" >';
+													}																					
+
+													if(suffix!=""){														
 														var reg=new RegExp(suffix,"");
 														suff_after_kw=after_kw.split(reg)[0];
 														
 														if(after_kw.split(reg)[0]=="" && after_kw.split(reg)[1]!=undefined){
 															suff_after_kw=after_kw.split(reg)[1];
 														}
-														
+
 														if(suff_after_kw==undefined){
 															suff_after_kw="";
 														}														
-														
+
 														just_after_kw=after_kw.match(reg);
 														if(just_after_kw==undefined || just_after_kw==null){
 															just_after_kw="";
 														}
-
+														
 														if(suff_after_kw==" "){
                                                             suff_after_kw="  ";
                                                         }
@@ -427,22 +560,25 @@ function bluet_kttg_place_tooltips(){
                                                         if(before_kw==" "){
                                                             before_kw="  ";
                                                         }
-														
-														elem.innerHTML=(txt_to_display==undefined || txt_to_display==null)?before_kw+just_after_kw+suff_after_kw:before_kw+"<span class='bluet_tooltip tooltipy-kw-prefix' data-tooltip-id="+tooltipIds[i]+">"+txt_to_display+""+just_after_kw+"</span>"+suff_after_kw;
-                                                    }else{    
-													
-														if(after_kw==" "){
+                                        /*console.log('('+suffix+')('+after_kw.split(reg)[1]+')');
+  										console.log('['+after_kw+'] -'+suff_after_kw+'-');*/
+
+  										            //with prefix
+														elem.innerHTML=(txt_to_display==undefined || txt_to_display==null) ? before_kw+just_after_kw+suff_after_kw : before_kw+"<span class='bluet_tooltip tooltipy-kw-prefix' data-tooltip="+tooltipIds[i]+">"+kttg_icon+txt_to_display+""+just_after_kw+"</span>"+suff_after_kw;
+                                                	}else{                                                          
+                                                        if(after_kw==" "){
                                                             after_kw="  ";
                                                         }
 
                                                         if(before_kw==" "){
                                                             before_kw="  ";
-                                                        } 
-														
-                                                        elem.innerHTML=(txt_to_display==undefined || txt_to_display==null)?before_kw+after_kw:before_kw+"<span class='bluet_tooltip' data-tooltip-id="+tooltipIds[i]+">"+txt_to_display+"</span>"+after_kw;
+                                                        }  
+                                                        //without prefix                                              
+                                                        elem.innerHTML=(txt_to_display==undefined || txt_to_display==null) ? before_kw+after_kw : before_kw+"<span class='bluet_tooltip' data-tooltip="+tooltipIds[i]+">"+kttg_icon+txt_to_display+"</span>"+after_kw;
                                                     }
-                                                    //add classes to keywords
-													jQuery(jQuery(elem).children(".bluet_tooltip")[0]).addClass("tooltipy-kw tooltipy-kw-"+tooltipIds[i]+" "+tooltipy_families_class+" "+tooltipy_video_class+" <?php echo($css_classes_added_inline_keywords); ?>");
+													//add classes to keywords
+                                                    jQuery(jQuery(elem).children(".bluet_tooltip")[0]).addClass("tooltipy-kw tooltipy-kw-"+tooltipIds[i]+" "+tooltipy_families_class+" "+tooltipy_video_class+" <?php echo($css_classes_added_inline_keywords); ?>");
+
 													return elem;
 												
 											<?php
@@ -456,13 +592,16 @@ function bluet_kttg_place_tooltips(){
 														if(suff_after_kw==undefined){
 															suff_after_kw="";
 														}
-														 elem.innerHTML=(txt_to_display==undefined || txt_to_display==null)?before_kw+after_kw.match(reg)+suff_after_kw:before_kw+txt_to_display+after_kw.match(reg)+"<img src='<?php echo(plugins_url('/assets/qst-mark-1.png',__FILE__)); ?>' class='bluet_tooltip tooltipy-kw-prefix tooltipy-kw-icon' data-tooltip-id="+tooltipIds[i]+" />"+suff_after_kw;
+														//icon with prefix
+														elem.innerHTML=(txt_to_display==undefined || txt_to_display==null)?before_kw+after_kw.match(reg)+suff_after_kw:before_kw+txt_to_display+after_kw.match(reg)+"<img src='<?php echo(plugins_url('/assets/qst-mark-1.png',__FILE__)); ?>' class='bluet_tooltip tooltipy-kw-prefix tooltipy-kw-icon' data-tooltip="+tooltipIds[i]+" />"+suff_after_kw;
                                                     }else{
-                                                        elem.innerHTML=(txt_to_display==undefined || txt_to_display==null)?before_kw+after_kw:before_kw+txt_to_display+"<img src='<?php echo(plugins_url('/assets/qst-mark-1.png',__FILE__)); ?>' class='bluet_tooltip tooltipy-kw-icon' data-tooltip-id="+tooltipIds[i]+" />"+after_kw;
+                                                    	//icon without prefix
+                                                        elem.innerHTML=(txt_to_display==undefined || txt_to_display==null)?before_kw+after_kw:before_kw+txt_to_display+"<img src='<?php echo(plugins_url('/assets/qst-mark-1.png',__FILE__)); ?>' class='bluet_tooltip tooltipy-kw-icon' data-tooltip="+tooltipIds[i]+" />"+after_kw;
                                                     }
 
                                                     //add classes to keywords
                                                     jQuery(jQuery(elem).children(".bluet_tooltip")[0]).addClass("tooltipy-kw tooltipy-kw-"+tooltipIds[i]+" "+tooltipy_families_class+" "+tooltipy_video_class+" <?php echo($css_classes_added_inline_keywords); ?>");
+
 													return elem;
 												
 											<?php
@@ -482,7 +621,7 @@ function bluet_kttg_place_tooltips(){
 			jQuery.event.trigger("keywordsFetched");
 		}
 			/*end test*/
-
+			
 			jQuery(document).ready(function(){
 				kttg_fetch_kws();
 				
@@ -496,18 +635,36 @@ function bluet_kttg_place_tooltips(){
 				bluet_placeTooltips(".bluet_tooltip, .bluet_img_tooltip","<?php echo($kttg_tooltip_position); ?>",false);
 			});
 
+			/*	Lanch keywords fetching for a chosen event triggered - pro feature	*/
+			<?php 
+			$custom_events=$adv_options['kttg_custom_events'];
+			$custom_events_array=explode(",", $custom_events);
+
+			foreach ($custom_events_array as $custom_event) {
+				if($custom_event==""){
+					continue;
+				}
+			?>
+				jQuery("body").on('<?php echo($custom_event); ?>',function(){
+					kttg_fetch_kws();
+				});
+			<?php 
+			}
+			?>
+
 		</script>
-		<?php
+				<?php
 		if(!is_admin()){
 			//if not in admin page
 			?>
 			<script>
 				jQuery(document).ready(function(){				
 						/*test begin*/
-					load_tooltip="<span id='loading_tooltip' class='bluet_block_to_show' data-tooltip-id='0'>";
+					load_tooltip="<span id='loading_tooltip' class='bluet_block_to_show' data-tooltip='0'>";
 						load_tooltip+="<div class='bluet_block_container'>";									
 							load_tooltip+="<div class='bluet_text_content'>";							
-								load_tooltip+="<img width='15px' src='<?php echo plugins_url('/assets/loading.gif',__FILE__); ?>' />";							load_tooltip+="</div>";						
+									load_tooltip+="<img width='15px' src='<?php echo plugins_url('/assets/loading.gif',__FILE__); ?>' />";
+							load_tooltip+="</div>";						
 						load_tooltip+="</div>";
 					load_tooltip+="</span>";
 
@@ -521,9 +678,7 @@ function bluet_kttg_place_tooltips(){
 	//call add filter for all hooks in need
 	//you can pass cutom hooks you've done
 	//(### do something here to support custom fields)
-add_action('wp_head','tooltipy_prepare_content_to_filter_func'); //'other content hook' if needed
-
-function tooltipy_prepare_content_to_filter_func(){
+add_action('wp_head',function(){
 	
 	$contents_to_filter=array(
 							array('the_content'),	//contents to filter to the post
@@ -553,7 +708,8 @@ function tooltipy_prepare_content_to_filter_func(){
 		}
 	}
 
-}
+}); //'other content hook' if needed
+
 
 //Functions
 
@@ -561,14 +717,14 @@ function tooltipy_prepare_content_to_filter_func(){
 /* enqueue js functions for the front side*/
 function bluet_kw_load_scripts_front() {
 	$options = get_option( 'bluet_kw_settings' );
-	$anim_type =( !empty($options['bt_kw_animation_type'])? $options['bt_kw_animation_type'] : null);
+	$anim_type=$options['bt_kw_animation_type'];
 
 	if(!empty($anim_type) and $anim_type!="none"){
 		wp_enqueue_style( 'kttg-tooltips-animations-styles', plugins_url('assets/animate.css',__FILE__), array(), false);
 	}
 	//load jQuery once to avoid conflict
-	wp_enqueue_script( 'kttg-tooltips-functions-script', plugins_url('assets/kttg-tooltip-functions.js',__FILE__), array('jquery'), TOOLTIPY_VERSION, true );
-		
+	wp_enqueue_script('kttg-tooltips-functions-script', plugins_url('assets/kttg-tooltip-functions.js',__FILE__), array('jquery'), TOOLTIPY_VERSION, true );
+	
 	//load mediaelement.js for audio and video shortcodes
 	//change this to make it load only when shortcodes are loaded with keywords
 	wp_enqueue_script('wp-mediaelement');
@@ -682,27 +838,30 @@ function kttg_filter_posttype($cont){
 		$my_keywords_ids=$bluet_matching_keywords_field;
 	}                                    
 					
-	$options=get_option('bluet_kw_advanced');    
+	   $options=get_option('bluet_kw_advanced');    
  
-    $kttg_fetch_all_keywords=false; 
-	
+    if(empty($options['kttg_fetch_all_keywords'])){
+        $kttg_fetch_all_keywords=false; 
+    }else if($options['kttg_fetch_all_keywords']=="on"){
+        $kttg_fetch_all_keywords=true;
+    }
+
 	if(!empty($my_keywords_ids) OR $kttg_fetch_all_keywords){
-		
 		$my_keywords_terms=array(); 
 							
 		$post_in=$my_keywords_ids;
 
-		if($kttg_fetch_all_keywords){
-			$post_in=null;
-		}
 		// The Query                                                                          
 		$wk_args=array(
-			'post__in'=>$post_in,
 			'post_type'=>$tooltip_post_types,
 			'posts_per_page'=>-1	//to retrieve all keywords
 		);
 		
-		$the_wk_query = new WP_Query( $wk_args );
+		if(!$kttg_fetch_all_keywords){
+			$wk_args['post__in']=$post_in;
+		}
+
+		$the_wk_query = new WP_Query($wk_args);
 
 		// The Loop
 		if ( $the_wk_query->have_posts() ) {
@@ -817,7 +976,7 @@ function kttg_filter_posttype($cont){
 					$dfn=$arr['dfn'];
 				}
 				
-				$html_to_replace='<span class="bluet_tooltip" data-tooltip-id="'.$arr["kw_id"].'">$2</span>';
+				$html_to_replace='<span class="bluet_tooltip" data-tooltip="'.$arr["kw_id"].'">$2</span>';
 				
 				$term_and_syns_array=explode('|',$term);
 
@@ -876,6 +1035,7 @@ function kttg_filter_posttype($cont){
 	$cont=$html_tooltips_to_add.$cont;
 	return do_shortcode($cont);//do_shortcode to return content after executing shortcodes
 }
+
 
 /**
 *	tooltipy_remove_plugins_filters : Removes the filters applied on the tooltip contents (advanced feature)

@@ -7,9 +7,9 @@ function moveTooltipElementsTop(className){
 		
 		//remove repeated elements 
 		jQuery("#tooltip_blocks_to_show").children().each(function(){
-			id_post_type=jQuery(this).data("tooltip-id");
-			if(jQuery("#tooltip_blocks_to_show").children("[data-tooltip-id="+id_post_type+"]").length>1){
-				jQuery("#tooltip_blocks_to_show").children("[data-tooltip-id="+id_post_type+"]").each(function(index){
+			id_post_type=jQuery(this).data("tooltip");
+			if(jQuery("#tooltip_blocks_to_show").children("[data-tooltip="+id_post_type+"]").length>1){
+				jQuery("#tooltip_blocks_to_show").children("[data-tooltip="+id_post_type+"]").each(function(index){
 					if(index>0){
 						jQuery(this).remove();
 					}
@@ -19,38 +19,30 @@ function moveTooltipElementsTop(className){
 }
 
 function bluet_placeTooltips(inlineClass,position,loading){
-	// Fix iOS devices mouseout issues
-	// Topics :	https://wordpress.org/support/topic/ipad-and-iphone-problems
-	// 			https://wordpress.org/support/topic/words-running-together-1
-	
-	// Solution : http://stackoverflow.com/questions/7006799/does-iphone-ipad-support-mouseout-event
-	jQuery('*').on('click', function(){
-		return true;
-	});
+    // Fix iOS devices mouseout issues
+    // Topics :    https://wordpress.org/support/topic/ipad-and-iphone-problems
+    //             https://wordpress.org/support/topic/words-running-together-1
+    
+    // Solution : http://stackoverflow.com/questions/7006799/does-iphone-ipad-support-mouseout-event
+    jQuery('*').on('click', function(){
+        return true;
+    });
 
-	// add listeners to inline keywords on mouseover
+	//add listeners to inline keywords on mouseover
 	jQuery(inlineClass).mouseover(function(){
 
 		if( currentHoveredKeyword != 'done' ){
 			currentHoveredKeyword = jQuery(this);
 		}
-
+		
 		//id of the posttype in concern
-		id_post_type=jQuery(this).data("tooltip-id");
+		id_post_type=jQuery(this).data("tooltip");
 		if (loading){
 			id_post_type=0;
 		};
 
-		var tooltipBlock=jQuery("#tooltip_blocks_to_show").children("[data-tooltip-id="+id_post_type+"]").first();
+		var tooltipBlock=jQuery("#tooltip_blocks_to_show").children("[data-tooltip="+id_post_type+"]").first();
 	  
-	  	// load images only if hevered
-		tooltipBlock.find('img').each(function(){
-			if(jQuery(this).attr('src') == ''){
-				jQuery(this).attr('src',jQuery(this).data('src'));
-			}
-		});
-
-
 	  //show and quit if mobile
 	  	if(jQuery(window).width()<401){
 			tooltipBlock.css("opacity","1").show();
@@ -143,10 +135,10 @@ function bluet_placeTooltips(inlineClass,position,loading){
 		}
 	});
 	
-	// on mouseout
+	//on mouseout
 	jQuery(inlineClass).mouseout(function(){
-		id_post_type=jQuery(this).data("tooltip-id");
-		var tooltipBlock=jQuery("#tooltip_blocks_to_show").children("[data-tooltip-id="+id_post_type+"]").first();
+		id_post_type=jQuery(this).data("tooltip");
+		var tooltipBlock=jQuery("#tooltip_blocks_to_show").children("[data-tooltip="+id_post_type+"]").first();
 
 	   if(tooltipBlock){
 		   //leave it like that .css("display","none"); for Safari navigator issue
@@ -189,3 +181,14 @@ function removeUrlParam(key, sourceURL) {
     }
     return rtn;
 }
+
+function associate_tooltip_to_img(){
+	jQuery('img.bluet_tooltip').each(function(){
+		tlt_data=jQuery(this).next().children().first().children().first().data('tooltip');
+		jQuery(this).attr('data-tooltip',tlt_data);
+	});
+}
+
+jQuery(document).on("keywordsLoaded",function(){
+	associate_tooltip_to_img();
+});

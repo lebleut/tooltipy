@@ -1,10 +1,10 @@
-//once keywords fetched (highlihted)
 var currentHoveredKeyword = false;
 
+//once keywords fetched (highlihted)
 jQuery(document).on("keywordsFetched",function() {
 	var keyw=[];
 	jQuery("body .bluet_tooltip").each(function(){
-		keyw.push(jQuery(this).data('tooltip-id'));
+		keyw.push(jQuery(this).data('tooltip'));
 	});
 	
 	jQuery.post(
@@ -32,6 +32,7 @@ jQuery(document).on("keywordsLoaded",function() {
 		currentHoveredKeyword.trigger('mouseover');
 		currentHoveredKeyword = 'done';
 	}
+
 	//for [audio] and [video] shortcodes to generate audio after keywords load
 	jQuery('.tooltipy-pop .wp-audio-shortcode[style*="visibility:hidden"], .tooltipy-pop .wp-video-shortcode[style*="visibility:hidden"]').mediaelementplayer();
 	jQuery('.tooltipy-pop .wp-audio-shortcode[style*="visibility: hidden"], .tooltipy-pop .wp-video-shortcode[style*="visibility: hidden"]').mediaelementplayer();

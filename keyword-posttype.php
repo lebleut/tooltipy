@@ -10,15 +10,15 @@ class bluet_keyword{
 	}
 	
 	public function register_my_post_type(){
-		global $bluet_kw_capability;
+		global $bluet_kw_capability, $tooltipy_post_type_name, $tooltipy_cat_name;
 
 		$args=array(
 			'labels'=>array(
-				'name'=>__('KeyWords','bluet-kw'),
+				'name'=>__('My KeyWords','bluet-kw'),
 				'singular_name'=>__('KeyWord','bluet-kw'),
 				'menu_name'=>__('Tooltipy','bluet-kw'),
 				'name_admin_bar'=>__('My KeyWords','bluet-kw'),
-				'all_items'=>__('All my KeyWords','bluet-kw'),
+				'all_items'=>__('My KeyWords','bluet-kw'),
 				'add_new' =>__('Add'),
 				'add_new_item'=>__('New').' '.__('KeyWord','bluet-kw'),
 				'edit_item'=>__('Edit').' '.__('KeyWord','bluet-kw'),
@@ -48,7 +48,7 @@ class bluet_keyword{
 			
 		}		
 	
-		register_post_type('my_keywords',$args);
+		register_post_type($tooltipy_post_type_name,$args);
 
 		$fam_args=array(
 			'labels'=>array(
@@ -60,36 +60,14 @@ class bluet_keyword{
 		);
 
 		register_taxonomy(
-				'keywords_family',
-				'my_keywords',
+				$tooltipy_cat_name,
+				$tooltipy_post_type_name,
 				$fam_args);
 	}
 	public function add_columns(){
 		
 		// add the picture among columns
-		add_filter('manage_my_keywords_posts_columns', array( $this, 'tooltipy_add_picture_among_columns_func') );
-		
-		add_action('manage_my_keywords_posts_custom_column', array( $this, 'tooltipy_add_picture_among_custom_columns_func'),10,2); //10 priority, 2 arguments
-
-	}
-	public function tooltipy_add_picture_among_custom_columns_func($column_name,$post_id){
-
-		if ($column_name == 'the_picture') {
-			// show content of 'directors_name' column
-			the_post_thumbnail(array(75,75));
-		}elseif($column_name == 'is_prefix'){
-			//if appropriate addon is activated
-			if(function_exists('bluet_show_prefix_in_column')){
-				bluet_show_prefix_in_column();
-			}
-		}elseif($column_name == 'is_video'){
-			//if appropriate addon is activated
-			if(function_exists('bluet_show_video_in_column')){
-				bluet_show_video_in_column();
-			}
-		}
-	}
-	public function tooltipy_add_picture_among_columns_func($defaults){		
+		add_filter('manage_my_keywords_posts_columns', function($defaults){		
 
 			$defaults['the_picture']=__('Picture','bluet-kw');
 			$defaults['is_prefix'] =__('Is Prefix ?','bluet-kw');
@@ -113,7 +91,27 @@ class bluet_keyword{
 			
 			//return the rearranged array
 			return $reArr;
-		}
+		});
+		
+		add_action('manage_my_keywords_posts_custom_column', function($column_name,$post_id){
+
+			if ($column_name == 'the_picture') {
+				// show content of 'directors_name' column
+				the_post_thumbnail(array(75,75));
+			}elseif($column_name == 'is_prefix'){
+				//if appropriate addon is activated
+				if(function_exists('bluet_show_prefix_in_column')){
+					bluet_show_prefix_in_column();
+				}
+			}elseif($column_name == 'is_video'){
+				//if appropriate addon is activated
+				if(function_exists('bluet_show_video_in_column')){
+					bluet_show_video_in_column();
+				}
+			}
+		},10,2); //10 priority, 2 arguments
+
+	}
 }
 
 ?>

@@ -5,7 +5,9 @@ pro addon
 
 defined('ABSPATH') or die("No script kiddies please!");
 
+require_once dirname( __FILE__ ) . '/pro-settings-page.php'; // post
 require_once dirname( __FILE__ ) . '/pro-functions.php'; // post
+require_once dirname( __FILE__ ) . '/pro-supported-plugins.php'; // 
 require_once dirname( __FILE__ ) . '/pro-shortcodes.php'; // 
 require_once dirname( __FILE__ ) . '/pro-load-ajax.php';
 
@@ -24,48 +26,11 @@ add_action('wp_head','bluet_kw_adv_enqueue_scripts');
 
 add_action( 'admin_init', 'bluet_buttons_mce' );
 
-add_action('init', 'tooltipy_add_metaboxes_for_custom_posttypes_func');
-
-function tooltipy_add_metaboxes_for_custom_posttypes_func(){
+add_action('init',function(){
 
 	//add metaboxes for custom post types
 
-	add_action('do_meta_boxes', 'tooltipy_metaboxes_custom_pt_func');
-	
-
-	// /*add custom post types to match*/	
-	add_filter('bluet_kttg_posttypes_to_match', 'tooltipy_add_custom_pt_to_much_func');
-	
-	// /*add custom fields to match*/	
-	add_filter('bluet_kttg_dustom_fields_hooks', 'tooltipy_add_custom_fields_to_much_func');
-}
-
-function tooltipy_add_custom_pt_to_much_func($cont){		
-	$post_types_to_filter=bluet_get_post_types_to_filter();
-
-	$cont=array(); //to eliminate page and post posttypes if pro is activated
-
-	if(!empty($post_types_to_filter)){
-		foreach($post_types_to_filter as $cpt){
-				$cont[]=$cpt;				
-		}
-	}
-	return $cont;
-}
-
-function tooltipy_add_custom_fields_to_much_func($cont){
-	$custom_fields_to_filter=bluet_get_custom_fields_to_filter();
-	$cont=array(); //to eliminate the_content filter hook
-
-	if(!empty($custom_fields_to_filter)){
-		foreach($custom_fields_to_filter as $cfd){
-				$cont[]=$cfd;
-		}			
-	}
-	return $cont;
-}
-
-function tooltipy_metaboxes_custom_pt_func(){
+	add_action('do_meta_boxes',function(){
 
 		foreach(bluet_get_post_types_to_filter() as $id=>$my_customposttype){
 			//!in_array($my_customposttype,array('post','page')) to prevent double metaboxes in post and page posttypes
@@ -81,5 +46,35 @@ function tooltipy_metaboxes_custom_pt_func(){
 			}
 		}
 
-	}
+	});
+	
+
+	// /*add custom post types to match*/	
+	add_filter('bluet_kttg_posttypes_to_match',function($cont){		
+		$post_types_to_filter=bluet_get_post_types_to_filter();
+	
+		$cont=array(); //to eliminate page and post posttypes if pro is activated
+
+		if(!empty($post_types_to_filter)){
+			foreach($post_types_to_filter as $cpt){
+					$cont[]=$cpt;				
+			}
+		}
+		return $cont;
+	});
+	
+	// /*add custom fields to match*/	
+	add_filter('bluet_kttg_dustom_fields_hooks',function($cont){
+		$custom_fields_to_filter=bluet_get_custom_fields_to_filter();
+		$cont=array(); //to eliminate the_content filter hook
+
+		if(!empty($custom_fields_to_filter)){
+			foreach($custom_fields_to_filter as $cfd){
+					$cont[]=$cfd;
+			}			
+		}
+		return $cont;
+	});
+});
+
 ?>

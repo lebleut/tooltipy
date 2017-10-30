@@ -417,7 +417,7 @@ msgstr ""
 
 #: settings-page.php:315
 msgid ""
-"my_keywords is not selected as a tooltip. (only selected post types will be "
+" is not selected as a tooltip. (only selected post types will be "
 "considered as tooltips)"
 msgstr ""
 

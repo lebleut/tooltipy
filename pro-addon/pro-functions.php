@@ -138,9 +138,11 @@ function bluet_filter_this_custom_post_type($my_id){
 
 function bluet_get_posttypes_list(){
 //returns the post types except (post, page and my_keywords) in an array 
+	global $tooltipy_post_type_name;
+	
 	$ret=array();
 	foreach(get_post_types() as $id=>$ptn){
-		if(!in_array($ptn,array('my_keywords'))){
+		if(!in_array($ptn,array($tooltipy_post_type_name))){
 			$ret[]=$ptn;
 		}
 	}
@@ -175,7 +177,7 @@ function bluet_kttg_all_tooltips_layout($kttg_text,$kttg_image,$kttg_youtube_id,
 		$html_media=$html_kttg_youtube_id;
 	}
 	
-	$layout_ret='<span class="bluet_block_to_show" data-tooltip-id="'.$id.'" onmouseover="callPlayer(\'iframe_'.$id.'\',\'playVideo\')" onmouseleave="callPlayer(\'iframe_'.$id.'\',\'pauseVideo\')">'
+	$layout_ret='<span class="bluet_block_to_show" data-tooltip="'.$id.'" onmouseover="callPlayer(\'iframe_'.$id.'\',\'playVideo\')" onmouseleave="callPlayer(\'iframe_'.$id.'\',\'pauseVideo\')">'
 					.'<img src="'.plugin_dir_url(__FILE__).'assets/close_button.png" class="bluet_hide_tooltip_button" style="display:'.$button_prop.';"/>'
 					.'<div class="bluet_block_container">'
 						.$html_media
@@ -217,11 +219,11 @@ function bluet_kw_adv_enqueue_scripts() {
 	wp_enqueue_script( 'kttg-pro-tooltip-scripts', plugins_url('assets/kttg-pro-functions.js',__FILE__), array('jquery'), TOOLTIPY_VERSION, true );
 	
 	//test
-	//wp_enqueue_script( 'kttg-pro-findandreplacedomtext', plugins_url('assets/findandreplacedomtext.js',__FILE__), array(),TOOLTIPY_VERSION , false );
+	//wp_enqueue_script( 'kttg-pro-findandreplacedomtext', plugins_url('assets/findandreplacedomtext.js',__FILE__), array(), TOOLTIPY_VERSION, false );
 }
 function bluet_kw_adv_enqueue() {
 	$adv_opt_tmp=get_option('bluet_kw_advanced');
-	$kttg_custom_style = ( !empty($adv_opt_tmp['bt_kw_adv_style']['custom_style_sheet'])? $adv_opt_tmp['bt_kw_adv_style']['custom_style_sheet'] : '');
+	$kttg_custom_style=$adv_opt_tmp['bt_kw_adv_style']['custom_style_sheet'];
 	if(!empty($adv_opt_tmp['bt_kw_adv_style']['apply_custom_style_sheet'])){
 		$kttg_apply_custom_style=$adv_opt_tmp['bt_kw_adv_style']['apply_custom_style_sheet'];
 	}else{
@@ -280,95 +282,94 @@ function bluet_buttons_mce_register($buttons) {
 
 function bluet_filter_imgs_content(){
 	global $tooltip_post_types;
-		add_filter('the_content', 'tooltipy_filter_images_content_func',101);
-}
-function tooltipy_filter_images_content_func($cont){
+		add_filter('the_content',function($cont){
 			
-	$exclude_me = get_post_meta(get_the_id(),'bluet_exclude_post_from_matching',true);
-	//if the current post tells us to exclude from fetch
-	if($exclude_me) return $cont;
-	
-	$settings=get_option('bluet_kw_settings');
-
-	if(((!empty($settings['bt_kw_match_excerpts']) and $settings['bt_kw_match_excerpts'] ? true : is_single()) and $settings['bt_kw_for_posts']) or (is_page() and !empty($settings['bt_kw_for_pages']) and $settings['bt_kw_for_pages']=="on")){ 
-		$my_keywords_ids=kttg_get_related_keywords(get_the_id());
-		
-		//if user specifies keywords to match
-		$bluet_matching_keywords_field=get_post_meta(get_the_id(),'bluet_matching_keywords_field',true);
-		if(!empty($bluet_matching_keywords_field)){
-			$my_keywords_ids=$bluet_matching_keywords_field;
-		}
-
-		if(!empty($my_keywords_ids)){
+			$exclude_me = get_post_meta(get_the_id(),'bluet_exclude_post_from_matching',true);
+			//if the current post tells us to exclude from fetch
+			if($exclude_me) return $cont;
 			
-			$my_keywords_terms=array();
-			
-			// The Query
-			$wk_args=array(
-				'post__in'=>$my_keywords_ids,
-				'post_type'=> $tooltip_post_types
-			);
-			
-			$the_wk_query = new WP_Query( $wk_args );
+			$settings=get_option('bluet_kw_settings');
 
-			// The Loop
-			if ( $the_wk_query->have_posts() ) {
-
-				while ( $the_wk_query->have_posts() ) {
-					$the_wk_query->the_post();
-					
-					$my_keywords_terms[]=array(
-						'kw_id'=>get_the_id(),
-						'term'=>get_the_title(),
-						'syns'=>get_post_meta(get_the_id(),'bluet_synonyms_keywords',true),
-						'dfn'=>get_the_content(),
-						'img'=>get_the_post_thumbnail(get_the_id(),'medium')
-						);	
-				}
+			if(((!empty($settings['bt_kw_match_excerpts']) and $settings['bt_kw_match_excerpts'] ? true : is_single()) and $settings['bt_kw_for_posts']) or (is_page() and !empty($settings['bt_kw_for_pages']) and $settings['bt_kw_for_pages']=="on")){ 
+				$my_keywords_ids=kttg_get_related_keywords(get_the_id());
 				
-			} else {
-				// no posts found
+				//if user specifies keywords to match
+				$bluet_matching_keywords_field=get_post_meta(get_the_id(),'bluet_matching_keywords_field',true);
+				if(!empty($bluet_matching_keywords_field)){
+					$my_keywords_ids=$bluet_matching_keywords_field;
+				}
+
+				if(!empty($my_keywords_ids)){
+					
+					$my_keywords_terms=array();
+					
+					// The Query
+					$wk_args=array(
+						'post__in'=>$my_keywords_ids,
+						'post_type'=> $tooltip_post_types
+					);
+					
+					$the_wk_query = new WP_Query( $wk_args );
+
+					// The Loop
+					if ( $the_wk_query->have_posts() ) {
+
+						while ( $the_wk_query->have_posts() ) {
+							$the_wk_query->the_post();
+							
+							$my_keywords_terms[]=array(
+								'kw_id'=>get_the_id(),
+								'term'=>get_the_title(),
+								'syns'=>get_post_meta(get_the_id(),'bluet_synonyms_keywords',true),
+								'dfn'=>get_the_content(),
+								'img'=>get_the_post_thumbnail(get_the_id(),'medium')
+								);	
+						}
+						
+					} else {
+						// no posts found
+					}
+					/* Restore original Post Data */
+					wp_reset_postdata();
+						
+						$limit_match=((!empty($settings['bt_kw_match_all']) and $settings['bt_kw_match_all']=='on')? -1 : 1);
+						
+						foreach($my_keywords_terms as $id=>$arr){
+							$term=$arr['term'];
+							
+							//concat synonyms if they are not empty
+							if($arr['syns']!=""){
+								$term.='|'.$arr['syns'];
+							}
+
+							$img=$arr['img'];
+							$dfn=$arr['dfn'];
+							
+							if($dfn!=""){
+								$dfn=" : ".$arr['dfn'];
+							}
+							
+							$term_1=explode('|',$term);
+							$term_1=$term_1[0];
+							
+							$html_to_replace='$1
+											<span class="bluet_block_to_show" data-tooltip="'.$arr["kw_id"].'">
+												<span class="bluet_block_container">
+													'.$img.'
+													<span class="bluet_title_on_block">'.$term_1.'</span>  
+													'.$dfn.'
+												</span>
+											</span>';
+							$cont=preg_replace('#(<img\s([^>]*\s)?alt="KTTG: '.$term_1.'"(.*?)>)#i',$html_to_replace,$cont,$limit_match);
+							
+							//to add data-tooltip attrib
+							$cont=preg_replace('#((<img)(\s([^>]*\s)?alt="KTTG: '.$term_1.'"(.*?)>))#i','<img class="bluet_img_tooltip" data-tooltip="'.$arr["kw_id"].'" $3',$cont,$limit_match);
+							
+						}
+				}
 			}
-			/* Restore original Post Data */
-			wp_reset_postdata();
-				
-				$limit_match=((!empty($settings['bt_kw_match_all']) and $settings['bt_kw_match_all']=='on')? -1 : 1);
-				
-				foreach($my_keywords_terms as $id=>$arr){
-					$term=$arr['term'];
-					
-					//concat synonyms if they are not empty
-					if($arr['syns']!=""){
-						$term.='|'.$arr['syns'];
-					}
-
-					$img=$arr['img'];
-					$dfn=$arr['dfn'];
-					
-					if($dfn!=""){
-						$dfn=" : ".$arr['dfn'];
-					}
-					
-					$term_1=explode('|',$term);
-					$term_1=$term_1[0];
-					
-					$html_to_replace='$1
-									<span class="bluet_block_to_show" data-tooltip-id="'.$arr["kw_id"].'">
-										<span class="bluet_block_container">
-											'.$img.'
-											<span class="bluet_title_on_block">'.$term_1.'</span>  
-											'.$dfn.'
-										</span>
-									</span>';
-					$cont=preg_replace('#(<img\s([^>]*\s)?alt="KTTG: '.$term_1.'"(.*?)>)#i',$html_to_replace,$cont,$limit_match);
-					
-					//to add data-tooltip-id attrib
-					$cont=preg_replace('#((<img)(\s([^>]*\s)?alt="KTTG: '.$term_1.'"(.*?)>))#i','<img class="bluet_img_tooltip" data-tooltip-id="'.$arr["kw_id"].'" $3',$cont,$limit_match);
-					
-				}
-		}
-	}
-	return $cont;
+			return $cont;
+		},101);
 }
 /*pro images -end*/
 

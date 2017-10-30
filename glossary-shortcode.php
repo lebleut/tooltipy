@@ -10,6 +10,8 @@ function bluet_kttg_glossary(){
 	global $tooltip_post_types;
 	global $is_kttg_glossary_page;
 	global $wpdb;
+	global $tooltipy_post_type_name;
+	global $tooltipy_cat_name;
 	 
 	$glossary_options = get_option( 'bluet_glossary_options' );
 
@@ -38,20 +40,21 @@ function bluet_kttg_glossary(){
 	if(empty($_GET["letter"])){
 			$current_letter_class='bluet_glossary_current_letter';
 	}
-	$all_link = get_permalink();
 
-	if(!empty($_GET['cat']) ){
-		$all_link = add_query_arg( 'cat', $_GET['cat'], $all_link );
-	}
+    $all_link = get_permalink();
+
+    if(!empty($_GET['cat']) ){
+        $all_link = add_query_arg( 'cat', $_GET['cat'], $all_link );
+    }
 
 	/*dropdown*/
 	/*begin*/
 		$ret="<div class='kttg_glossary_div'>";
-		$ret.="<div class='kttg_glossary_families'><label>".__('Select a family','bluet-kw')." : </label><select name='kttg-glossary-family' onchange='document.location.href=changeQueryStringParameter(\"".get_permalink()."\",\"cat\",this.options[this.selectedIndex].value);'>";
+        $ret.="<div class='kttg_glossary_families'><label>".__('Select a family','bluet-kw')." : </label><select name='kttg-glossary-family' onchange='document.location.href=changeQueryStringParameter(\"".get_permalink()."\",\"cat\",this.options[this.selectedIndex].value);'>";
 	 	$ret.="<option value='all_families'>".__('All families','bluet-kw')."</option>";
 
 		$families = get_categories(array(
-	  		'taxonomy'=>'keywords_family'
+	  		'taxonomy'=>$tooltipy_cat_name
 	  	)) ;
 		foreach ($families as $family) {
 			$selected_family='';
@@ -89,7 +92,7 @@ function bluet_kttg_glossary(){
 
    		$args['tax_query']=array(
 				array(
-					'taxonomy' => 'keywords_family',
+					'taxonomy' => $tooltipy_cat_name,
 					'field'    => 'slug',
 					'terms'    => $current_family,
 				),
@@ -119,11 +122,11 @@ function bluet_kttg_glossary(){
  		$found_letter_class='bluet_glossary_found_letter';
 		$current_letter_class='';
 
-        $current_glossary_page_url = get_permalink();
+		$current_glossary_page_url = get_permalink();
         $link_to_the_letter_page = add_query_arg( 'letter', $chara, $current_glossary_page_url );
         
         if(!empty($_GET["cat"])){
-        	$link_to_the_letter_page = add_query_arg( 'cat', $_GET["cat"], $link_to_the_letter_page );
+            $link_to_the_letter_page = add_query_arg( 'cat', $_GET["cat"], $link_to_the_letter_page );
         }
 
 		if(!empty($_GET["letter"]) and $_GET["letter"]==$chara){
@@ -145,7 +148,7 @@ function bluet_kttg_glossary(){
 												SELECT      ID
 												FROM        $wpdb->posts
 												WHERE       SUBSTR($wpdb->posts.post_title,1,1) = %s
-													AND $wpdb->posts.post_type='my_keywords'
+													AND $wpdb->posts.post_type='".$tooltipy_post_type_name."'
 													AND $wpdb->posts.post_status = 'publish'
 												ORDER BY    $wpdb->posts.post_title"
 											,$chosen_letter)); 
@@ -174,7 +177,7 @@ function bluet_kttg_glossary(){
 
    		$args['tax_query']=array(
 				array(
-					'taxonomy' => 'keywords_family',
+					'taxonomy' => $tooltipy_cat_name,
 					'field'    => 'slug',
 					'terms'    => $current_family,
 				),
@@ -189,8 +192,7 @@ function bluet_kttg_glossary(){
 			while ( $the_query->have_posts() ) :
                 $the_query->the_post();
 
-				$families_list = wp_get_post_terms(get_the_id(), 'keywords_family', array("fields" => "slugs"));
-
+				$families_list = wp_get_post_terms(get_the_id(), $tooltipy_cat_name, array("fields" => "slugs"));
 				$families_string="";
 				foreach ($families_list as $family_name) {
 					$families_string.=$family_name." ";
@@ -209,10 +211,9 @@ function bluet_kttg_glossary(){
 
                 //echo(substr(get_the_title(),0,1).'<br>');
                 if((strtoupper(mb_substr(get_the_title(),0,1,'utf-8'))==$chosen_letter) or $chosen_letter==null){                    
-
-                	$fam_action = add_query_arg( 'cat', trim($families_string), $current_glossary_page_url );
+					$fam_action = add_query_arg( 'cat', trim($families_string), $current_glossary_page_url );
                     $ret.='<li class="kttg_glossary_element" style="list-style-type: none;">
-							<h2 class="kttg_glossary_element_title">'.get_the_title()." ".(count($families_list)>0 ? "<sub>[<a href='".$fam_action."'>".$families_string."</a>]</sub>":"" ).'</h2>
+                            <h2 class="kttg_glossary_element_title">'.get_the_title()." ".(count($families_list)>0 ? "<sub>[<a href='".$fam_action."'>".$families_string."</a>]</sub>":"" ).'</h2>
 							<div class="kttg_glossary_element_content">
 							'.$tooltipy_glossary_thumb.get_the_content().'</div>
 						</li>';

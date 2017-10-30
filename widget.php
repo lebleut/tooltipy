@@ -13,7 +13,8 @@ class bluet_keyword_widget extends wp_widget{
 	public function widget( $args, $instance ) {
 		global $is_kttg_glossary_page;
 		global $tooltip_post_types;
-
+		global $tooltipy_cat_name;
+		
 		$options = get_option( 'bluet_kw_style' ); //to get the ['bt_kw_fetch_mode']
 		
 		//init added classes
@@ -93,7 +94,7 @@ class bluet_keyword_widget extends wp_widget{
 								$trm=$trm.'&zwnj;';
 
 								//categories or families
-								$tooltipy_families_arr = wp_get_post_terms($kw_id,'keywords_family',array("fields" => "ids"));
+								$tooltipy_families_arr = wp_get_post_terms($kw_id, $tooltipy_cat_name,array("fields" => "ids"));
 								foreach ($tooltipy_families_arr as $key => $value) {
 								 	$tooltipy_families_arr[$key]="tooltipy-kw-cat-".$value;
 								}
@@ -116,7 +117,7 @@ class bluet_keyword_widget extends wp_widget{
 					wp_reset_postdata();
 					
 						$string_to_show='<li>
-											<span class="bluet_tooltip tooltipy-kw tooltipy-kw-'.$kw_id.' '.$tooltipy_families_class.' '.$tooltipy_video_class.' '.$css_classes_added_inline_keywords.'" data-tooltip-id="'.$kw_id.'">
+											<span class="bluet_tooltip tooltipy-kw tooltipy-kw-'.$kw_id.' '.$tooltipy_families_class.' '.$tooltipy_video_class.' '.$css_classes_added_inline_keywords.'" data-tooltip="'.$kw_id.'">
 												'.$trm.'
 											</span> 
 										</li>';
@@ -150,9 +151,8 @@ class bluet_keyword_widget extends wp_widget{
 	}	
 }
 
-add_action('widgets_init', 'tooltipy_register_widget_func');
-
-function tooltipy_register_widget_func(){
+add_action('widgets_init',function(){
 	register_widget('bluet_keyword_widget');
-}
+});
+
 ?>

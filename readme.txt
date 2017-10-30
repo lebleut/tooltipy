@@ -3,9 +3,8 @@ Contributors: lebleut
 Tags: inline, responsive, tooltips, tooltip, highlight, widget, image, style, keyword, post, page, glossary, localization, description, definition, term, word, interactive, link, wpml
 Requires at least: 3.9
 Tested up to: 4.7.1
-Stable tag: 3.4
+Stable tag: 5.0
 License: GPLv2 or later
-Donate Link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LPKWCDNECSVWJ
 
 Tooltipy (Keywords tooltip generator) allows you to highlight the keywords in your content in order to show a responsive description tooltip
 
@@ -116,6 +115,10 @@ The plugin is available in these languages :
 11. Glossary settings page
 
 == Changelog ==
+
+= 5.0 =
+* Tooltipy Pro is now free
+* All the advanced settings are now for free :)
 
 = 3.4 =
 * Fix the Ajax load before showing the selected tooltip
@@ -405,10 +408,10 @@ Finally press the button «Update»
 The menu «Apprence» Then the submenu «Widgets» Choose the widget «My Keywords (Bluet)» Then Add Widget.
 = I have used a similar plugin to KTTG, I want to migrate to KTTG and automatically add my old list of keywords, how to? =
 You can convert the list of keywords for other plugins using the tool «KTTG converter» under the menu «Tools»: Carefully select on the drop down list the name of the post-type in concern and click «Begin conversion», now back on «My Keywords»  and you will find new keywords from the old plugin.
-= Can I apply the tooltips on specific images? =
-This is possible but Premium version, so first you must purchase the add-on «KTTG Pro addon» On the following link http://www.tooltipy.com/downloads/kttg-pro
 = Can I export and import my keywords from one site to another  ? =
 Yes it is possible by using the tool «Import» and «Export» on the tool menu
 For example:  To import my list of keywords to a new site: Tools> Import>WordPress and select the XML file you exported from the old site.
 = How to preserve the color of text that contains the keyword ? =
 In the menu «My Keywords» choose the submenu «Settings»  In the Style section of the keyword press to change the color of text in the input box, delete the color code (Example  : #123FFF) And write «inherit» in instead and confirm.
+= How to tell Tooltipy where to show tooltips and where not ? =
+Go to the Advanced tab in the Tooltipy settings and add your area class to the cover area or to the exclude area
