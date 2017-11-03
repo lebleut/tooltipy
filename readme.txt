@@ -3,7 +3,7 @@ Contributors: lebleut
 Tags: inline, responsive, tooltips, tooltip, highlight, widget, image, style, keyword, post, page, glossary, localization, description, definition, term, word, interactive, link, wpml
 Requires at least: 3.9
 Tested up to: 4.7.1
-Stable tag: 5.0
+Stable tag: 5.0.1
 License: GPLv2 or later
 
 Tooltipy (Keywords tooltip generator) allows you to highlight the keywords in your content in order to show a responsive description tooltip
@@ -115,6 +115,10 @@ The plugin is available in these languages :
 11. Glossary settings page
 
 == Changelog ==
+
+= 5.0.1 =
+* Fix the space before and after wrapped keywords (in b tag or anchor tag for example)
+* Fix the 'bt_kw_adv_style' PHP Notice error
 
 = 5.0 =
 * Tooltipy Pro is now free
