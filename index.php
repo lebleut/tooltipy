@@ -637,8 +637,8 @@ function bluet_kttg_place_tooltips(){
 
 			/*	Lanch keywords fetching for a chosen event triggered - pro feature	*/
 			<?php 
-			$custom_events=$adv_options['kttg_custom_events'];
-			$custom_events_array=explode(",", $custom_events);
+			$custom_events = ( array_key_exists('kttg_custom_events', $adv_options) ? $adv_options['kttg_custom_events'] : "");
+			$custom_events_array = explode(",", $custom_events);
 
 			foreach ($custom_events_array as $custom_event) {
 				if($custom_event==""){
