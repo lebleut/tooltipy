@@ -3,7 +3,7 @@
 Plugin Name: Tooltipy
 Description: This plugin allows you automatically create tooltip boxes for your technical keywords in order to explain them for your site visitors making surfing more comfortable.
 Author: Jamel Zarga
-Version: 5.0.1
+Version: 5.0.2
 Author URI: http://www.tooltipy.com/about-us
 */
 defined('ABSPATH') or die("No script kiddies please!");
@@ -722,6 +722,10 @@ function bluet_kw_load_scripts_front() {
 	if(!empty($anim_type) and $anim_type!="none"){
 		wp_enqueue_style( 'kttg-tooltips-animations-styles', plugins_url('assets/animate.css',__FILE__), array(), false);
 	}
+
+    $frontend_style_file = apply_filters('tooltipy_stylesheet_url', plugins_url('assets/style.css',__FILE__) );
+	wp_enqueue_style( 'tooltipy-default-style', $frontend_style_file, array(), false);
+
 	//load jQuery once to avoid conflict
 	wp_enqueue_script('kttg-tooltips-functions-script', plugins_url('assets/kttg-tooltip-functions.js',__FILE__), array('jquery'), TOOLTIPY_VERSION, true );
 	
