@@ -9,11 +9,11 @@ Author URI: http://www.tooltipy.com/about-us
 defined('ABSPATH') or die("No script kiddies please!");
 
 //Tooltipy post_type name
-$tooltipy_post_type_name=get_option("tooltipy_post_type_name");
+$tooltipy_post_type_name = get_option("tooltipy_post_type_name");
 $default_tooltipy_post_type_name="my_keywords";
 
-$tooltipy_cat_name=$tooltipy_post_type_name."_cat";
-if($tooltipy_post_type_name==$default_tooltipy_post_type_name){
+$tooltipy_cat_name = $tooltipy_post_type_name."_cat";
+if($tooltipy_post_type_name == $default_tooltipy_post_type_name){
 	$tooltipy_cat_name="keywords_family";
 }
 
@@ -381,9 +381,12 @@ function bluet_kttg_place_tooltips(){
 							}
 							?>];
 				<?php
-				$kttg_exclude_anchor_tags=false;
+				$kttg_exclude_anchor_tags = false;
 				
-				$kttg_exclude_heading_tags=array(false,false,false,false,false,false);
+				$kttg_exclude_heading_tags = array(false,false,false,false,false,false);
+
+				$kttg_exclude_common_tags = array();
+
 				$adv_options = get_option('bluet_kw_advanced');
 
 				if(!empty($adv_options['kttg_exclude_anchor_tags']) and $adv_options['kttg_exclude_anchor_tags']=="on"){
@@ -393,6 +396,11 @@ function bluet_kttg_place_tooltips(){
 				if(!empty($adv_options['kttg_exclude_heading_tags'])){
 					//heding h1 to h6
 					$kttg_exclude_heading_tags=$adv_options['kttg_exclude_heading_tags'];
+				}
+
+				if(!empty($adv_options['kttg_exclude_common_tags'])){
+					//heding h1 to h6
+					$kttg_exclude_common_tags = $adv_options['kttg_exclude_common_tags'];
 				}
 
 				//if exclude anchor tags			
@@ -408,6 +416,12 @@ function bluet_kttg_place_tooltips(){
 						zones_to_exclude.push("h"+<?php echo($i); ?>);
 					<?php 
 					}
+				}
+
+				foreach ($kttg_exclude_common_tags as $tag => $val) {
+				?>
+					zones_to_exclude.push("<?php echo($tag); ?>");
+				<?php 
 				}
 				?>
 			}
@@ -1045,13 +1059,15 @@ function kttg_filter_posttype($cont){
 *	tooltipy_remove_plugins_filters : Removes the filters applied on the tooltip contents (advanced feature)
 */
 function tooltipy_remove_plugins_filters() {
-    global $post;
-    $options = get_option( 'bluet_kw_advanced' );
+    global $post, $default_tooltipy_post_type_name;
 
+    $tooltipy_post_type_name = get_option("tooltipy_post_type_name", $default_tooltipy_post_type_name);
+    $options = get_option( 'bluet_kw_advanced' );
+	
     $prevent_plugins_filters_option = (!empty($options['prevent_plugins_filters']) ? $options['prevent_plugins_filters'] : false );
 
     if( $prevent_plugins_filters_option == "on" ){
-	    if ( 'my_keywords' == $post->post_type ){
+	    if ( $tooltipy_post_type_name == $post->post_type ){
 			remove_all_filters( 'the_content', 10 );
 	    }
     }

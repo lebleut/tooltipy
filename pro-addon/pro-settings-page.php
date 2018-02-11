@@ -62,6 +62,15 @@ add_action( 'admin_init',function () {
 		'advanced_section'					
 	);
 
+	//exclude common tags
+	add_settings_field( 
+		'kttg_exclude_common_tags',
+		__('Exclude Common Tags','bluet-kw')." ?",
+		'bluet_kw_exclude_common_tags_display',
+		'my_keywords_advanced_page',
+		'advanced_section'
+	);
+
 	// Define custom style field
 	add_settings_field( 
 		'bt_kw_adv_style', 					
@@ -205,6 +214,35 @@ function bluet_kw_exclude_heading_tags_display(){
 		<label for="bluet_exclude_heading_H<?php echo($i); ?>"><h<?php echo($i); ?>>H<?php echo($i); ?></h<?php echo($i); ?>></label>
 		<br>
 	<?php
+	}
+	echo("</div>");
+}
+
+/**
+* Excludes some common tags callback
+*/
+function bluet_kw_exclude_common_tags_display(){
+	//exclude tags
+	$options = get_option('bluet_kw_advanced');
+
+	$exclude_common_tags = false;
+
+	if(!empty($options['kttg_exclude_common_tags'])){
+		$exclude_common_tags = $options['kttg_exclude_common_tags'];
+	}
+	echo("<div id='kttg_exclude_tags_zone'>");
+
+
+	$tags = array( 'strong', 'b', 'abbr', 'button', 'dfn', 'em', 'i', 'label' );
+
+	foreach ($tags as $tagName) {
+		?>	
+			<input id="bluet_exclude_tag_<?php echo($tagName); ?>" type="checkbox" name="bluet_kw_advanced[kttg_exclude_common_tags][<?php echo($tagName); ?>]" <?php if(!empty($exclude_common_tags[$tagName]) and $exclude_common_tags[$tagName]=="on") echo "checked"; ?>>
+			<label for="bluet_exclude_tag_<?php echo($tagName); ?>">
+				<&zwnj;<?php echo($tagName); ?>&zwnj;/>
+			</label>
+			<br>
+		<?php
 	}
 	echo("</div>");
 }
