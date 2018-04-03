@@ -60,11 +60,34 @@ function kttg_glossary_kws_per_page_display(){
 }
 function kttg_glossary_text_display(){
 	$options = get_option( 'bluet_glossary_options' );
+
+	$label_select_a_family		= array_key_exists('kttg_glossary_text_select_a_family', $options['kttg_glossary_text']) ? $options['kttg_glossary_text']['kttg_glossary_text_select_a_family'] : "";
+	$label_select_all_families 	= array_key_exists('kttg_glossary_text_select_all_families', $options['kttg_glossary_text']) ? $options['kttg_glossary_text']['kttg_glossary_text_select_all_families'] : "";
+
 	_e('<b>ALL</b> label','bluet-kw'); ?> : <input  type="text" name="bluet_glossary_options[kttg_glossary_text][kttg_glossary_text_all]" value="<?php echo $options['kttg_glossary_text']['kttg_glossary_text_all']; ?>" placeholder="<?php _e('ALL','bluet-kw');?>"><br>
 	<?php
 	_e('<b>Previous</b> label','bluet-kw'); ?> : <input  type="text" name="bluet_glossary_options[kttg_glossary_text][kttg_glossary_text_previous]" value="<?php echo $options['kttg_glossary_text']['kttg_glossary_text_previous']; ?>" placeholder="<?php _e('Previous','bluet-kw');?>"><br>
 	<?php
 	_e('<b>Next</b> label','bluet-kw'); ?> : <input  type="text" name="bluet_glossary_options[kttg_glossary_text][kttg_glossary_text_next]" value="<?php echo $options['kttg_glossary_text']['kttg_glossary_text_next']; ?>" placeholder="<?php _e('Next','bluet-kw');?>"><br>
+	<?php
+
+	_e('<b>Select a family</b> label','bluet-kw');
+	?> : 
+	<input  
+		type="text"
+		name="bluet_glossary_options[kttg_glossary_text][kttg_glossary_text_select_a_family]"
+		value="<?php echo $label_select_a_family; ?>"
+		placeholder="<?php _e('Select a family','bluet-kw');?>"
+	><br>
+	<?php
+
+	_e('<b>All families</b> label','bluet-kw'); ?> : 
+	<input  
+		type="text"
+		name="bluet_glossary_options[kttg_glossary_text][kttg_glossary_text_select_all_families]"
+		value="<?php echo $label_select_all_families; ?>"
+		placeholder="<?php _e('All families','bluet-kw');?>"
+	><br>
 	<?php
 	
 }

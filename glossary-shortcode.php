@@ -15,7 +15,10 @@ function bluet_kttg_glossary(){
 	 
 	$glossary_options = get_option( 'bluet_glossary_options' );
 
-    $tooltipy_glossary_show_thumb=$glossary_options['bluet_kttg_glossary_show_thumb'];
+	$label_select_a_family		= array_key_exists('kttg_glossary_text_select_a_family', $glossary_options['kttg_glossary_text']) && $glossary_options['kttg_glossary_text']['kttg_glossary_text_select_a_family'] != "" ? $glossary_options['kttg_glossary_text']['kttg_glossary_text_select_a_family'] : "Select a family";
+	$label_select_all_families 	= array_key_exists('kttg_glossary_text_select_all_families', $glossary_options['kttg_glossary_text']) && $glossary_options['kttg_glossary_text']['kttg_glossary_text_select_all_families'] != "" ? $glossary_options['kttg_glossary_text']['kttg_glossary_text_select_all_families'] : "All families";
+
+    $tooltipy_glossary_show_thumb = array_key_exists('bluet_kttg_glossary_show_thumb', $glossary_options) ? $glossary_options['bluet_kttg_glossary_show_thumb'] : "";
 	 
     $is_kttg_glossary_page=true;
 	
@@ -50,8 +53,8 @@ function bluet_kttg_glossary(){
 	/*dropdown*/
 	/*begin*/
 		$ret="<div class='kttg_glossary_div'>";
-        $ret.="<div class='kttg_glossary_families'><label>".__('Select a family','bluet-kw')." : </label><select name='kttg-glossary-family' onchange='document.location.href=changeQueryStringParameter(\"".get_permalink()."\",\"cat\",this.options[this.selectedIndex].value);'>";
-	 	$ret.="<option value='all_families'>".__('All families','bluet-kw')."</option>";
+        $ret.="<div class='kttg_glossary_families'><label>".__($label_select_a_family,'bluet-kw')." : </label><select name='kttg-glossary-family' onchange='document.location.href=changeQueryStringParameter(\"".get_permalink()."\",\"cat\",this.options[this.selectedIndex].value);'>";
+	 	$ret.="<option value='all_families'>".__($label_select_all_families,'bluet-kw')."</option>";
 
 		$families = get_categories(array(
 	  		'taxonomy'=>$tooltipy_cat_name
