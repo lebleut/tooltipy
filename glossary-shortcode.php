@@ -214,11 +214,23 @@ function bluet_kttg_glossary(){
 
                 //echo(substr(get_the_title(),0,1).'<br>');
                 if((strtoupper(mb_substr(get_the_title(),0,1,'utf-8'))==$chosen_letter) or $chosen_letter==null){                    
-					$fam_action = add_query_arg( 'cat', trim($families_string), $current_glossary_page_url );
                     $ret.='<li class="kttg_glossary_element" style="list-style-type: none;">
-                            <h2 class="kttg_glossary_element_title">'.get_the_title()." ".(count($families_list)>0 ? "<sub>[<a href='".$fam_action."'>".$families_string."</a>]</sub>":"" ).'</h2>
+							<h2 class="kttg_glossary_element_title">'.get_the_title()." ";
+					if( count($families_list)>0 ){
+						$ret.="<sub>[";
+						foreach ($families_list as $key => $family_name) {
+							$fam_action = add_query_arg( 'cat', trim($family_name), $current_glossary_page_url );
+
+							$ret.= " <a href='".$fam_action."'>".$family_name."</a>";
+							$ret.= ( $key+1 == count($families_list) ) ? " " : ", ";
+						}
+						$ret.="]</sub>";
+					}
+
+					$ret.='</h2>
 							<div class="kttg_glossary_element_content">
-							'.$tooltipy_glossary_thumb.get_the_content().'</div>
+							'.$tooltipy_glossary_thumb.get_the_content()
+							.'</div>
 						</li>';
                 }
                 
