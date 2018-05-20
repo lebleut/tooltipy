@@ -3,7 +3,6 @@ defined('ABSPATH') or die("No script kiddies please!");
 
 /*adding custom style*/
 require_once 'add-style.php';
-require_once 'importer.php';
 require_once 'functions.php';
 require_once 'settings-glossary.php';
 
