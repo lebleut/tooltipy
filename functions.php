@@ -152,7 +152,7 @@ function tooltipy_families_admin_posts_filter_restrict_manage_posts(){
 
     $type = 'post';
     if (isset($_GET['post_type'])) {
-        $type = $_GET['post_type'];
+        $type = esc_html( $_GET['post_type'] );
     }
 
     //only add filter to post type you want
@@ -162,7 +162,7 @@ function tooltipy_families_admin_posts_filter_restrict_manage_posts(){
         <select name="tooltipy_family" id='tooltipy_filter_by_family'>
         <option value=""><?php _e('Filter by Family','bluet-kw'); ?></option>
         <?php
-            $current_v = isset($_GET['tooltipy_family'])? $_GET['tooltipy_family']:'';
+            $current_v = isset($_GET['tooltipy_family'])? esc_html( $_GET['tooltipy_family'] ):'';
             foreach ($tax_families as $fam) {
                 printf
                     (
@@ -185,11 +185,11 @@ function tooltipy_families_posts_filter($query){
 
     $type = 'post';
     if (isset($_GET['post_type'])) {
-        $type = $_GET['post_type'];
+        $type = esc_html( $_GET['post_type'] );
     }
 
     if ($tooltipy_post_type_name == $type && is_admin() && $pagenow=='edit.php' && isset($_GET['tooltipy_family']) && $_GET['tooltipy_family'] != ''){
-        $query->query_vars[$tooltipy_cat_name] = $_GET['tooltipy_family'];
+        $query->query_vars[$tooltipy_cat_name] = esc_html( $_GET['tooltipy_family'] );
     }
 }
 /* END -- Edit keywords page */

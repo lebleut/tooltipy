@@ -47,7 +47,7 @@ function bluet_kttg_glossary(){
     $all_link = get_permalink();
 
     if(!empty($_GET['cat']) ){
-        $all_link = add_query_arg( 'cat', $_GET['cat'], $all_link );
+        $all_link = add_query_arg( 'cat', esc_html( $_GET['cat'] ), $all_link );
     }
 
 	/*dropdown*/
@@ -91,7 +91,7 @@ function bluet_kttg_glossary(){
 	$current_family="";
 
 	if(!empty($_GET['cat']) and $_GET['cat']!='all_families'){
-   		$current_family=$_GET['cat'];
+   		$current_family = esc_html( $_GET['cat'] );
 
    		$args['tax_query']=array(
 				array(
@@ -129,7 +129,7 @@ function bluet_kttg_glossary(){
         $link_to_the_letter_page = add_query_arg( 'letter', $chara, $current_glossary_page_url );
         
         if(!empty($_GET["cat"])){
-            $link_to_the_letter_page = add_query_arg( 'cat', $_GET["cat"], $link_to_the_letter_page );
+            $link_to_the_letter_page = add_query_arg( 'cat', esc_html($_GET["cat"]), $link_to_the_letter_page );
         }
 
 		if(!empty($_GET["letter"]) and $_GET["letter"]==$chara){
@@ -145,7 +145,7 @@ function bluet_kttg_glossary(){
    
    $chosen_letter=null;
    if(!empty($_GET["letter"]) and $_GET["letter"]){
-       $chosen_letter=$_GET["letter"];
+       $chosen_letter= esc_html( $_GET["letter"] );
 	   
 	   $postids=$wpdb->get_col($wpdb->prepare("
 												SELECT      ID
@@ -176,7 +176,7 @@ function bluet_kttg_glossary(){
     );
 	
 	if(!empty($_GET['cat']) and $_GET['cat']!='all_families'){
-   		$current_family=$_GET['cat'];
+   		$current_family= esc_html( $_GET['cat'] );
 
    		$args['tax_query']=array(
 				array(
