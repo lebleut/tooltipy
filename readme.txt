@@ -3,7 +3,7 @@ Contributors: lebleut
 Tags: inline, responsive, tooltips, tooltip, highlight, widget, image, style, keyword, post, page, glossary, localization, description, definition, term, word, interactive, link, wpml
 Requires at least: 3.9
 Tested up to: 4.7.1
-Stable tag: 5.0.2
+Stable tag: 5.1
 License: GPLv2 or later
 
 Tooltipy (Keywords tooltip generator) allows you to highlight the keywords in your content in order to show a responsive description tooltip
@@ -18,11 +18,6 @@ Tooltipy (Keywords tooltip generator) allows you to highlight the keywords in yo
 > * [Admin Live DEMO](http://www.tooltipy.com/wp-admin/edit.php?post_type=my_keywords) 
 * user 		: demo
 * password 	: demo
-
----
-
-= Premium =
-* [Buy Now](http://www.tooltipy.com/pricing)
 
 = Check How to add a keyword with KTTG on this 2 minutes video. =
 https://www.youtube.com/watch?v=JBdyLKa4DMI
@@ -46,7 +41,6 @@ https://www.youtube.com/watch?v=JBdyLKa4DMI
 * Glossary page new settings (keywords per page, labels ...)
 * Tooltip width setting
 * Close button tooltip
-* v2.5 is made for the pro addon version (video tooltips, woocommerce support, bbpress support, and much more)
 * Dotted style is now available for keywords (from v2.1.8)
 * It's very simple: After installing and activating the plugin you only need to add your keywords (KeyWord, description, image) the rest is magic
 * From the settings Customize the style of the tooltips depending on the color scheme of your site
@@ -115,6 +109,15 @@ The plugin is available in these languages :
 11. Glossary settings page
 
 == Changelog ==
+
+= 5.1 =
+* Add new feature 'Exclude Common Tags' (b, strong, abr, button ...)
+* Add 2 new glossary labels 'Select a family' & 'All families' suggested by https://profiles.wordpress.org/csedu
+* Fix families list links in the glossary page
+* Thanks to DanielChan : https://wordpress.org/support/users/danielchan/
+* Related issue thread : https://wordpress.org/support/topic/links-to-keywords-in-glossary/#post-10245756
+* Remove importer tool (no more helpful, and for security issues)
+* Escaping for securing output issues
 
 = 5.0.2 =
 * New filter 'tooltipy_stylesheet_url' to alter the url of the tooltips stylesheet file
