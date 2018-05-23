@@ -76,6 +76,7 @@ The plugin is available in these languages :
 * Turkish (tr_TR) - Eyyüp Güner
 * Italian (it_IT) - [Genioallopera](https://profiles.wordpress.org/genioallopera)
 * Spanish (es_ES) - Andrew Kurtis - [WebHostingHub.com](http://www.webhostinghub.com)
+* Chinese (zh_cn) - Zchen - [zchen.info](https://www.zchen.info)
 
 = ScreenShots =
 
@@ -118,6 +119,7 @@ The plugin is available in these languages :
 * Related issue thread : https://wordpress.org/support/topic/links-to-keywords-in-glossary/#post-10245756
 * Remove importer tool (no more helpful, and for security issues)
 * Escaping for securing output issues
+* Chinese(zh_cn) Translation thanks to zchen ( https://www.zchen.info )
 
 = 5.0.2 =
 * New filter 'tooltipy_stylesheet_url' to alter the url of the tooltips stylesheet file
