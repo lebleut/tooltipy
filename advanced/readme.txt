@@ -3,7 +3,6 @@ Contributors: lebleut
 Requires at least: 3.8
 Tested up to: 4.1.1
 Stable tag: 1.4.1.0.0.7
-Donate Link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LPKWCDNECSVWJ
 
 The pro addon version for Bluet keywords tooltip generator
 

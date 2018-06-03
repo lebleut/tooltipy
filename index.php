@@ -17,7 +17,7 @@ if($tooltipy_post_type_name == $default_tooltipy_post_type_name){
 	$tooltipy_cat_name="keywords_family";
 }
 
-require_once dirname( __FILE__ ) . '/pro-addon/pro-index.php'; //pro addon
+require_once dirname( __FILE__ ) . '/advanced/index.php'; //advanced addon
 require_once dirname( __FILE__ ) . '/keyword-posttype.php'; //contain the class that handles the new custom post
 require_once dirname( __FILE__ ) . '/settings-page.php';
 require_once dirname( __FILE__ ) . '/widget.php';
@@ -108,7 +108,7 @@ add_action('admin_footer','bluet_kttg_place_tooltips');
 add_action('wp_head',function(){
 	//if(function_exists('bluet_kttg_pro_addon')){
 		//$pro_addon_dir=plugins_url("bluet_kttg_pro_addon");
-		echo('<script type="text/javascript" src="'.plugins_url('pro-addon/assets/findandreplacedomtext.js',__FILE__).'"></script>');
+		echo('<script type="text/javascript" src="'.plugins_url('advanced/assets/findandreplacedomtext.js',__FILE__).'"></script>');
 	//}
 });
 	

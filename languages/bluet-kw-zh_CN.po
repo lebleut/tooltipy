@@ -90,7 +90,7 @@ msgid "All my KeyWords"
 msgstr "我的所有关键词"
 
 #: keyword-posttype.php:22 meta-boxes.php:163
-#: pro-addon/pro-settings-page.php:249 pro-addon/pro-settings-page.php:289
+#: advanced/settings-page.php:249 advanced/settings-page.php:289
 msgid "Add"
 msgstr "添加"
 
@@ -142,7 +142,7 @@ msgstr "视频提示框"
 msgid "Keyword Settings"
 msgstr "关键词设置"
 
-#: meta-boxes.php:38 meta-boxes.php:133 pro-addon/pro-index.php:40
+#: meta-boxes.php:38 meta-boxes.php:133 advanced/index.php:40
 msgid "Keywords related"
 msgstr "关键词相关"
 
@@ -182,91 +182,91 @@ msgstr "关键词…"
 msgid "Manage KeyWords"
 msgstr "管理关键词"
 
-#: pro-addon/pro-functions.php:192
+#: advanced/functions.php:192
 msgid "Youtube video ID"
 msgstr "Youtube视频ID"
 
-#: pro-addon/pro-functions.php:209
+#: advanced/functions.php:209
 msgid "Video :"
 msgstr "视频："
 
-#: pro-addon/pro-functions.php:212
+#: advanced/functions.php:212
 msgid "-"
 msgstr "-"
 
-#: pro-addon/pro-functions.php:241
+#: advanced/functions.php:241
 msgid "This Keyword is a <b>Prefix</b>"
 msgstr "这是一个<b>前缀</b>关键词"
 
-#: pro-addon/pro-functions.php:255
+#: advanced/functions.php:255
 msgid "Prefix"
 msgstr "前缀"
 
-#: pro-addon/pro-functions.php:258
+#: advanced/functions.php:258
 msgid "No"
 msgstr "否"
 
-#: pro-addon/pro-settings-page.php:30
+#: advanced/settings-page.php:30
 msgid "Advance settings for KTTG :"
 msgstr "KTTG高级设置："
 
-#: pro-addon/pro-settings-page.php:39
+#: advanced/settings-page.php:39
 msgid "Cover areas"
 msgstr "涵盖区域"
 
-#: pro-addon/pro-settings-page.php:47
+#: advanced/settings-page.php:47
 msgid "Exclude areas"
 msgstr "排除区域"
 
-#: pro-addon/pro-settings-page.php:56
+#: advanced/settings-page.php:56
 msgid "Exclude links"
 msgstr "排除链接"
 
-#: pro-addon/pro-settings-page.php:65
+#: advanced/settings-page.php:65
 msgid "Exclude Headings"
 msgstr "排除标题"
 
-#: pro-addon/pro-settings-page.php:93
+#: advanced/settings-page.php:93
 msgid "Advanced Style"
 msgstr "高级样式"
 
-#: pro-addon/pro-settings-page.php:102
+#: advanced/settings-page.php:102
 msgid "Load all keywords"
 msgstr "加载全部关键词"
 
-#: pro-addon/pro-settings-page.php:151
+#: advanced/settings-page.php:151
 msgid "Advanced space"
 msgstr "高级设置"
 
-#: pro-addon/pro-settings-page.php:177
+#: advanced/settings-page.php:177
 msgid "Apply custom style sheet"
 msgstr "应用自定义样式表"
 
-#: pro-addon/pro-settings-page.php:194
+#: advanced/settings-page.php:194
 msgid "Links"
 msgstr "链接"
 
-#: pro-addon/pro-settings-page.php:229
+#: advanced/settings-page.php:229
 msgid "use only if needed to load all keywords per page"
 msgstr "只有在需要每页加载全部关键词时使用"
 
-#: pro-addon/pro-settings-page.php:246 pro-addon/pro-settings-page.php:286
+#: advanced/settings-page.php:246 advanced/settings-page.php:286
 msgid "class ..."
 msgstr "类 …"
 
-#: pro-addon/pro-settings-page.php:252
+#: advanced/settings-page.php:252
 msgid "Choose CSS classes to cover with tooltips"
 msgstr "选择提示框涵盖的CSS类"
 
-#: pro-addon/pro-settings-page.php:266
+#: advanced/settings-page.php:266
 msgid "Please avoid overlapped classes !"
 msgstr "请避免重叠的类名！"
 
-#: pro-addon/pro-settings-page.php:267
+#: advanced/settings-page.php:267
 msgid "If you leave it blank the whole page will be affected"
 msgstr "留空的话会作用于整个页面"
 
-#: pro-addon/pro-settings-page.php:292
+#: advanced/settings-page.php:292
 msgid "Choose CSS classes to exclude"
 msgstr "选择排除的CSS类"
 

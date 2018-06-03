@@ -5,11 +5,11 @@ pro addon
 
 defined('ABSPATH') or die("No script kiddies please!");
 
-require_once dirname( __FILE__ ) . '/pro-settings-page.php'; // post
-require_once dirname( __FILE__ ) . '/pro-functions.php'; // post
-require_once dirname( __FILE__ ) . '/pro-supported-plugins.php'; // 
-require_once dirname( __FILE__ ) . '/pro-shortcodes.php'; // 
-require_once dirname( __FILE__ ) . '/pro-load-ajax.php';
+require_once dirname( __FILE__ ) . '/settings-page.php'; // post
+require_once dirname( __FILE__ ) . '/functions.php'; // post
+require_once dirname( __FILE__ ) . '/supported-plugins.php'; // 
+require_once dirname( __FILE__ ) . '/shortcodes.php'; // 
+require_once dirname( __FILE__ ) . '/load-ajax.php';
 
 
 register_activation_hook( __FILE__,'bluet_kw_pro_activation');
