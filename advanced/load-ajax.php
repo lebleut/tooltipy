@@ -1,18 +1,18 @@
 <?php
-add_action('wp_enqueue_scripts', 'kttg_load_keywords_js');
+add_action('wp_enqueue_scripts', 'tltpy_load_keywords_js');
 
-function kttg_load_keywords_js() {
-	wp_enqueue_script( 'kttg_load_keywords_script', plugins_url('assets/ajax/load-keywords.js',__FILE__), array('jquery'), TOOLTIPY_VERSION, true );
+function tltpy_load_keywords_js() {
+	wp_enqueue_script( 'tltpy_load_keywords_script', plugins_url('assets/ajax/load-keywords.js',__FILE__), array('jquery'), TOOLTIPY_VERSION, true );
 
 	// pass Ajax Url to script.js
-	wp_localize_script('kttg_load_keywords_script', 'kttg_ajax_load', admin_url( 'admin-ajax.php' ) );
+	wp_localize_script('tltpy_load_keywords_script', 'tltpy_ajax_load', admin_url( 'admin-ajax.php' ) );
 }
 
 ////
-add_action( 'wp_ajax_kttg_load_keywords', 'kttg_load_keywords' );
-add_action( 'wp_ajax_nopriv_kttg_load_keywords', 'kttg_load_keywords' );
+add_action( 'wp_ajax_tltpy_load_keywords', 'tltpy_load_keywords' );
+add_action( 'wp_ajax_nopriv_tltpy_load_keywords', 'tltpy_load_keywords' );
 
-function kttg_load_keywords() {
+function tltpy_load_keywords() {
 	global $tooltip_post_types, $tooltipy_cat_name;
 
 	//init added classes

@@ -2,11 +2,11 @@
 defined('ABSPATH') or die("No script kiddies please!");
 
 # Adds a shortcode called 'tooltipy_glossary'.
-add_shortcode('tooltipy_glossary', 'bluet_kttg_glossary');
-add_shortcode('tooltip_glossary', 'bluet_kttg_glossary');
-add_shortcode('kttg_glossary', 'bluet_kttg_glossary');
+add_shortcode('tooltipy_glossary', 'tltpy_glossary');
+add_shortcode('tooltip_glossary', 'tltpy_glossary');
+add_shortcode('kttg_glossary', 'tltpy_glossary');
 
-function bluet_kttg_glossary(){
+function tltpy_glossary(){
 	global $tooltip_post_types;
 	global $is_kttg_glossary_page;
 	global $wpdb;
@@ -18,25 +18,25 @@ function bluet_kttg_glossary(){
 	$label_select_a_family		= array_key_exists('kttg_glossary_text_select_a_family', $glossary_options['kttg_glossary_text']) && $glossary_options['kttg_glossary_text']['kttg_glossary_text_select_a_family'] != "" ? $glossary_options['kttg_glossary_text']['kttg_glossary_text_select_a_family'] : "Select a family";
 	$label_select_all_families 	= array_key_exists('kttg_glossary_text_select_all_families', $glossary_options['kttg_glossary_text']) && $glossary_options['kttg_glossary_text']['kttg_glossary_text_select_all_families'] != "" ? $glossary_options['kttg_glossary_text']['kttg_glossary_text_select_all_families'] : "All families";
 
-    $tooltipy_glossary_show_thumb = array_key_exists('bluet_kttg_glossary_show_thumb', $glossary_options) ? $glossary_options['bluet_kttg_glossary_show_thumb'] : "";
+    $tooltipy_glossary_show_thumb = array_key_exists('tltpy_glossary_show_thumb', $glossary_options) ? $glossary_options['tltpy_glossary_show_thumb'] : "";
 	 
     $is_kttg_glossary_page=true;
 	
 	//Begin -- glossary permalink page option
-	if(!get_option('bluet_kttg_glossary_page')){
+	if(!get_option('tltpy_glossary_page')){
 		//attribute glossary page permalink
-		add_option('bluet_kttg_glossary_page',get_the_permalink());
+		add_option('tltpy_glossary_page',get_the_permalink());
 	}
-	if(get_option('bluet_kttg_glossary_page')!=get_the_permalink()){
+	if(get_option('tltpy_glossary_page')!=get_the_permalink()){
 		//update glossary page permalink if different
-		update_option('bluet_kttg_glossary_page',get_the_permalink());
+		update_option('tltpy_glossary_page',get_the_permalink());
 	}
 	//End -- glossary permalink page option
     // next_posts_link() usage with max_num_pages
 	if(!empty($glossary_options['kttg_glossary_text']['kttg_glossary_text_all']) and $glossary_options['kttg_glossary_text']['kttg_glossary_text_all']!=""){
 		$text_all=$glossary_options['kttg_glossary_text']['kttg_glossary_text_all'];
 	}else{
-		$text_all=__('ALL','bluet-kw');
+		$text_all=__('ALL','tooltipy-lang');
 	}
 	
 	$current_letter_class='';
@@ -53,8 +53,8 @@ function bluet_kttg_glossary(){
 	/*dropdown*/
 	/*begin*/
 		$ret="<div class='kttg_glossary_div'>";
-        $ret.="<div class='kttg_glossary_families'><label>".__($label_select_a_family,'bluet-kw')." : </label><select name='kttg-glossary-family' onchange='document.location.href=changeQueryStringParameter(\"".get_permalink()."\",\"cat\",this.options[this.selectedIndex].value);'>";
-	 	$ret.="<option value='all_families'>".__($label_select_all_families,'bluet-kw')."</option>";
+        $ret.="<div class='kttg_glossary_families'><label>".__($label_select_a_family,'tooltipy-lang')." : </label><select name='kttg-glossary-family' onchange='document.location.href=changeQueryStringParameter(\"".get_permalink()."\",\"cat\",this.options[this.selectedIndex].value);'>";
+	 	$ret.="<option value='all_families'>".__($label_select_all_families,'tooltipy-lang')."</option>";
 
 		$families = get_categories(array(
 	  		'taxonomy'=>$tooltipy_cat_name
@@ -241,13 +241,13 @@ function bluet_kttg_glossary(){
 	if(!empty($glossary_options['kttg_glossary_text']['kttg_glossary_text_next']) and $glossary_options['kttg_glossary_text']['kttg_glossary_text_next']!=""){
 		$text_next=$glossary_options['kttg_glossary_text']['kttg_glossary_text_next'];
 	}else{
-		$text_next=__('Next','bluet-kw');
+		$text_next=__('Next','tooltipy-lang');
 	}
 	
 	if(!empty($glossary_options['kttg_glossary_text']['kttg_glossary_text_previous']) and $glossary_options['kttg_glossary_text']['kttg_glossary_text_previous']!=""){
 		$text_previous=$glossary_options['kttg_glossary_text']['kttg_glossary_text_previous'];
 	}else{
-		$text_previous=__('Previous','bluet-kw');
+		$text_previous=__('Previous','tooltipy-lang');
 	}	
 	
     $ret.=get_previous_posts_link( '<span class="kttg_glossary_nav prev">'.$text_previous.'</span>' );

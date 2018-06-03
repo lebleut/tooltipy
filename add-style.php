@@ -3,7 +3,7 @@ defined('ABSPATH') or die("No script kiddies please!");
 
 function bluet_kw_custom_style(){
 	
-	if(function_exists('bluet_kttg_pro_addon')){//if pro addon activated
+	if(function_exists('tltpy_pro_addon')){//if pro addon activated
 	
 		$adv_options=get_option('bluet_kw_advanced');
 		if(!empty($adv_options['bt_kw_adv_style']['apply_custom_style_sheet'])){

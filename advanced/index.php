@@ -37,7 +37,7 @@ add_action('init',function(){
 			if(post_type_exists($my_customposttype) and !in_array($my_customposttype,array('post','page'))){
 				add_meta_box(
 				'bluet_kw_posttypes_related_keywords_meta',
-				__('Keywords related','bluet-kw').' (KTTG)',
+				__('Keywords related','tooltipy-lang').' (KTTG)',
 				'bluet_keywords_related_render',
 				$my_customposttype,
 				'side',
@@ -50,7 +50,7 @@ add_action('init',function(){
 	
 
 	// /*add custom post types to match*/	
-	add_filter('bluet_kttg_posttypes_to_match',function($cont){		
+	add_filter('tltpy_posttypes_to_match',function($cont){		
 		$post_types_to_filter=bluet_get_post_types_to_filter();
 	
 		$cont=array(); //to eliminate page and post posttypes if pro is activated
@@ -64,7 +64,7 @@ add_action('init',function(){
 	});
 	
 	// /*add custom fields to match*/	
-	add_filter('bluet_kttg_dustom_fields_hooks',function($cont){
+	add_filter('tltpy_custom_fields_hooks',function($cont){
 		$custom_fields_to_filter=bluet_get_custom_fields_to_filter();
 		$cont=array(); //to eliminate the_content filter hook
 

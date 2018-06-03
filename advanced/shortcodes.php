@@ -5,13 +5,13 @@ defined('ABSPATH') or die("No script kiddies please!");
 
 remove_shortcode('tooltip', 'tooltip_shortcode');
 
-add_action('init','kttg_pro_shortcodes');
+add_action('init','tltpy_pro_shortcodes');
 
-function kttg_pro_shortcodes(){
-	add_shortcode('tooltip', 'bluet_kttg_shortcode');	
+function tltpy_pro_shortcodes(){
+	add_shortcode('tooltip', 'tltpy_shortcode');	
 }
 
-function bluet_kttg_shortcode($atts,$content=null){
+function tltpy_shortcode($atts,$content=null){
 	extract(shortcode_atts(array(
 		"text" => '',
 		"image"=>'',
@@ -40,7 +40,7 @@ function bluet_kttg_shortcode($atts,$content=null){
 	
 	add_filter('kttg_another_tooltip_in_block',function($cont) use ($kttg_tooltip_id,$kttg_youtube_id,$kttg_image,$kttg_text){ //"use" to pass external parameters to add_filter
 	
-		$add_to_block_of_tooltips=bluet_kttg_all_tooltips_layout($kttg_text,$kttg_image,$kttg_youtube_id,$kttg_tooltip_id);		
+		$add_to_block_of_tooltips=tltpy_all_tooltips_layout($kttg_text,$kttg_image,$kttg_youtube_id,$kttg_tooltip_id);		
 
 		$cont.=$add_to_block_of_tooltips;
 		

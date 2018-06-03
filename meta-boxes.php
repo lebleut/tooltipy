@@ -16,7 +16,7 @@ add_action('do_meta_boxes',function(){
 //for keywords
 		add_meta_box(
 			'bluet_kw_settings_meta',
-			__('Keyword Settings','bluet-kw'),
+			__('Keyword Settings','tooltipy-lang'),
 			'bluet_keyword_settings_render',
 			$tooltipy_post_type_name,
 			'after_title',
@@ -36,7 +36,7 @@ add_action('do_meta_boxes',function(){
 		//related keywords
 		add_meta_box(
 			'bluet_kw_post_related_keywords_meta',
-			__('Keywords related','bluet-kw').' (KTTG)',
+			__('Keywords related','tooltipy-lang').' (KTTG)',
 			'bluet_keywords_related_render',
 			$screen,
 			'side',
@@ -49,18 +49,18 @@ add_action('do_meta_boxes',function(){
 function bluet_keyword_settings_render(){
 	?>
 	<p>
-		<Label for="bluet_synonyms_id"><?php _e('Synonyms','bluet-kw');?></label>
+		<Label for="bluet_synonyms_id"><?php _e('Synonyms','tooltipy-lang');?></label>
 		<input type="text" 
 			id="bluet_synonyms_id" 
 			name="bluet_synonyms_name" 
 			value="<?php echo(get_post_meta(get_the_id(),'bluet_synonyms_keywords',true));?>" 
-			placeholder="<?php _e("Type here the keyword's Synonyms separated with '|'","bluet-kw");?>" 
+			placeholder="<?php _e("Type here the keyword's Synonyms separated with '|'","tooltipy-lang");?>" 
 			style=" width:100%;" 
 		/>
 	</p>
 	
 	<p>
-		<label for='bluet_case_sensitive_id'><?php _e('Make this keyword <b>Case Sensitive</b>','bluet-kw');?>  </label>
+		<label for='bluet_case_sensitive_id'><?php _e('Make this keyword <b>Case Sensitive</b>','tooltipy-lang');?>  </label>
 		<input type="checkbox" 
 			id="bluet_case_sensitive_id" 
 			name="bluet_case_sensitive_name" <?php if(get_post_meta(get_the_id(),'bluet_case_sensitive_word',true)) echo('checked');?> 
@@ -108,13 +108,13 @@ function bluet_keywords_related_render(){
 
 	?>
 	<div>
-		<h3><?php _e('Exclude this post from being matched','bluet-kw'); ?></h3>
+		<h3><?php _e('Exclude this post from being matched','tooltipy-lang'); ?></h3>
 		<input type="checkbox" 
 			id="bluet_kw_admin_exclude_post_from_matching_id" 
 			onClick="hideIfChecked('bluet_kw_admin_exclude_post_from_matching_id','bluet_kw_admin_div_terms')" 
 			name="bluet_exclude_post_from_matching_name" <?php if(!empty($exclude_me)) echo "checked"; ?>
 		/>
-		<label for="bluet_kw_admin_exclude_post_from_matching_id" style="color:red;"><?php _e('Exclude this post','bluet-kw'); ?></label>
+		<label for="bluet_kw_admin_exclude_post_from_matching_id" style="color:red;"><?php _e('Exclude this post','tooltipy-lang'); ?></label>
 
 
 	
@@ -124,7 +124,7 @@ function bluet_keywords_related_render(){
 	
 	$my_kws=array();
 	
-	$my_kws=kttg_get_related_keywords($current_post_id);
+	$my_kws=tltpy_get_related_keywords($current_post_id);
 	
 	//echo('<pre>');print_r($my_kws);echo('</pre>');
 
@@ -137,7 +137,7 @@ function bluet_keywords_related_render(){
 
 	if(!empty($my_kws)){
 		?>		
-			<h3><?php _e('Keywords related','bluet-kw');?></h3>
+			<h3><?php _e('Keywords related','tooltipy-lang');?></h3>
 		<?php
 		echo('<ul style="list-style: initial; padding-left: 20px;">');
 			foreach($my_kws as $kw_id){
@@ -152,18 +152,18 @@ function bluet_keywords_related_render(){
 			}
 		echo('</ul>');
 	}else{
-		echo('<p>'.__('No KeyWords found for this post','bluet-kw').'</p>');
+		echo('<p>'.__('No KeyWords found for this post','tooltipy-lang').'</p>');
 	}
 	
 	?>
-		<h3><?php _e('Keywords to exclude','bluet-kw'); ?></h3>			
+		<h3><?php _e('Keywords to exclude','tooltipy-lang'); ?></h3>			
 		<!-- test -->
 		<div class="easy_tags">		
 			<div class="easy_tags-content" onclick="jQuery('#bluet_cover_areas_id').focus()"> <!-- content before add button -->
 				<div class="easy_tags-list tagchecklist" id="cover_areas_list" >	<!-- list before field -->
 				</div>
 				
-				<input class="easy_tags-field" type="text" style="max-width:250px;" id="bluet_cover_areas_id" placeholder="<?php _e('keyword...','bluet-kw'); ?>"> <!-- field -->
+				<input class="easy_tags-field" type="text" style="max-width:250px;" id="bluet_cover_areas_id" placeholder="<?php _e('keyword...','tooltipy-lang'); ?>"> <!-- field -->
 					<input class="easy_tags-to_send" type="hidden" name="bluet_exclude_keywords_from_matching_name" id="exclude-keywords-field" value="<?php echo $exclude_keywords_string; ?>" > <!-- hidden text to send -->
 			</div>
 
@@ -181,7 +181,7 @@ function bluet_keywords_related_render(){
 	<?php
 
 	echo('<p><a href="'.get_admin_url().'edit.php?post_type='.$tooltipy_post_type_name.'">');
-	echo(__('Manage KeyWords','bluet-kw').' >>');
+	echo(__('Manage KeyWords','tooltipy-lang').' >>');
 	echo('</a></p>');
 		echo('</div>');
 	echo "</div>";

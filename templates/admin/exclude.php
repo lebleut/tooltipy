@@ -2,14 +2,14 @@
 //exclude
 				?>				
 					<div id="bluet_kw_excluded_posts">
-						<h3><?php _e('Excluded posts','bluet-kw');?></h3>
-						<p><?php _e('Posts which are excluded from being matched','bluet-kw');?></p>
+						<h3><?php _e('Excluded posts','tooltipy-lang');?></h3>
+						<p><?php _e('Posts which are excluded from being matched','tooltipy-lang');?></p>
 						<?php
 						$excluded_posts=bluet_kw_fetch_excluded_posts();
 
 						if(empty($excluded_posts)){ 
 							echo('<p style="color:red;">');
-							_e('No posts or pages are excluded','bluet-kw');
+							_e('No posts or pages are excluded','tooltipy-lang');
 							echo('</p>');
 						}else{							
 							echo('<ul style="list-style: initial; padding-left: 25px;">');

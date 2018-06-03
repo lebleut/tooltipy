@@ -35,7 +35,7 @@ if( !defined('TOOLTIPY_VERSION') ){
     define('TOOLTIPY_VERSION', $tooltipy_plugin_data["Version"]);
 }
 
-$bluet_kw_capability=apply_filters('bluet_kw_capability','manage_options');
+$tltpy_capability=apply_filters('bluet_kw_capability','manage_options');
 
 
 /*init settings*/
@@ -78,7 +78,7 @@ add_action('init',function(){
 		}
 	}
 	/**** localization ****/
-	load_plugin_textdomain('bluet-kw', false, dirname( plugin_basename( __FILE__ ) ).'/languages/');
+	load_plugin_textdomain('tooltipy-lang', false, dirname( plugin_basename( __FILE__ ) ).'/languages/');
 
 	//post types from which we get the tooltips
 	global $tooltip_post_types;
@@ -103,16 +103,16 @@ add_action('init',function(){
 
 add_action('wp_enqueue_scripts', 'bluet_kw_load_scripts_front' );
 
-add_action('wp_footer','bluet_kttg_place_tooltips');
-add_action('admin_footer','bluet_kttg_place_tooltips');
+add_action('wp_footer','tltpy_place_tooltips');
+add_action('admin_footer','tltpy_place_tooltips');
 add_action('wp_head',function(){
-	//if(function_exists('bluet_kttg_pro_addon')){
-		//$pro_addon_dir=plugins_url("bluet_kttg_pro_addon");
+	//if(function_exists('tltpy_pro_addon')){
+		//$pro_addon_dir=plugins_url("tltpy_pro_addon");
 		echo('<script type="text/javascript" src="'.plugins_url('advanced/assets/findandreplacedomtext.js',__FILE__).'"></script>');
 	//}
 });
 	
-function bluet_kttg_place_tooltips(){
+function tltpy_place_tooltips(){
 	global $tooltip_post_types, $tooltipy_cat_name;
 
 	$exclude_me = get_post_meta(get_the_id(),'bluet_exclude_post_from_matching',true);			
@@ -247,7 +247,7 @@ function bluet_kttg_place_tooltips(){
 		?>	
 		<script type="text/javascript">
 			/*test*/
-		function kttg_fetch_kws(){
+		function tltpy_fetch_kws(){
 			/*
 			<?php	var_dump($my_excluded_keywords); ?>
 			*/
@@ -637,7 +637,7 @@ function bluet_kttg_place_tooltips(){
 			/*end test*/
 			
 			jQuery(document).ready(function(){
-				kttg_fetch_kws();
+				tltpy_fetch_kws();
 				
 				bluet_placeTooltips(".bluet_tooltip, .bluet_img_tooltip","<?php echo($kttg_tooltip_position); ?>",true);	 
 				animation_type="<?php echo($animation_type);?>";
@@ -660,7 +660,7 @@ function bluet_kttg_place_tooltips(){
 				}
 			?>
 				jQuery("body").on('<?php echo($custom_event); ?>',function(){
-					kttg_fetch_kws();
+					tltpy_fetch_kws();
 				});
 			<?php 
 			}
@@ -711,14 +711,14 @@ add_action('wp_head',function(){
         $posttypes_to_match[]='page';
     }
 	
-	if(function_exists('bluet_kttg_pro_addon')){//if pro addon activated
-		$contents_to_filter=apply_filters('bluet_kttg_dustom_fields_hooks',$contents_to_filter);
-		$posttypes_to_match=apply_filters('bluet_kttg_posttypes_to_match',$posttypes_to_match);
+	if(function_exists('tltpy_pro_addon')){//if pro addon activated
+		$contents_to_filter=apply_filters('tltpy_custom_fields_hooks',$contents_to_filter);
+		$posttypes_to_match=apply_filters('tltpy_posttypes_to_match',$posttypes_to_match);
 	}
 
 	foreach($posttypes_to_match as $k=>$the_posttype_to_match){
 		if(!empty($contents_to_filter[$k]) and $contents_to_filter[$k]!=null){
-			bluet_kttg_filter_any_content($the_posttype_to_match,$contents_to_filter[$k]);
+			tltpy_filter_any_content($the_posttype_to_match,$contents_to_filter[$k]);
 		}
 	}
 
@@ -788,7 +788,7 @@ function bluet_kw_activation(){
 	}
 }
 
-function bluet_kttg_filter_any_content($post_type_to_filter,$filter_hooks_to_filter){
+function tltpy_filter_any_content($post_type_to_filter,$filter_hooks_to_filter){
 	//this function filters a specific posttype with specific filter hooks
 	$my_post_id=get_the_id();
 	$exclude_me = get_post_meta($my_post_id,'bluet_exclude_post_from_matching',true);			
@@ -803,25 +803,25 @@ function bluet_kttg_filter_any_content($post_type_to_filter,$filter_hooks_to_fil
 		return false;
 	}
 	foreach($filter_hooks_to_filter as $hook){
-		add_filter($hook,'kttg_filter_posttype',100000);//priority to 100 000 to avoid filters after it		
+		add_filter($hook,'tltpy_filter_posttype',100000);//priority to 100 000 to avoid filters after it		
 	}
 }
 
-function kttg_specific_plugins($cont){
+function tltpy_specific_plugins($cont){
 	//specific modification so it can work for fields of "WooCommerce Product Addons"
 	foreach($cont as $k=>$c_arr){
 		//for description field
-		$cont[$k]['description']=kttg_filter_posttype($c_arr['description']);
+		$cont[$k]['description']=tltpy_filter_posttype($c_arr['description']);
 	}	
 	return $cont;
 }
 		
-function kttg_filter_posttype($cont){
+function tltpy_filter_posttype($cont){
 	global $tooltip_post_types;
 	/*28-05-2015*/
 	//specific modification so it can work for "WooCommerce Product Addons" and other addons
 	if(is_array($cont)){
-		$cont=kttg_specific_plugins($cont);		
+		$cont=tltpy_specific_plugins($cont);		
 		return $cont;
 	}				
 	/*28-05-2015 end*/
@@ -835,11 +835,11 @@ function kttg_filter_posttype($cont){
 	}
 
 	//glossary settings
-	$bluet_kttg_show_glossary_link=get_option('bluet_kw_settings');		
-	if(!empty($bluet_kttg_show_glossary_link['bluet_kttg_show_glossary_link'])){
-		$bluet_kttg_show_glossary_link=$bluet_kttg_show_glossary_link['bluet_kttg_show_glossary_link'];
+	$tltpy_show_glossary_link=get_option('bluet_kw_settings');		
+	if(!empty($tltpy_show_glossary_link['bluet_kttg_show_glossary_link'])){
+		$tltpy_show_glossary_link=$tltpy_show_glossary_link['bluet_kttg_show_glossary_link'];
 	}else{
-		$bluet_kttg_show_glossary_link=false;
+		$tltpy_show_glossary_link=false;
 	}
 	
 
@@ -848,7 +848,7 @@ function kttg_filter_posttype($cont){
 	//var dans la quelle on cache les tooltips a afficher
 	$html_tooltips_to_add='<div class="my_tooltips_in_block">';		
 
-	$my_keywords_ids=kttg_get_related_keywords($my_post_id);
+	$my_keywords_ids=tltpy_get_related_keywords($my_post_id);
 	
 	//if user specifies keywords to match
 	$bluet_matching_keywords_field=get_post_meta($my_post_id,'bluet_matching_keywords_field',true);
@@ -925,7 +925,7 @@ function kttg_filter_posttype($cont){
 				$out=array();
 				preg_match_all('#('.$regex.')#iu',$cont,$out);
 				
-				if(!function_exists('bluet_kttg_pro_addon')){
+				if(!function_exists('tltpy_pro_addon')){
 					$cont=preg_replace('#('.$regex.')#i','**T_A_G**',$cont); //replace tags by **T_A_G**							
 				}
 			//end
@@ -952,7 +952,7 @@ function kttg_filter_posttype($cont){
 				$term_and_syns_array=explode('|',$term);
 
 				//sort keywords by string length in the array (to match them properly)
-				usort($term_and_syns_array,'kttg_length_compare');
+				usort($term_and_syns_array,'tltpy_length_compare');
 				
 				//verify if case sensitive
 				if($arr['case']){
@@ -961,10 +961,10 @@ function kttg_filter_posttype($cont){
 					$kttg_case_sensitive='i';
 				}							
 				foreach($term_and_syns_array as $temr_occ){
-					$temr_occ=elim_apostrophes($temr_occ);
-					$cont=elim_apostrophes($cont);
+					$temr_occ=tltpy_elim_apostrophes($temr_occ);
+					$cont=tltpy_elim_apostrophes($cont);
 					
-					if(!function_exists('bluet_kttg_pro_addon')){
+					if(!function_exists('tltpy_pro_addon')){
 						$cont=preg_replace('#((\W)('.$temr_occ.''.$kw_after.')(\W))#u'.$kttg_case_sensitive,'$2__$3__$4',$cont,$limit_match);
 					}
 				}					
@@ -999,20 +999,20 @@ function kttg_filter_posttype($cont){
 				$term_and_syns_array=explode('|',$term);
 
 				$kttg_term_title=$term_and_syns_array[0];
-				if($video!="" and function_exists('bluet_kttg_all_tooltips_layout')){
-					$html_tooltips_to_add.=bluet_kttg_all_tooltips_layout(
+				if($video!="" and function_exists('tltpy_all_tooltips_layout')){
+					$html_tooltips_to_add.=tltpy_all_tooltips_layout(
 			/*text=*/	$dfn,
 			/*image=*/	'',
 						$video,
 						$arr["kw_id"]
 					);
 				}else{
-					$html_tooltips_to_add.=bluet_kttg_tooltip_layout(
+					$html_tooltips_to_add.=tltpy_tooltip_layout(
 						$kttg_term_title 	//title
 						,$dfn				//content def
 						,$img				//image
 						,$arr["kw_id"]		//id
-						,$bluet_kttg_show_glossary_link	//show glossary link y/n
+						,$tltpy_show_glossary_link	//show glossary link y/n
 						);
 				}
 
@@ -1024,17 +1024,17 @@ function kttg_filter_posttype($cont){
 					$kttg_case_sensitive='i';
 				}								
 				foreach($term_and_syns_array as $temr_occ){
-					$temr_occ=elim_apostrophes($temr_occ);
-					$cont=elim_apostrophes($cont);
+					$temr_occ=tltpy_elim_apostrophes($temr_occ);
+					$cont=tltpy_elim_apostrophes($cont);
 
-					if(!function_exists('bluet_kttg_pro_addon')){
+					if(!function_exists('tltpy_pro_addon')){
 						$cont=preg_replace('#(__('.$temr_occ.''.$kw_after.')__)#u'.$kttg_case_sensitive,$html_to_replace,$cont,-1);
 					}
 				}
 			}
 			
 			//Reinsert tag HTML elements
-			if(!function_exists('bluet_kttg_pro_addon')){
+			if(!function_exists('tltpy_pro_addon')){
 				foreach($out[0] as $id=>$tag){						
 					$cont=preg_replace('#(\*\*T_A_G\*\*)#',$tag,$cont,1);
 				}
@@ -1042,7 +1042,7 @@ function kttg_filter_posttype($cont){
 			//prevent HTML Headings (h1 h2 h3) to be matched
 			$regH='(<h[1-3]+>.*)(class="bluet_tooltip")(.*<\/h[1-3]+>)';						
 
-			if(!function_exists('bluet_kttg_pro_addon')){
+			if(!function_exists('tltpy_pro_addon')){
 				$cont=preg_replace('#('.$regH.')#iu','$2$4',$cont);					
 			}
 	}			

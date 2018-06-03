@@ -2,7 +2,7 @@
 defined('ABSPATH') or die("No script kiddies please!");
 
 
-function bluet_kttg_pro_addon(){
+function tltpy_pro_addon(){
 	return true;
 }
 
@@ -32,7 +32,7 @@ function bluet_kw_pro_activation(){
 		add_option('bluet_kw_advanced',$advanced_options);
 	//}
 }
-function bluet_kttg_add_meta_to_check($id){
+function tltpy_add_meta_to_check($id){
 	//call this function in the loop
 	//add the title
 	$ret=' ';
@@ -150,7 +150,7 @@ function bluet_get_posttypes_list(){
 }
 
 /*video tooltips functions - begin*/
-function bluet_kttg_all_tooltips_layout($kttg_text,$kttg_image,$kttg_youtube_id,$id){
+function tltpy_all_tooltips_layout($kttg_text,$kttg_image,$kttg_youtube_id,$id){
 	
 	$button_prop='none';
 	$html_text='';
@@ -191,7 +191,7 @@ function bluet_kttg_all_tooltips_layout($kttg_text,$kttg_image,$kttg_youtube_id,
 function bluet_video_metabox(){
 		?>
 	<p>
-		<label for='bluet_video_id'><b><?php _e('Youtube video ID','bluet-kw');?></b></label><br>
+		<label for='bluet_video_id'><b><?php _e('Youtube video ID','tooltipy-lang');?></b></label><br>
 		WWW.Youtube.com/watch?v=<input id="bluet_video_id" name="bluet_video_id_name" type="text" value="<?php echo(get_post_meta(get_the_id(),'bluet_youtube_video_id',true));?>" /><img src="<?php echo(plugin_dir_url(__FILE__).'assets/youtube_play.png');?>" style="position: relative; top: 5px;">
 	</p>
 	<?php
@@ -208,10 +208,10 @@ function bluet_show_video_in_column(){
 	
 	$kttg_you_video=get_post_meta(get_the_id(),'bluet_youtube_video_id',true);
 	if($kttg_you_video!=""){
-		?><span style="color:green;"><?php _e('Video :','bluet-kw'); echo('<a href="http://WWW.Youtube.com/watch?v='.$kttg_you_video.'">'.$kttg_you_video.'</a>');?></span>
+		?><span style="color:green;"><?php _e('Video :','tooltipy-lang'); echo('<a href="http://WWW.Youtube.com/watch?v='.$kttg_you_video.'">'.$kttg_you_video.'</a>');?></span>
 		<?php
 	}else{
-		_e('-','bluet-kw');
+		_e('-','tooltipy-lang');
 	}
 }
 /*video tooltips functions - end*/
@@ -240,7 +240,7 @@ function bluet_kw_adv_enqueue() {
 function bluet_prefix_metabox(){
 	?>
 	<p>
-		<label for='bluet_prefix_id'><?php _e('This Keyword is a <b>Prefix</b>','bluet-kw');?>  </label>
+		<label for='bluet_prefix_id'><?php _e('This Keyword is a <b>Prefix</b>','tooltipy-lang');?>  </label>
 		<input id="bluet_prefix_id" name="bluet_prefix_name" type="checkbox" <?php if(get_post_meta(get_the_id(),'bluet_prefix_keywords',true)) echo('checked');?> />
 	</p>
 	<?php
@@ -254,10 +254,10 @@ function bluet_prefix_save(){
 }
 function bluet_show_prefix_in_column(){
 	if(get_post_meta(get_the_id(),'bluet_prefix_keywords',true)){
-		?><span style="color:red;"><?php _e('Prefix','bluet-kw');?></span>
+		?><span style="color:red;"><?php _e('Prefix','tooltipy-lang');?></span>
 		<?php
 	}else{
-		_e('No','bluet-kw');
+		_e('No','tooltipy-lang');
 	}
 }
 /* prefix feature - end*/
@@ -276,7 +276,7 @@ function bluet_buttons_mce_add($plugin_array) {
 }
 
 function bluet_buttons_mce_register($buttons) {
-	array_push( $buttons, 'bluet_kttg_img'); 
+	array_push( $buttons, 'tltpy_kttg_img'); 
 	return $buttons;
 }
 
@@ -291,7 +291,7 @@ function bluet_filter_imgs_content(){
 			$settings=get_option('bluet_kw_settings');
 
 			if(((!empty($settings['bt_kw_match_excerpts']) and $settings['bt_kw_match_excerpts'] ? true : is_single()) and $settings['bt_kw_for_posts']) or (is_page() and !empty($settings['bt_kw_for_pages']) and $settings['bt_kw_for_pages']=="on")){ 
-				$my_keywords_ids=kttg_get_related_keywords(get_the_id());
+				$my_keywords_ids=tltpy_get_related_keywords(get_the_id());
 				
 				//if user specifies keywords to match
 				$bluet_matching_keywords_field=get_post_meta(get_the_id(),'bluet_matching_keywords_field',true);

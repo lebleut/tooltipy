@@ -12,7 +12,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __;gettext;gettext_noop;_e\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
-"X-Poedit-SearchPath-1: ..\\..\\Bluet_kttg_pro_addon\n"
+"X-Poedit-SearchPath-1: ..\\..\\tltpy_pro_addon\n"
 
 #: ../glossary-shortcode.php:29 ../settings-glossary.php:43
 #: ../settings-glossary.php:47

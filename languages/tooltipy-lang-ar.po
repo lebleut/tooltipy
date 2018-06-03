@@ -12,7 +12,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __;gettext;gettext_noop;_e\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
-"X-Poedit-SearchPath-1: ..\\..\\Bluet_kttg_pro_addon\n"
+"X-Poedit-SearchPath-1: ..\\..\\tltpy_pro_addon\n"
 
 #: ../glossary-shortcode.php:11
 msgid "ALL"
@@ -124,7 +124,7 @@ msgid "Posts in concern"
 msgstr "المقالات ذات الصلة"
 
 #: ../meta-boxes.php:37 ../meta-boxes.php:47
-#: ..\..\Bluet_kttg_pro_addon/index.php:37
+#: ..\..\tltpy_pro_addon/index.php:37
 msgid "Keywords related"
 msgstr "المصطلحات ذات الصلة"
 
@@ -336,7 +336,7 @@ msgstr "المقالات أو الصفحات المستبعدة من المعا�
 msgid "No posts or pages are excluded"
 msgstr "لم يتم استبعاد أي مقال أو صفحة"
 
-#: ../settings-page.php:344 ..\..\Bluet_kttg_pro_addon/settings-page.php:82
+#: ../settings-page.php:344 ..\..\tltpy_pro_addon/settings-page.php:82
 msgid "Save Settings"
 msgstr "حفض الاعدادات"
 
@@ -356,39 +356,39 @@ msgstr "Is Prefix (بداية)"
 msgid "No"
 msgstr "لا"
 
-#: ..\..\Bluet_kttg_pro_addon/settings-page.php:8
+#: ..\..\tltpy_pro_addon/settings-page.php:8
 msgid "KTTG Advanced"
 msgstr ""
 
-#: ..\..\Bluet_kttg_pro_addon/settings-page.php:9
+#: ..\..\tltpy_pro_addon/settings-page.php:9
 msgid "Advanced"
 msgstr "متقدم"
 
-#: ..\..\Bluet_kttg_pro_addon/settings-page.php:24
+#: ..\..\tltpy_pro_addon/settings-page.php:24
 msgid "Match the custom-fields :"
 msgstr "معالجة الحقول المخصصة :"
 
-#: ..\..\Bluet_kttg_pro_addon/settings-page.php:34
+#: ..\..\tltpy_pro_addon/settings-page.php:34
 msgid "Match custom-fields"
 msgstr "معالجة الحقول المخصصة"
 
-#: ..\..\Bluet_kttg_pro_addon/settings-page.php:43
+#: ..\..\tltpy_pro_addon/settings-page.php:43
 msgid "Match custom-posts"
 msgstr "معالجة المقالات المخصصة"
 
-#: ..\..\Bluet_kttg_pro_addon/settings-page.php:68
+#: ..\..\tltpy_pro_addon/settings-page.php:68
 msgid "KeyWords Avanced"
 msgstr "المصطلحات المتقدمة"
 
-#: ..\..\Bluet_kttg_pro_addon/settings-page.php:91
+#: ..\..\tltpy_pro_addon/settings-page.php:91
 msgid "Advanced space"
 msgstr "فضاء الخصائص المتقدمة"
 
-#: ..\..\Bluet_kttg_pro_addon/settings-page.php:99
+#: ..\..\tltpy_pro_addon/settings-page.php:99
 msgid "Write the name of the hooks in concern separated by \"|\"."
 msgstr "قم بكتابة الخطافات المناسبة مفصولة بـ ‘|’"
 
-#: ..\..\Bluet_kttg_pro_addon/settings-page.php:108
+#: ..\..\tltpy_pro_addon/settings-page.php:108
 msgid "Write the name of Post types in concern separated by \"|\"."
 msgstr "قم بكتابة أسماء المقالات المخصصة مفصولة بـ ‘|’"
 

@@ -133,7 +133,7 @@ msgid "Keyword Settings"
 msgstr "Impostazioni KeyWord"
 
 #: ../meta-boxes.php:28 ../meta-boxes.php:38 ../meta-boxes.php:93
-#: ..\..\Bluet_kttg_pro_addon/index.php:43
+#: ..\..\tltpy_pro_addon/index.php:43
 msgid "Keywords related"
 msgstr ""
 
@@ -344,7 +344,7 @@ msgstr "Elenco Articoli esclusi dalla ricerca"
 msgid "No posts or pages are excluded"
 msgstr "Nessun articolo o pagine sono esclusi"
 
-#: ../settings-page.php:373 ..\..\Bluet_kttg_pro_addon/settings-page.php:99
+#: ../settings-page.php:373 ..\..\tltpy_pro_addon/settings-page.php:99
 msgid "Save Settings"
 msgstr "Salva impostazioni"
 
@@ -352,59 +352,59 @@ msgstr "Salva impostazioni"
 msgid "no terms found for this post"
 msgstr "Nessuna parola in questo articolo"
 
-#: ..\..\Bluet_kttg_pro_addon/functions.php:174
+#: ..\..\tltpy_pro_addon/functions.php:174
 msgid "Youtube video ID"
 msgstr ""
 
-#: ..\..\Bluet_kttg_pro_addon/functions.php:191
+#: ..\..\tltpy_pro_addon/functions.php:191
 msgid "Video :"
 msgstr ""
 
-#: ..\..\Bluet_kttg_pro_addon/functions.php:194
+#: ..\..\tltpy_pro_addon/functions.php:194
 msgid "-"
 msgstr ""
 
-#: ..\..\Bluet_kttg_pro_addon/functions.php:216
+#: ..\..\tltpy_pro_addon/functions.php:216
 msgid "This Keyword is a <b>Prefix</b>"
 msgstr ""
 
-#: ..\..\Bluet_kttg_pro_addon/functions.php:230
+#: ..\..\tltpy_pro_addon/functions.php:230
 msgid "Prefix"
 msgstr ""
 
-#: ..\..\Bluet_kttg_pro_addon/functions.php:233
+#: ..\..\tltpy_pro_addon/functions.php:233
 msgid "No"
 msgstr ""
 
-#: ..\..\Bluet_kttg_pro_addon/settings-page.php:14
+#: ..\..\tltpy_pro_addon/settings-page.php:14
 msgid "KTTG Advanced"
 msgstr ""
 
-#: ..\..\Bluet_kttg_pro_addon/settings-page.php:15
+#: ..\..\tltpy_pro_addon/settings-page.php:15
 msgid "Advanced"
 msgstr "Avanzate"
 
-#: ..\..\Bluet_kttg_pro_addon/settings-page.php:30
+#: ..\..\tltpy_pro_addon/settings-page.php:30
 msgid "Advance settings for KTTG :"
 msgstr "Impostazioni Avanzate KTTG :"
 
-#: ..\..\Bluet_kttg_pro_addon/settings-page.php:40
+#: ..\..\tltpy_pro_addon/settings-page.php:40
 msgid "Supported Plugins"
 msgstr ""
 
-#: ..\..\Bluet_kttg_pro_addon/settings-page.php:51
+#: ..\..\tltpy_pro_addon/settings-page.php:51
 msgid "Advanced Style"
 msgstr ""
 
-#: ..\..\Bluet_kttg_pro_addon/settings-page.php:60
+#: ..\..\tltpy_pro_addon/settings-page.php:60
 msgid "Match custom-fields"
 msgstr "Individua campi personalizzati"
 
-#: ..\..\Bluet_kttg_pro_addon/settings-page.php:85
+#: ..\..\tltpy_pro_addon/settings-page.php:85
 msgid "KeyWords Avanced"
 msgstr ""
 
-#: ..\..\Bluet_kttg_pro_addon/settings-page.php:108
+#: ..\..\tltpy_pro_addon/settings-page.php:108
 msgid "Advanced space"
 msgstr ""
 

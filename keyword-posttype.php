@@ -10,24 +10,24 @@ class bluet_keyword{
 	}
 	
 	public function register_my_post_type(){
-		global $bluet_kw_capability, $tooltipy_post_type_name, $tooltipy_cat_name;
+		global $tltpy_capability, $tooltipy_post_type_name, $tooltipy_cat_name;
 
 		$args=array(
 			'labels'=>array(
-				'name'=>__('My KeyWords','bluet-kw'),
-				'singular_name'=>__('KeyWord','bluet-kw'),
-				'menu_name'=>__('Tooltipy','bluet-kw'),
-				'name_admin_bar'=>__('My KeyWords','bluet-kw'),
-				'all_items'=>__('My KeyWords','bluet-kw'),
+				'name'=>__('My KeyWords','tooltipy-lang'),
+				'singular_name'=>__('KeyWord','tooltipy-lang'),
+				'menu_name'=>__('Tooltipy','tooltipy-lang'),
+				'name_admin_bar'=>__('My KeyWords','tooltipy-lang'),
+				'all_items'=>__('My KeyWords','tooltipy-lang'),
 				'add_new' =>__('Add'),
-				'add_new_item'=>__('New').' '.__('KeyWord','bluet-kw'),
-				'edit_item'=>__('Edit').' '.__('KeyWord','bluet-kw'),
-				'new_item'=>__('New').' '.__('KeyWord','bluet-kw'),
-				'view_item'=>__('View').' '.__('KeyWord','bluet-kw'),
-				'search_items'=>__('Search for KeyWords','bluet-kw'),
-				'not_found'=>__('KeyWords not found','bluet-kw'),
-				'not_found_in_trash'=>__('KeyWords not found in trash','bluet-kw'),
-				'parent_item_colon' =>__('Parent KeyWords colon','bluet-kw')
+				'add_new_item'=>__('New').' '.__('KeyWord','tooltipy-lang'),
+				'edit_item'=>__('Edit').' '.__('KeyWord','tooltipy-lang'),
+				'new_item'=>__('New').' '.__('KeyWord','tooltipy-lang'),
+				'view_item'=>__('View').' '.__('KeyWord','tooltipy-lang'),
+				'search_items'=>__('Search for KeyWords','tooltipy-lang'),
+				'not_found'=>__('KeyWords not found','tooltipy-lang'),
+				'not_found_in_trash'=>__('KeyWords not found in trash','tooltipy-lang'),
+				'parent_item_colon' =>__('Parent KeyWords colon','tooltipy-lang')
 				),
 			'public'=>true,
 			'supports'=>array('title','editor','thumbnail','author'),
@@ -38,12 +38,12 @@ class bluet_keyword{
 		//modify capabilities if bluet_kw_capability hook has been called
 		
 		
-		if($bluet_kw_capability!='manage_options'){
+		if($tltpy_capability!='manage_options'){
 		$args['capabilities']=array(
-		        'edit_post' => $bluet_kw_capability,
-				'edit_posts' => $bluet_kw_capability,
-				'publish_posts' => $bluet_kw_capability,
-				'delete_post' => $bluet_kw_capability,
+		        'edit_post' => $tltpy_capability,
+				'edit_posts' => $tltpy_capability,
+				'publish_posts' => $tltpy_capability,
+				'delete_post' => $tltpy_capability,
 			);
 			
 		}		
@@ -52,7 +52,7 @@ class bluet_keyword{
 
 		$fam_args=array(
 			'labels'=>array(
-				'name'=>__('Families','bluet-kw')
+				'name'=>__('Families','tooltipy-lang')
 			),
 			'hierarchical'=> true,			
     		'show_ui' => 'radio',
@@ -69,9 +69,9 @@ class bluet_keyword{
 		// add the picture among columns
 		add_filter('manage_my_keywords_posts_columns', function($defaults){		
 
-			$defaults['the_picture']=__('Picture','bluet-kw');
-			$defaults['is_prefix'] =__('Is Prefix ?','bluet-kw');
-			$defaults['is_video'] =__('Video tooltip','bluet-kw');
+			$defaults['the_picture']=__('Picture','tooltipy-lang');
+			$defaults['is_prefix'] =__('Is Prefix ?','tooltipy-lang');
+			$defaults['is_video'] =__('Video tooltip','tooltipy-lang');
 			
 			//we want to rearrange the columns apearance
 			$reArr['cb']=$defaults['cb']; //checkBox column

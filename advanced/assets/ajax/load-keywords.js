@@ -8,9 +8,9 @@ jQuery(document).on("keywordsFetched",function() {
 	});
 	
 	jQuery.post(
-		kttg_ajax_load,
+		tltpy_ajax_load,
 		{
-			'action': 'kttg_load_keywords',
+			'action': 'tltpy_load_keywords',
 			'keyword_ids': keyw
 		},
 		function(response){

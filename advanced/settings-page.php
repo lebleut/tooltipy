@@ -2,10 +2,10 @@
 defined('ABSPATH') or die("No script kiddies please!");
 
 /* enqueue js functions  for settings admin only*/
-function kttg_pro_load_admin_scripts() {
+function tltpy_pro_load_admin_scripts() {
 	//
 }
-add_action( 'admin_head', 'kttg_pro_load_admin_scripts' );
+add_action( 'admin_head', 'tltpy_pro_load_admin_scripts' );
 
 add_action( 'admin_init',function () {
 
@@ -13,7 +13,7 @@ add_action( 'admin_init',function () {
 	// 1st section
 	add_settings_section(
 		'advanced_section',					
-		__('Advance settings for KTTG :','bluet-kw'),					
+		__('Advance settings for KTTG :','tooltipy-lang'),					
 		'bluet_kw_advanced_display',		
 		'my_keywords_advanced_page'				
 	);
@@ -22,7 +22,7 @@ add_action( 'admin_init',function () {
 	//
     add_settings_field( 
         'kttg_cover_areas',  //classes to cover                
-        __('Cover CSS classes','bluet-kw'),             
+        __('Cover CSS classes','tooltipy-lang'),             
         'bluet_kw_cover_areas_display',      
         'my_keywords_advanced_page',                
         'advanced_section'                  
@@ -30,7 +30,7 @@ add_action( 'admin_init',function () {
 
     add_settings_field( 
         'kttg_cover_tags',  //tags to cover                
-        __('Cover HTML TAGS','bluet-kw'),             
+        __('Cover HTML TAGS','tooltipy-lang'),             
         'bluet_kw_cover_tags_display',      
         'my_keywords_advanced_page',                
         'advanced_section'                  
@@ -38,7 +38,7 @@ add_action( 'admin_init',function () {
 	//
     add_settings_field( 
         'kttg_exclude_areas',  //classes to exclude                
-        __('Exclude CSS classes','bluet-kw'),             
+        __('Exclude CSS classes','tooltipy-lang'),             
         'bluet_kw_exclude_areas_display',      
         'my_keywords_advanced_page',                
         'advanced_section'                  
@@ -47,7 +47,7 @@ add_action( 'admin_init',function () {
 	//exclude links
 	add_settings_field( 
 		'kttg_exclude_anchor_tags', 					
-		__('Exclude links','bluet-kw')." ?", 			
+		__('Exclude links','tooltipy-lang')." ?", 			
 		'bluet_kw_exclude_anchor_tags_display', 		
 		'my_keywords_advanced_page',				
 		'advanced_section'					
@@ -56,7 +56,7 @@ add_action( 'admin_init',function () {
 	//exclude headings
 	add_settings_field( 
 		'kttg_exclude_heading_tags', 					
-		__('Exclude Headings','bluet-kw')." ?", 			
+		__('Exclude Headings','tooltipy-lang')." ?", 			
 		'bluet_kw_exclude_heading_tags_display', 		
 		'my_keywords_advanced_page',				
 		'advanced_section'					
@@ -65,7 +65,7 @@ add_action( 'admin_init',function () {
 	//exclude common tags
 	add_settings_field( 
 		'kttg_exclude_common_tags',
-		__('Exclude Common Tags','bluet-kw')." ?",
+		__('Exclude Common Tags','tooltipy-lang')." ?",
 		'bluet_kw_exclude_common_tags_display',
 		'my_keywords_advanced_page',
 		'advanced_section'
@@ -74,7 +74,7 @@ add_action( 'admin_init',function () {
 	// Define custom style field
 	add_settings_field( 
 		'bt_kw_adv_style', 					
-		__('Advanced Style','bluet-kw'), 			
+		__('Advanced Style','tooltipy-lang'), 			
 		'bluet_kw_adv_style_display', 		
 		'my_keywords_advanced_page',				
 		'advanced_section'					
@@ -83,7 +83,7 @@ add_action( 'admin_init',function () {
 	//
     add_settings_field( 
         'kttg_fetch_all_keywords',                  
-        __('Load all keywords','bluet-kw'),             
+        __('Load all keywords','tooltipy-lang'),             
         'bluet_kw_fetch_all_keywords_display',      
         'my_keywords_advanced_page',                
         'advanced_section'                  
@@ -92,8 +92,8 @@ add_action( 'admin_init',function () {
     //kttg_custom_events
    add_settings_field( 
         'kttg_custom_events',                  
-        __('Events to fetch','bluet-kw'),             
-        'kttg_custom_events_display',      
+        __('Events to fetch','tooltipy-lang'),             
+        'tltpy_custom_events_display',      
         'my_keywords_advanced_page',                
         'advanced_section'                  
     );
@@ -101,7 +101,7 @@ add_action( 'admin_init',function () {
 	// tooltipy_prevent_plugins_filters
 	add_settings_field(
 		'tooltipy_prevent_plugins_filters',
-		__('Prevent other plugins filters','bluet-kw'),
+		__('Prevent other plugins filters','tooltipy-lang'),
 		'bt_tooltipy_prevent_plugins_filters_display',
 		'my_keywords_advanced_page',
 		'advanced_section'
@@ -126,7 +126,7 @@ add_action( 'admin_init',function () {
 /*function bluet_kw_render_advanced_page(){
 	?>
 		<div id="bluet-general" class="wrap" >
-			<h2><?php _e('KeyWords Avanced','bluet-kw'); ?></h2>
+			<h2><?php _e('KeyWords Avanced','tooltipy-lang'); ?></h2>
 			<?php settings_errors();?>				
 			<form method="post" action="options.php">
 			<div>
@@ -140,7 +140,7 @@ add_action( 'admin_init',function () {
 			?>
 			</div> <!-- end  bluet-sections-div -->
 			
-				<?php submit_button( __('Save Settings','bluet-kw'), 'primary'); ?> 
+				<?php submit_button( __('Save Settings','tooltipy-lang'), 'primary'); ?> 
 
 			</form>	
 
@@ -150,7 +150,7 @@ add_action( 'admin_init',function () {
 }*/
 function bluet_kw_advanced_display(){
 
-	echo('<div id="keywords-advanced">'.__('Advanced space','bluet-kw').'.</div>');
+	echo('<div id="keywords-advanced">'.__('Advanced space','tooltipy-lang').'.</div>');
 }
 /*
 function bluet_kw_supported_plugins_display(){
@@ -176,7 +176,7 @@ function bluet_kw_adv_style_display(){
 
 	?>
 	<input id="bluet_apply_custom_style_sheet" type="checkbox" name="bluet_kw_advanced[bt_kw_adv_style][apply_custom_style_sheet]" <?php if($apply_custom_style_sheet) echo "checked"; ?>>
-	<label for="bluet_apply_custom_style_sheet"><?php _e('Apply custom style sheet','bluet-kw'); ?></label>
+	<label for="bluet_apply_custom_style_sheet"><?php _e('Apply custom style sheet','tooltipy-lang'); ?></label>
 	<br><input style="min-width:250px;" id="bluet_custom_style_sheet" type="text" name="bluet_kw_advanced[bt_kw_adv_style][custom_style_sheet]" value="<?php echo($custom_style_sheet);?>" placeholder="CSS URL Here">
 	<?php
 }
@@ -193,7 +193,7 @@ function bluet_kw_exclude_anchor_tags_display(){
 
 	?>
 	<input id="bluet_exclude_anchor_tags" type="checkbox" name="bluet_kw_advanced[kttg_exclude_anchor_tags]" <?php if(!empty($exclude_anchor_tags) and $exclude_anchor_tags=="on" ) echo "checked"; ?>>
-	<label for="bluet_exclude_anchor_tags"><?php _e('Links','bluet-kw'); ?></label>
+	<label for="bluet_exclude_anchor_tags"><?php _e('Links','tooltipy-lang'); ?></label>
 	<?php
 
 }
@@ -257,11 +257,11 @@ function bluet_kw_fetch_all_keywords_display(){
  
     ?>
         <input id="bluet_fetch_all_keywords" type="checkbox" name="bluet_kw_advanced[kttg_fetch_all_keywords]" <?php if(!empty($fetch_all_keywords) and $fetch_all_keywords=='on') echo "checked"; ?>>
-        <label for="bluet_fetch_all_keywords">(<?php _e('use only if needed to load all keywords per page','bluet-kw');?>)</label>
+        <label for="bluet_fetch_all_keywords">(<?php _e('use only if needed to load all keywords per page','tooltipy-lang');?>)</label>
     <?php
 }
 
-function kttg_custom_events_display(){
+function tltpy_custom_events_display(){
 	    $options = get_option('bluet_kw_advanced');
  
     if(!empty($options['kttg_custom_events'])){
@@ -271,7 +271,7 @@ function kttg_custom_events_display(){
     }
  
     ?>
-		<input type="text" id="kttg_custom_events_id" style="min-width:300px;" placeholder="<?php _e('Events names saparated with \',\'','bluet-kw'); ?>" name="bluet_kw_advanced[kttg_custom_events]" value="<?php echo($kttg_custom_events); ?>">
+		<input type="text" id="kttg_custom_events_id" style="min-width:300px;" placeholder="<?php _e('Events names saparated with \',\'','tooltipy-lang'); ?>" name="bluet_kw_advanced[kttg_custom_events]" value="<?php echo($kttg_custom_events); ?>">
      <?php
 }
 function bluet_kw_cover_tags_display(){
@@ -288,13 +288,13 @@ function bluet_kw_cover_tags_display(){
 			<div class="easy_tags-list tagchecklist" id="cover_tags_list" >	<!-- list before field -->
 			</div>
 			
-			<input class="easy_tags-field" type="text" style="max-width:250px;" id="bluet_cover_tags_id" placeholder="<?php _e('HTML tag ...','bluet-kw'); ?>"> <!-- field -->
+			<input class="easy_tags-field" type="text" style="max-width:250px;" id="bluet_cover_tags_id" placeholder="<?php _e('HTML tag ...','tooltipy-lang'); ?>"> <!-- field -->
 				<input class="easy_tags-to_send" type="hidden" name="bluet_kw_advanced[kttg_cover_tags]" id="cover_tags_send" value="<?php echo($kttg_cover_tags);?>" > <!-- hidden text to send -->
 		</div>
 		<input class="easy_tags-add button tagadd" type="button" value="<?php _e('Add'); ?>" id="cover_tag_add" > <!-- add button -->
 	</div>
 	
-	<p style="color:green;"><?php _e('Choose HTML TAGS (like h1, h2, strong, p, ... ) to cover with tooltips','bluet-kw'); ?></p>
+	<p style="color:green;"><?php _e('Choose HTML TAGS (like h1, h2, strong, p, ... ) to cover with tooltips','tooltipy-lang'); ?></p>
 
 	<?php
 }
@@ -313,13 +313,13 @@ function bluet_kw_cover_areas_display(){
 			<div class="easy_tags-list tagchecklist" id="cover_areas_list" >	<!-- list before field -->
 			</div>
 			
-			<input class="easy_tags-field" type="text" style="max-width:250px;" id="bluet_cover_areas_id" placeholder="<?php _e('class ...','bluet-kw'); ?>"> <!-- field -->
+			<input class="easy_tags-field" type="text" style="max-width:250px;" id="bluet_cover_areas_id" placeholder="<?php _e('class ...','tooltipy-lang'); ?>"> <!-- field -->
 				<input class="easy_tags-to_send" type="hidden" name="bluet_kw_advanced[kttg_cover_areas]" id="cover_areas_send" value="<?php echo($kttg_cover_areas);?>" > <!-- hidden text to send -->
 		</div>
 		<input class="easy_tags-add button tagadd" type="button" value="<?php _e('Add'); ?>" id="cover_class_add" > <!-- add button -->
 	</div>
 	
-	<p style="color:green;"><?php _e('Choose CSS classes to cover with tooltips','bluet-kw'); ?></p>
+	<p style="color:green;"><?php _e('Choose CSS classes to cover with tooltips','tooltipy-lang'); ?></p>
 
 	<script>
 	jQuery(document).ready(function(){
@@ -333,8 +333,8 @@ function bluet_kw_cover_areas_display(){
 	</script>
 	<p><b>NB : </b>
 		<i>
-		<?php _e('Please avoid overlapped classes !','bluet-kw'); ?><br> 
-		<?php _e('If you leave Classes AND Tags blank the whole page will be affected','bluet-kw'); ?>
+		<?php _e('Please avoid overlapped classes !','tooltipy-lang'); ?><br> 
+		<?php _e('If you leave Classes AND Tags blank the whole page will be affected','tooltipy-lang'); ?>
 	</i></p>
 	
 
@@ -353,13 +353,13 @@ function bluet_kw_exclude_areas_display(){
 			<div class="easy_tags-list tagchecklist" id="exclude_areas_list" >
 			</div>
 			
-			<input class="easy_tags-field" type="text" style="max-width:250px;" id="bluet_exclude_areas_id" placeholder="<?php _e('class ...','bluet-kw'); ?>" >
+			<input class="easy_tags-field" type="text" style="max-width:250px;" id="bluet_exclude_areas_id" placeholder="<?php _e('class ...','tooltipy-lang'); ?>" >
 				<input class="easy_tags-to_send" type="hidden" name="bluet_kw_advanced[kttg_exclude_areas]" id="exclude_areas_send" value="<?php echo($kttg_exclude_areas);?>" >
 		</div>
 		<input class="easy_tags-add button tagadd" type="button" value="<?php _e('Add'); ?>" id="exclude_class_add" >
 	</div>
 
-	<p style="color:red;"><?php _e('Choose CSS classes to exclude','bluet-kw'); ?></p>
+	<p style="color:red;"><?php _e('Choose CSS classes to exclude','tooltipy-lang'); ?></p>
 
 	<?php
 }

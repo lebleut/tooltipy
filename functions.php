@@ -1,18 +1,18 @@
 <?php
 defined('ABSPATH') or die("No script kiddies please!");
 
-define("KTTG_TEMPLATES_DIR","templates");
+define("TLTPY_TEMPLATES_DIR","templates");
 
-function kttg_template($template_name,$file=__FILE__){
+function tltpy_template($template_name,$file=__FILE__){
 	/*
 	to load a template inside another from the template folder
 	*/
 	$current_dir = dirname($file);
-	include($current_dir."/".KTTG_TEMPLATES_DIR."/".$template_name.".php");
+	include($current_dir."/".TLTPY_TEMPLATES_DIR."/".$template_name.".php");
 }
 
 //common functions
-function bluet_kttg_tooltip_layout($term_title,$dfn,$img,$id,$bluet_kttg_show_glossary_link = null){
+function tltpy_tooltip_layout($term_title,$dfn,$img,$id,$tltpy_show_glossary_link = null){
 	global $is_kttg_glossary_page;
 //generates the HTML code of the tooltip model
 
@@ -41,14 +41,14 @@ $kttg_title_layout='';
 	return $layout_ret;
 }
 
-function kttg_length_compare( $a, $b ) {
+function tltpy_length_compare( $a, $b ) {
     return strlen($a)-strlen($b) ;
 }
  function is_i_device(){
 	 return true;
  }
 
-function kttg_get_related_keywords($my_post_id){
+function tltpy_get_related_keywords($my_post_id){
 	global $tooltip_post_types;
 	//return an array of related keywords of the current post
 		//delete this function for optimization !
@@ -107,7 +107,7 @@ function kttg_get_related_keywords($my_post_id){
 	/*get all posts (but not post type keywords)*/	
 	//$posttypes_to_match=array('post','page');//initial posttypes to match
 	
-	//$posttypes_to_match=apply_filters('bluet_kttg_posttypes_to_match',$posttypes_to_match);
+	//$posttypes_to_match=apply_filters('tltpy_posttypes_to_match',$posttypes_to_match);
 
 	//init the post keywords related to zero
 	$post_have_kws=array();
@@ -119,8 +119,8 @@ function kttg_get_related_keywords($my_post_id){
 		//look for the $term in the content (### do something here to support custom fields)
 		$content_to_check=' '.get_post($my_post_id)->post_content;
 
-		if(function_exists('bluet_kttg_add_meta_to_check')){
-			$content_to_check.=bluet_kttg_add_meta_to_check($my_post_id);
+		if(function_exists('tltpy_add_meta_to_check')){
+			$content_to_check.=tltpy_add_meta_to_check($my_post_id);
 		}
 		
 		$content_to_check=strip_tags($content_to_check);//strip_tags eliminates HTML tags before passing in pregmatch
@@ -134,10 +134,10 @@ function kttg_get_related_keywords($my_post_id){
 	return $post_have_kws;
 }
 
-function kttg_get_related_posts($my_post_id){
+function tltpy_get_related_posts($my_post_id){
 	//return an array of related posts of the current keyword
 }
-function elim_apostrophes($chaine){
+function tltpy_elim_apostrophes($chaine){
 	//pour éliminé les apostrophes unicode echanger par apostrophe ascii	
 	$resultat=str_replace("&#8217;","'",$chaine);
 
@@ -160,7 +160,7 @@ function tooltipy_families_admin_posts_filter_restrict_manage_posts(){
         $tax_families = get_terms( $tooltipy_cat_name );        
         ?>
         <select name="tooltipy_family" id='tooltipy_filter_by_family'>
-        <option value=""><?php _e('Filter by Family','bluet-kw'); ?></option>
+        <option value=""><?php _e('Filter by Family','tooltipy-lang'); ?></option>
         <?php
             $current_v = isset($_GET['tooltipy_family'])? esc_html( $_GET['tooltipy_family'] ):'';
             foreach ($tax_families as $fam) {

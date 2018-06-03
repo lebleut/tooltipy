@@ -55,7 +55,7 @@ class bluet_keyword_widget extends wp_widget{
 			echo($after_title);
 			echo('<ul>');
 			//widget content process here
-				$my_keywords_ids=kttg_get_related_keywords(get_the_id());
+				$my_keywords_ids=tltpy_get_related_keywords(get_the_id());
 				
 				//if user specifies keywords to match
 				$bluet_matching_keywords_field=get_post_meta(get_the_id(),'bluet_matching_keywords_field',true);
@@ -85,7 +85,7 @@ class bluet_keyword_widget extends wp_widget{
 								$kw_id=get_the_id();
 
 							// adding &zwnj; (invisible character) to avoid tooltips overlapping 
-								$trm=elim_apostrophes($trm);
+								$trm=tltpy_elim_apostrophes($trm);
 
 								$dfn=preg_replace('#('.$trm.')#i',$trm.'&zwnj;',get_the_content());
 								
@@ -125,7 +125,7 @@ class bluet_keyword_widget extends wp_widget{
 						echo($string_to_show);
 					}
 				}else{
-					_e('no terms found for this post','bluet-kw');
+					_e('no terms found for this post','tooltipy-lang');
 				}
 			//
 				echo('</ul>');

@@ -9,7 +9,7 @@
          * @param {string} url Absolute URL to where the plugin is located.
          */
         init : function(ed, url) {
-            ed.addCommand('bluet_kttg_img', function() {
+            ed.addCommand('tltpy_kttg_img', function() {
                 var selected_text = ed.selection.getContent();
 
 				if(jQuery(selected_text).prop("tagName")=="IMG"){
@@ -26,12 +26,12 @@
 							jQuery(img_obj.children().first()).addClass("bluet_tooltip");
 
 							//eliminates old and new elems first
-							jQuery(editor_doc).find("#bluet_kw_img_tt_"+newKw).first().remove();
-							jQuery(editor_doc).find("#bluet_kw_img_tt_"+old_kw).first().remove();
+							jQuery(editor_doc).find("#tltpy_img_tt_"+newKw).first().remove();
+							jQuery(editor_doc).find("#tltpy_img_tt_"+old_kw).first().remove();
 							
-							img_obj.children().first().parent().append( "<span id='bluet_kw_img_tt_"+newKw+"' style='display:none;'>"+newKw+"</span>");
+							img_obj.children().first().parent().append( "<span id='tltpy_img_tt_"+newKw+"' style='display:none;'>"+newKw+"</span>");
 						}else{
-							jQuery(editor_doc).find("#bluet_kw_img_tt_"+old_kw).first().remove();
+							jQuery(editor_doc).find("#tltpy_img_tt_"+old_kw).first().remove();
 							img_obj.children().first().attr("alt","");
 
                             jQuery(img_obj.children().first()).removeClass("bluet_tooltip");
@@ -46,9 +46,9 @@
 				}
             });
             
-            ed.addButton('bluet_kttg_img', {
+            ed.addButton('tltpy_kttg_img', {
                 title : 'Associate tooltip to image',
-                cmd : 'bluet_kttg_img',
+                cmd : 'tltpy_kttg_img',
                 image : url + '/ico_16x16.png'
             });
 
