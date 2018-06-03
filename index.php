@@ -6,6 +6,13 @@ Author: Jamel Zarga
 Version: 5.1
 Author URI: http://www.tooltipy.com/about-us
 */
+
+$vari = "dfg456d-f456";
+
+echo("<pre>");
+echo(  sanitize_file_name($vari ) );
+echo("</pre>");
+
 defined('ABSPATH') or die("No script kiddies please!");
 
 //Tooltipy post_type name

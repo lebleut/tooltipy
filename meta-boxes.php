@@ -196,18 +196,19 @@ add_action('save_post',function(){
 		//synonyms
 		//editpost to prevent quick edit problems
 		if($_POST['action'] =='editpost'){
-			$syns_save=$_POST['bluet_synonyms_name'];		
+			$syns_save = sanitize_text_field( $_POST['bluet_synonyms_name'] );
 			
-			$kttg_case=$_POST['bluet_case_sensitive_name'];
+			$kttg_case = sanitize_text_field( $_POST['bluet_case_sensitive_name'] );
 			
 			//replace ||||||| by only one
 			$syns_save=preg_replace('(\|{2,100})','|',$syns_save);
 			
 			//eliminate spaces special caracters
 			$syns_save=preg_replace('(^\||\|$|[\s]{2,100})','',$syns_save);
-			update_post_meta($_POST['post_ID'],'bluet_synonyms_keywords',$syns_save);
+			$the_post_id = sanitize_text_field( $_POST['post_ID'] );
+			update_post_meta( $the_post_id,'bluet_synonyms_keywords',$syns_save);
 			
-			update_post_meta($_POST['post_ID'],'bluet_case_sensitive_word',$kttg_case);		
+			update_post_meta($the_post_id,'bluet_case_sensitive_word',$kttg_case);		
 			
 			//prefixes if exists
 			if(function_exists('bluet_prefix_save')){
@@ -230,11 +231,11 @@ add_action('save_post',function(){
 	}else{
 		if(!empty($_POST['action']) and $_POST['action'] =='editpost'){
 
-			$exclude_me=$_POST['bluet_exclude_post_from_matching_name'];
-			$exclude_keywords_string=$_POST['bluet_exclude_keywords_from_matching_name'];
+			$exclude_me = sanitize_text_field( $_POST['bluet_exclude_post_from_matching_name'] );
+			$exclude_keywords_string = sanitize_text_field( $_POST['bluet_exclude_keywords_from_matching_name'] );
 
 			// save exclude post from matching
-			update_post_meta($_POST['post_ID'],'bluet_exclude_post_from_matching',$exclude_me);
+			update_post_meta($the_post_id,'bluet_exclude_post_from_matching',$exclude_me);
 			
 			//get list if excluded posts
 			$tooltipy_excluded_posts = get_option("tooltipy_excluded_posts_from_matching");
@@ -248,9 +249,9 @@ add_action('save_post',function(){
 				
 				// this post info
 				$tooltipy_this_post_info = array(
-					'id' 	=> 	$_POST['post_ID'],
-					'title' => 	$_POST['post_title'],
-					'slug' 	=> 	$_POST['post_name'],
+					'id' 	=> 	$the_post_id,
+					'title' => 	sanitize_title( $_POST['post_title'] ),
+					'slug' 	=> 	sanitize_text_field( $_POST['post_name'] ),
 				);
 				if( is_array($tooltipy_excluded_posts) ){
 					// since option is there
@@ -258,7 +259,7 @@ add_action('save_post',function(){
 					
 					foreach ($tooltipy_excluded_posts as $key => $excluded_post) {
 						// look if it is allready there
-						if( $excluded_post['id'] == $_POST['post_ID'] ){
+						if( $excluded_post['id'] == $the_post_id ){
 							// remove it from array so to puch it with new data later with " array_push() "
 							unset($tooltipy_excluded_posts[$key]);
 						}
@@ -282,7 +283,7 @@ add_action('save_post',function(){
 					// if not excluded remove it from the "tooltipy_excluded_posts_from_matching" option
 					foreach ($tooltipy_excluded_posts as $key => $excluded_post) {
 						// look if it is allready there
-						if( $excluded_post['id'] == $_POST['post_ID'] ){
+						if( $excluded_post['id'] == $the_post_id ){
 							// remove it from array
 							unset($tooltipy_excluded_posts[$key]);
 						}
@@ -296,9 +297,9 @@ add_action('save_post',function(){
 			}
 
 			// 
-			update_post_meta($_POST['post_ID'],'bluet_exclude_keywords_from_matching',$exclude_keywords_string);
+			update_post_meta($the_post_id,'bluet_exclude_keywords_from_matching',$exclude_keywords_string);
 
-			$matchable_keywords=$_POST['matchable_keywords'];
+			$matchable_keywords = sanitize_text_field( $_POST['matchable_keywords'] );
 			$arr_match=array();
 
 			if(!empty($matchable_keywords)){
@@ -308,13 +309,7 @@ add_action('save_post',function(){
 			}else{
 				//
 			}
-			update_post_meta($_POST['post_ID'],'bluet_matching_keywords_field',$arr_match);
+			update_post_meta($the_post_id,'bluet_matching_keywords_field',$arr_match);
 		}	
 	}
 }); 
-
-/*
-add_action('save_post',function(){
-	var_dump($_POST);
-	die();
-});*/

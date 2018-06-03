@@ -199,8 +199,8 @@ function bluet_video_metabox(){
 
 function bluet_video_save(){
 	if($_POST['action'] =='editpost'){
-		$kttg_youtube_save=trim($_POST['bluet_video_id_name']); //trim to delete spaces
-		update_post_meta($_POST['post_ID'],'bluet_youtube_video_id',$kttg_youtube_save);
+		$kttg_youtube_save=trim(sanitize_text_field( $_POST['bluet_video_id_name'] ) ); //trim to delete spaces
+		update_post_meta(sanitize_text_field( $_POST['post_ID'] ),'bluet_youtube_video_id',$kttg_youtube_save);
 	}
 }
 
@@ -248,8 +248,8 @@ function bluet_prefix_metabox(){
 
 function bluet_prefix_save(){
 	if($_POST['action'] =='editpost'){
-		$pref_save=$_POST['bluet_prefix_name'];
-		update_post_meta($_POST['post_ID'],'bluet_prefix_keywords',$pref_save);
+		$pref_save= sanitize_text_field( $_POST['bluet_prefix_name'] );
+		update_post_meta(sanitize_text_field( $_POST['post_ID'] ),'bluet_prefix_keywords',$pref_save);
 	}
 }
 function bluet_show_prefix_in_column(){
