@@ -30,12 +30,18 @@ function tltpy_load_keywords() {
         $kttg_fetch_all_keywords=true;
     }
 
+	$keyword_ids = array();
+
 	if(empty($_POST['keyword_ids'])){
 		die();
 	}else{
-		$keyword_ids = $_POST['keyword_ids'];
+		foreach ($_POST['keyword_ids'] as $keyword_id) {
+			array_push($keyword_ids, sanitize_key($keyword_id) );
+		}
+		$keyword_ids = array_unique($keyword_ids);
 	}
-//glossary link
+
+	//glossary link
     $glossary_options = get_option('bluet_glossary_options');
 	
 	$args = array(
