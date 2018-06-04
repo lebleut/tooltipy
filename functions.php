@@ -152,7 +152,7 @@ function tooltipy_families_admin_posts_filter_restrict_manage_posts(){
 
     $type = 'post';
     if (isset($_GET['post_type'])) {
-        $type = esc_html( $_GET['post_type'] );
+        $type = sanitize_text_field( $_GET['post_type'] );
     }
 
     //only add filter to post type you want
@@ -185,7 +185,7 @@ function tooltipy_families_posts_filter($query){
 
     $type = 'post';
     if (isset($_GET['post_type'])) {
-        $type = esc_html( $_GET['post_type'] );
+        $type = sanitize_text_field( $_GET['post_type'] );
     }
 
     if ($tooltipy_post_type_name == $type && is_admin() && $pagenow=='edit.php' && isset($_GET['tooltipy_family']) && $_GET['tooltipy_family'] != ''){
