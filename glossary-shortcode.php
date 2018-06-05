@@ -214,8 +214,15 @@ function tltpy_glossary(){
 
                 //echo(substr(get_the_title(),0,1).'<br>');
                 if((strtoupper(mb_substr(get_the_title(),0,1,'utf-8'))==$chosen_letter) or $chosen_letter==null){                    
+					$title_wrap = get_the_title();
+					
+					// Add titles links if setting checked
+					if( !empty($glossary_options['link_titles']) and $glossary_options['link_titles'] == 'on' ){
+						$title_wrap = '<a href="'.get_permalink().'">'.get_the_title().'</a>';
+					}
+					
                     $ret.='<li class="kttg_glossary_element" style="list-style-type: none;">
-							<h2 class="kttg_glossary_element_title">'.get_the_title()." ";
+							<h2 class="kttg_glossary_element_title">'.$title_wrap." ";
 					if( count($families_list)>0 ){
 						$ret.="<sub>[";
 						foreach ($families_list as $key => $family_name) {

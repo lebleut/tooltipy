@@ -36,14 +36,22 @@ add_action( 'admin_init',function () {
         'glossary_section'
     );      
  
-		 // Define view glossary page field
-    add_settings_field( 
-        'bluet_kttg_show_glossary_link',                    
-        __('Glossary link page','tooltipy-lang'),            
-        'bt_kw_show_glossary_link_display',         
-        'my_keywords_glossary_settings',                // The page on which we'll be rendering this field
-        'glossary_section'                  // The section to which we're adding the setting                    
-    );
+	// Define view glossary page field
+	add_settings_field( 
+		'bluet_kttg_show_glossary_link',                    
+		__('Glossary link page','tooltipy-lang'),            
+		'bt_kw_show_glossary_link_display',         
+		'my_keywords_glossary_settings',                // The page on which we'll be rendering this field
+		'glossary_section'                  // The section to which we're adding the setting                    
+	);
+	// Add link to the keyword title
+	add_settings_field( 
+		'tltpy_titles',
+		__('Titles','tooltipy-lang'),            
+		'tltpy_titles_display',
+		'my_keywords_glossary_settings',
+		'glossary_section'
+	);
 	
 	/*for glossary options*/
 	register_setting(
@@ -120,6 +128,22 @@ function bt_kw_show_glossary_link_display(){
  
     
     <?php
+}
+/**
+ * Add link to the keywords titles
+ */
+function tltpy_titles_display(){
+	$glossary_options = get_option( 'bluet_glossary_options' );
+	$link_titles_checked = (!empty($glossary_options['link_titles']) and $glossary_options['link_titles'] == 'on') ? "checked" : "" ;
+	?>
+	<label>Add links to titles
+		<input
+			type="checkbox"
+			name="bluet_glossary_options[link_titles]"
+			<?php echo $link_titles_checked; ?>
+		>
+	</label>
+	<?php
 }
 
 function bt_kw_show_glossary_show_thumb(){
