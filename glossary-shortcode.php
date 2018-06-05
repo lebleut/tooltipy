@@ -129,7 +129,7 @@ function tltpy_glossary(){
         $link_to_the_letter_page = add_query_arg( 'letter', $chara, $current_glossary_page_url );
         
         if(!empty($_GET["cat"])){
-            $link_to_the_letter_page = add_query_arg( 'cat', esc_url($_GET["cat"]), $link_to_the_letter_page );
+            $link_to_the_letter_page = add_query_arg( 'cat', esc_attr($_GET["cat"]), $link_to_the_letter_page );
         }
 
 		if(!empty($_GET["letter"]) and $_GET["letter"]==$chara){
