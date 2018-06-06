@@ -523,8 +523,8 @@ function tltpy_place_tooltips(){
 										
 										kttg_tab[i][6]++;
 
-										if(splitted[0]!=undefined){ before_kw = " "; }else{before_kw="";}
-										if(splitted[1]!=undefined){ after_kw = " "; }else{after_kw="";}
+										if(splitted[0]!=undefined){ before_kw = splitted[0]; }else{before_kw="";}
+										if(splitted[1]!=undefined){ after_kw = splitted[1]; }else{after_kw="";}
 										
 										if(portion.text!="" && portion.text!=" " && portion.text!="\t" && portion.text!="\n" ){
 											//console.log(i+" : ("+splitted[0]+"-["+txt_to_find+"]-"+splitted[1]+"-"+splitted[2]+"-"+splitted[3]+")");
