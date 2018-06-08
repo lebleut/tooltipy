@@ -1,0 +1,46 @@
+/* admin style */
+span.class_val{
+    margin-right: 5px;
+}
+span.elem_class {
+  color: white;
+  margin-top: 3px;
+  border-radius: 5px;
+  padding-left: 15px;	
+  margin-right: 10px !important;	  
+}
+#cover_areas_list .elem_class,
+#cover_tags_list .elem_class{
+background-color: cornflowerblue;
+}
+#exclude_areas_list .elem_class {
+background-color: indianred;
+}
+.easy_tags-list{
+  display: inline-block;
+  margin-left: 5px !important;
+}
+.easy_tags-content{
+  border: 1px solid #dcdcdc;
+  max-width: 500px;
+  background-color: white;
+  display: inline-block;
+}
+.easy_tags-add{
+  display: inline-block;
+}
+.easy_tags-field{
+  width: 100px;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background: transparent;
+  vertical-align: top;
+}
+.easy_tags-field:focus{
+  border: none !important;
+      box-shadow: none !important;
+}
+a.nav-tab{
+cursor: pointer !important;
+}

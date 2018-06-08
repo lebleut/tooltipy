@@ -103,6 +103,7 @@ add_action('init',function(){
 });
 
 add_action('wp_enqueue_scripts', 'bluet_kw_load_scripts_front' );
+add_action( 'admin_enqueue_scripts', 'ttpy_admin_load_scripts' );
 
 add_action('wp_footer','tltpy_place_tooltips');
 add_action('admin_footer','tltpy_place_tooltips');
@@ -728,7 +729,10 @@ add_action('wp_head',function(){
 
 //Functions
 
-
+function ttpy_admin_load_scripts(){
+	$backend_style_file = plugins_url('assets/admin-style.css',__FILE__);
+	wp_enqueue_style( 'tooltipy-default-style', $backend_style_file, array(), false);
+}
 /* enqueue js functions for the front side*/
 function bluet_kw_load_scripts_front() {
 	$options = get_option( 'bluet_kw_settings' );

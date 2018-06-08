@@ -1,3 +1,5 @@
+/* frontend style */
+
 .bluet_tooltip img {
 	max-width: 20px;
 }
@@ -206,55 +208,8 @@ span.kttg_glossary_nav {
 	}
 }
 
-/*admin*/
-span.class_val{
-	  margin-right: 5px;
-}
-span.elem_class {
-	color: white;
-	margin-top: 3px;
-	border-radius: 5px;
-	padding-left: 15px;	
-	margin-right: 10px !important;	  
-}
-#cover_areas_list .elem_class,
-#cover_tags_list .elem_class{
-  background-color: cornflowerblue;
-}
-#exclude_areas_list .elem_class {
-  background-color: indianred;
-}
-.easy_tags-list{
-	display: inline-block;
-	margin-left: 5px !important;
-}
-.easy_tags-content{
-	border: 1px solid #dcdcdc;
-	max-width: 500px;
-	background-color: white;
-	display: inline-block;
-}
-.easy_tags-add{
-	display: inline-block;
-}
-.easy_tags-field{
-	width: 100px;
-	border: none !important;
-	box-shadow: none !important;
-	outline: none !important;
-	background: transparent;
-	vertical-align: top;
-}
-.easy_tags-field:focus{
-	border: none !important;
-		box-shadow: none !important;
-}
-a.nav-tab{
-  cursor: pointer !important;
-}
-
 .kttg_glossary_element_title sub {
-  font-size: 50%;
+	font-size: 50%;
 }
 #kttg_exclude_headings_zone label {
 	display: inline-block;
@@ -265,10 +220,10 @@ a.nav-tab{
 #kttg_exclude_headings_zone h4,
 #kttg_exclude_headings_zone h5,
 #kttg_exclude_headings_zone h6 {
-    margin: 0px !important;
-    padding: 0px !important;
+	margin: 0px !important;
+	padding: 0px !important;
 }
 
 .bluet_block_footer {
-    padding: 0 10px;
+	padding: 0 10px;
 }
