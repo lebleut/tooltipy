@@ -189,6 +189,9 @@ function bluet_keywords_related_render(){
 
 add_action('save_post',function(){
 	global $tooltipy_post_type_name;
+	
+	$the_post_id = sanitize_key( $_POST['post_ID'] );
+
 	//saving synonyms
 	if(!empty($_POST['post_type']) and $_POST['post_type']==$tooltipy_post_type_name){
 		//do sanitisation and validation
@@ -205,7 +208,6 @@ add_action('save_post',function(){
 			
 			//eliminate spaces special caracters
 			$syns_save=preg_replace('(^\||\|$|[\s]{2,100})','',$syns_save);
-			$the_post_id = sanitize_key( $_POST['post_ID'] );
 			update_post_meta( $the_post_id,'bluet_synonyms_keywords',$syns_save);
 			
 			update_post_meta($the_post_id,'bluet_case_sensitive_word',$kttg_case);		
@@ -297,8 +299,8 @@ add_action('save_post',function(){
 			}
 
 			// 
-			update_post_meta($the_post_id,'bluet_exclude_keywords_from_matching',$exclude_keywords_string);
-
+			$updated = update_post_meta($the_post_id,'bluet_exclude_keywords_from_matching',$exclude_keywords_string);
+			
 			$matchable_keywords = sanitize_text_field( $_POST['matchable_keywords'] );
 			$arr_match=array();
 
