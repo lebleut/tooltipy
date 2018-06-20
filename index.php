@@ -110,7 +110,7 @@ add_action('admin_footer','tltpy_place_tooltips');
 add_action('wp_head',function(){
 	//if(function_exists('tltpy_pro_addon')){
 		//$pro_addon_dir=plugins_url("tltpy_pro_addon");
-		echo('<script type="text/javascript" src="'.plugins_url('advanced/assets/findandreplacedomtext.js',__FILE__).'"></script>');
+		echo('<script type="text/javascript" src="'.plugins_url('library/findandreplacedomtext.js',__FILE__).'"></script>');
 	//}
 });
 	
