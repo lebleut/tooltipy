@@ -129,7 +129,7 @@ function bluet_keywords_related_render(){
 	//echo('<pre>');print_r($my_kws);echo('</pre>');
 
 	$bluet_matching_keywords_field=get_post_meta($current_post_id,'bluet_matching_keywords_field',true);
-	
+
 	?>
 	
 		<div id="bluet_kw_admin_div_terms">
@@ -232,7 +232,7 @@ add_action('save_post',function($post_id){
 	}else{
 		if(!empty($_POST['action']) and $_POST['action'] =='editpost'){
 
-			$exclude_me = sanitize_text_field( $_POST['bluet_exclude_post_from_matching_name'] );
+			$exclude_me = !empty( $_POST['bluet_exclude_post_from_matching_name'] ) ? sanitize_text_field( $_POST['bluet_exclude_post_from_matching_name'] ) : '';
 			$exclude_keywords_string = sanitize_text_field( $_POST['bluet_exclude_keywords_from_matching_name'] );
 
 			// save exclude post from matching
@@ -300,10 +300,10 @@ add_action('save_post',function($post_id){
 			// 
 			$updated = update_post_meta($post_id,'bluet_exclude_keywords_from_matching',$exclude_keywords_string);
 			
-			$matchable_keywords = sanitize_text_field( $_POST['matchable_keywords'] );
+			$matchable_keywords = !empty( $_POST['matchable_keywords'] ) ? sanitize_text_field( $_POST['matchable_keywords'] ) : '';
 			$arr_match=array();
 
-			if(!empty($matchable_keywords)){
+			if( is_array( $matchable_keywords ) && !empty($matchable_keywords)){
 				foreach($matchable_keywords as $k=>$matchable_kw_id){
 					$arr_match[$matchable_kw_id]=$matchable_kw_id;
 				}
