@@ -46,8 +46,10 @@ class bluet_keyword{
 				'delete_post' => $tltpy_capability,
 			);
 			
-		}		
-	
+		}
+			
+		$args = apply_filters('tltpy_post_type_args', $args);
+
 		register_post_type($tooltipy_post_type_name,$args);
 
 		$fam_args=array(
