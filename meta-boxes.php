@@ -84,43 +84,43 @@ function bluet_keyword_settings_render(){
 }
 
 function bluet_keywords_related_render(){
-//exclude checkbox to exclode the current post from being matched
-	global $post, $tooltipy_post_type_name;
+	//exclude checkbox to exclode the current post from being matched
+		global $post, $tooltipy_post_type_name;
 
-	$current_post_id=$post->ID;
-	$exclude_me = get_post_meta($current_post_id,'bluet_exclude_post_from_matching',true);
-	$exclude_keywords_string = get_post_meta($current_post_id,'bluet_exclude_keywords_from_matching',true);
+		$current_post_id=$post->ID;
+		$exclude_me = get_post_meta($current_post_id,'bluet_exclude_post_from_matching',true);
+		$exclude_keywords_string = get_post_meta($current_post_id,'bluet_exclude_keywords_from_matching',true);
 
-	//get excluded terms and sanitize them
-	/*begin*/
-		$my_excluded_keywords=explode(',',$exclude_keywords_string);
-		$my_excluded_keywords=array_map('trim',$my_excluded_keywords);
-		$my_excluded_keywords=array_map('strtolower',$my_excluded_keywords);
+		//get excluded terms and sanitize them
+		/*begin*/
+			$my_excluded_keywords=explode(',',$exclude_keywords_string);
+			$my_excluded_keywords=array_map('trim',$my_excluded_keywords);
+			$my_excluded_keywords=array_map('strtolower',$my_excluded_keywords);
+			
+			$my_excluded_keywords=array_filter($my_excluded_keywords,function($val){
+				$ret=array();
+				if($val!=""){
+					array_push($ret,$val);
+				}
+				return $ret;
+			});
+		/*end*/
+
+		?>
+		<div>
+			<h3><?php _e('Exclude this post from being matched','tooltipy-lang'); ?></h3>
+			<input type="checkbox" 
+				id="bluet_kw_admin_exclude_post_from_matching_id" 
+				onClick="hideIfChecked('bluet_kw_admin_exclude_post_from_matching_id','bluet_kw_admin_div_terms')" 
+				name="bluet_exclude_post_from_matching_name" <?php if(!empty($exclude_me)) echo "checked"; ?>
+			/>
+			<label for="bluet_kw_admin_exclude_post_from_matching_id" style="color:red;"><?php _e('Exclude this post','tooltipy-lang'); ?></label>
+
+
 		
-		$my_excluded_keywords=array_filter($my_excluded_keywords,function($val){
-			$ret=array();
-			if($val!=""){
-				array_push($ret,$val);
-			}
-			return $ret;
-		});
-	/*end*/
+		<?php
 
-	?>
-	<div>
-		<h3><?php _e('Exclude this post from being matched','tooltipy-lang'); ?></h3>
-		<input type="checkbox" 
-			id="bluet_kw_admin_exclude_post_from_matching_id" 
-			onClick="hideIfChecked('bluet_kw_admin_exclude_post_from_matching_id','bluet_kw_admin_div_terms')" 
-			name="bluet_exclude_post_from_matching_name" <?php if(!empty($exclude_me)) echo "checked"; ?>
-		/>
-		<label for="bluet_kw_admin_exclude_post_from_matching_id" style="color:red;"><?php _e('Exclude this post','tooltipy-lang'); ?></label>
-
-
-	
-	<?php
-
-//show keywords list related
+	//show keywords list related
 	
 	$my_kws=array();
 	
@@ -187,11 +187,10 @@ function bluet_keywords_related_render(){
 	echo "</div>";
 }
 
-add_action('save_post',function(){
+add_action('save_post',function($post_id){
 	global $tooltipy_post_type_name;
 	
-	$the_post_id = sanitize_key( $_POST['post_ID'] );
-
+	
 	//saving synonyms
 	if(!empty($_POST['post_type']) and $_POST['post_type']==$tooltipy_post_type_name){
 		//do sanitisation and validation
@@ -208,9 +207,9 @@ add_action('save_post',function(){
 			
 			//eliminate spaces special caracters
 			$syns_save=preg_replace('(^\||\|$|[\s]{2,100})','',$syns_save);
-			update_post_meta( $the_post_id,'bluet_synonyms_keywords',$syns_save);
+			update_post_meta( $post_id,'bluet_synonyms_keywords',$syns_save);
 			
-			update_post_meta($the_post_id,'bluet_case_sensitive_word',$kttg_case);		
+			update_post_meta($post_id,'bluet_case_sensitive_word',$kttg_case);		
 			
 			//prefixes if exists
 			if(function_exists('bluet_prefix_save')){
@@ -237,7 +236,7 @@ add_action('save_post',function(){
 			$exclude_keywords_string = sanitize_text_field( $_POST['bluet_exclude_keywords_from_matching_name'] );
 
 			// save exclude post from matching
-			update_post_meta($the_post_id,'bluet_exclude_post_from_matching',$exclude_me);
+			update_post_meta($post_id,'bluet_exclude_post_from_matching',$exclude_me);
 			
 			//get list if excluded posts
 			$tooltipy_excluded_posts = get_option("tooltipy_excluded_posts_from_matching");
@@ -251,7 +250,7 @@ add_action('save_post',function(){
 				
 				// this post info
 				$tooltipy_this_post_info = array(
-					'id' 	=> 	$the_post_id,
+					'id' 	=> 	$post_id,
 					'title' => 	sanitize_title( $_POST['post_title'] ),
 					'slug' 	=> 	sanitize_text_field( $_POST['post_name'] ),
 				);
@@ -261,7 +260,7 @@ add_action('save_post',function(){
 					
 					foreach ($tooltipy_excluded_posts as $key => $excluded_post) {
 						// look if it is allready there
-						if( $excluded_post['id'] == $the_post_id ){
+						if( $excluded_post['id'] == $post_id ){
 							// remove it from array so to puch it with new data later with " array_push() "
 							unset($tooltipy_excluded_posts[$key]);
 						}
@@ -285,7 +284,7 @@ add_action('save_post',function(){
 					// if not excluded remove it from the "tooltipy_excluded_posts_from_matching" option
 					foreach ($tooltipy_excluded_posts as $key => $excluded_post) {
 						// look if it is allready there
-						if( $excluded_post['id'] == $the_post_id ){
+						if( $excluded_post['id'] == $post_id ){
 							// remove it from array
 							unset($tooltipy_excluded_posts[$key]);
 						}
@@ -299,7 +298,7 @@ add_action('save_post',function(){
 			}
 
 			// 
-			$updated = update_post_meta($the_post_id,'bluet_exclude_keywords_from_matching',$exclude_keywords_string);
+			$updated = update_post_meta($post_id,'bluet_exclude_keywords_from_matching',$exclude_keywords_string);
 			
 			$matchable_keywords = sanitize_text_field( $_POST['matchable_keywords'] );
 			$arr_match=array();
@@ -311,7 +310,7 @@ add_action('save_post',function(){
 			}else{
 				//
 			}
-			update_post_meta($the_post_id,'bluet_matching_keywords_field',$arr_match);
+			update_post_meta($post_id,'bluet_matching_keywords_field',$arr_match);
 		}	
 	}
 }); 
