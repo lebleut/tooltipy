@@ -485,6 +485,8 @@ function tltpy_place_tooltips(){
 							var reg=new RegExp(pattern,fetch_all+iscase);
 
 							if (typeof findAndReplaceDOMText == 'function') { //if function exists
+							  // Allow buttons to be matched with Tooltipy
+							  delete findAndReplaceDOMText.NON_PROSE_ELEMENTS.button;
 							  findAndReplaceDOMText(zone, {
 									<?php
 										echo("preset: 'prose',");
