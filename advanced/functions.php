@@ -217,9 +217,6 @@ function bluet_show_video_in_column(){
 /*video tooltips functions - end*/
 function bluet_kw_adv_enqueue_scripts() {
 	wp_enqueue_script( 'kttg-pro-tooltip-scripts', plugins_url('assets/kttg-pro-functions.js',__FILE__), array('jquery'), TOOLTIPY_VERSION, true );
-	
-	//test
-	//wp_enqueue_script( 'kttg-pro-findandreplacedomtext', plugins_url('assets/findandreplacedomtext.js',__FILE__), array(), TOOLTIPY_VERSION, false );
 }
 function bluet_kw_adv_enqueue() {
 	$adv_opt_tmp=get_option('bluet_kw_advanced');
