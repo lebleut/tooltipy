@@ -793,6 +793,14 @@ function bluet_kw_activation(){
 	if(!get_option('bluet_kw_settings')){
 		add_option('bluet_kw_settings',$settings_options);
 	}
+
+	// Make Tooltipy aware of activation (use it after registering the new post type)
+	if( !get_option( 'tooltipy_activated_just_now',false ) ){
+		add_option('tooltipy_activated_just_now',true);
+	}else{
+		update_option('tooltipy_activated_just_now',true);
+	}
+
 }
 
 function tltpy_filter_any_content($post_type_to_filter,$filter_hooks_to_filter){

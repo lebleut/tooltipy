@@ -65,6 +65,12 @@ class bluet_keyword{
 				$tooltipy_cat_name,
 				$tooltipy_post_type_name,
 				$fam_args);
+
+		// Flush permalinks to consider new tooltipy post type rewrite rule if activated now
+		if( get_option( 'tooltipy_activated_just_now',false ) ){
+			flush_rewrite_rules();
+			delete_option( 'tooltipy_activated_just_now');
+		}
 	}
 	public function add_columns(){
 		
