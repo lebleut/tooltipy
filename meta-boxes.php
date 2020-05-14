@@ -198,9 +198,9 @@ add_action('save_post',function($post_id){
 		//synonyms
 		//editpost to prevent quick edit problems
 		if($_POST['action'] =='editpost'){
-			$syns_save = sanitize_text_field( $_POST['bluet_synonyms_name'] );
+			$syns_save = isset($_POST['bluet_synonyms_name']) ? sanitize_text_field( $_POST['bluet_synonyms_name'] ) : "";
 			
-			$kttg_case = sanitize_text_field( $_POST['bluet_case_sensitive_name'] );
+			$kttg_case = isset($_POST['bluet_case_sensitive_name'] ) ? sanitize_text_field( $_POST['bluet_case_sensitive_name'] ) : "";
 			
 			//replace ||||||| by only one
 			$syns_save=preg_replace('(\|{2,100})','|',$syns_save);
