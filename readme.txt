@@ -1,9 +1,9 @@
-﻿=== Tooltipy (tooltips for WP) ===
+﻿﻿=== Tooltipy (tooltips for WP) ===
 Contributors: lebleut
 Tags: inline, responsive, tooltips, tooltip, highlight, widget, image, style, keyword, post, page, glossary, localization, description, definition, term, word, interactive, link, wpml
 Requires at least: 3.9
-Tested up to: 4.7.1
-Stable tag: 5.1.3
+Tested up to: 5.4.1
+Stable tag: 5.2
 License: GPLv2 or later
 
 Tooltipy (Keywords tooltip generator) allows you to highlight the keywords in your content in order to show a responsive description tooltip
@@ -110,6 +110,20 @@ The plugin is available in these languages :
 11. Glossary settings page
 
 == Changelog ==
+= 5.2 =
+* FIXED : https://wordpress.org/support/topic/multiples-errors/
+* Flush the permalinks to fix 404 not found page for Tooltipy keywords pages
+* Update the findAndReplaceDOMText library from 0.4.3 to 0.4.6 (Change the library folder)
+* Remove useless comment
+* A new filter hook 'tltpy_post_type_args' to allow filtering the Tooltipy post type arguments
+* Allow <button> tags to be matched with Tooltipy
+* Fix PHP notice errors
+* Fix Notice error when creating new tooltip
+* PHP Error fixed
+* Fix PHP notices, Related topics :
+https://wordpress.org/support/topic/warning-array_key_exists-16/
+https://wordpress.org/support/topic/warning-array_key_exists-17/
+
 = 5.1.3 =
 Fixed (Not saving or updating the keyword metaboxes)
 Related topic : https://wordpress.org/support/topic/i-can-not-exclude-individual-tooltips-in-the-post/
