@@ -244,8 +244,8 @@ function bluet_prefix_metabox(){
 }
 
 function bluet_prefix_save(){
-	if($_POST['action'] =='editpost'){
-		$pref_save= sanitize_text_field( $_POST['bluet_prefix_name'] );
+	if( $_POST['action'] =='editpost' ){
+		$pref_save = isset($_POST['bluet_prefix_name']) ? sanitize_text_field( $_POST['bluet_prefix_name'] ) : '';
 		update_post_meta(sanitize_text_field( $_POST['post_ID'] ),'bluet_prefix_keywords',$pref_save);
 	}
 }
