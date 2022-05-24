@@ -597,6 +597,10 @@ function tltpy_place_tooltips(){
 													//add classes to keywords
                                                     jQuery(jQuery(elem).children(".bluet_tooltip")[0]).addClass("tooltipy-kw tooltipy-kw-"+tooltipIds[i]+" "+tooltipy_families_class+" "+tooltipy_video_class+" <?php echo($css_classes_added_inline_keywords); ?>");
 
+													// add spaces
+													jQuery(elem).children(".bluet_tooltip").before(' ')
+													jQuery(elem).children(".bluet_tooltip").after(' ')
+
 													return elem;
 												
 											<?php
@@ -619,6 +623,10 @@ function tltpy_place_tooltips(){
 
                                                     //add classes to keywords
                                                     jQuery(jQuery(elem).children(".bluet_tooltip")[0]).addClass("tooltipy-kw tooltipy-kw-"+tooltipIds[i]+" "+tooltipy_families_class+" "+tooltipy_video_class+" <?php echo($css_classes_added_inline_keywords); ?>");
+													
+													// add spaces
+													jQuery(elem).children(".bluet_tooltip").before(' ')
+													jQuery(elem).children(".bluet_tooltip").after(' ')
 
 													return elem;
 												
@@ -642,7 +650,7 @@ function tltpy_place_tooltips(){
 			
 			jQuery(document).ready(function(){
 				tltpy_fetch_kws();
-				
+
 				bluet_placeTooltips(".bluet_tooltip, .bluet_img_tooltip","<?php echo($kttg_tooltip_position); ?>",true);	 
 				animation_type="<?php echo($animation_type);?>";
 				animation_speed="<?php echo($animation_speed);?>";
