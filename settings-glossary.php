@@ -69,14 +69,14 @@ function tltpy_glossary_kws_per_page_display(){
 function tltpy_glossary_text_display(){
 	$options = get_option( 'bluet_glossary_options' );
 
-	$label_select_a_family		= array_key_exists('kttg_glossary_text_select_a_family', $options['kttg_glossary_text']) ? $options['kttg_glossary_text']['kttg_glossary_text_select_a_family'] : "";
-	$label_select_all_families 	= array_key_exists('kttg_glossary_text_select_all_families', $options['kttg_glossary_text']) ? $options['kttg_glossary_text']['kttg_glossary_text_select_all_families'] : "";
+	$label_select_a_family		= is_array( $options['kttg_glossary_text'] ) && array_key_exists('kttg_glossary_text_select_a_family', $options['kttg_glossary_text']) ? $options['kttg_glossary_text']['kttg_glossary_text_select_a_family'] : "";
+	$label_select_all_families 	= is_array( $options['kttg_glossary_text'] ) && array_key_exists('kttg_glossary_text_select_all_families', $options['kttg_glossary_text']) ? $options['kttg_glossary_text']['kttg_glossary_text_select_all_families'] : "";
 
-	_e('<b>ALL</b> label','tooltipy-lang'); ?> : <input  type="text" name="bluet_glossary_options[kttg_glossary_text][kttg_glossary_text_all]" value="<?php echo $options['kttg_glossary_text']['kttg_glossary_text_all']; ?>" placeholder="<?php _e('ALL','tooltipy-lang');?>"><br>
+	_e('<b>ALL</b> label','tooltipy-lang'); ?> : <input  type="text" name="bluet_glossary_options[kttg_glossary_text][kttg_glossary_text_all]" value="<?php echo is_array( $options['kttg_glossary_text'] ) ? $options['kttg_glossary_text']['kttg_glossary_text_all'] : ""; ?>" placeholder="<?php _e('ALL','tooltipy-lang');?>"><br>
 	<?php
-	_e('<b>Previous</b> label','tooltipy-lang'); ?> : <input  type="text" name="bluet_glossary_options[kttg_glossary_text][kttg_glossary_text_previous]" value="<?php echo $options['kttg_glossary_text']['kttg_glossary_text_previous']; ?>" placeholder="<?php _e('Previous','tooltipy-lang');?>"><br>
+	_e('<b>Previous</b> label','tooltipy-lang'); ?> : <input  type="text" name="bluet_glossary_options[kttg_glossary_text][kttg_glossary_text_previous]" value="<?php echo is_array( $options['kttg_glossary_text'] ) ? $options['kttg_glossary_text']['kttg_glossary_text_previous'] : ""; ?>" placeholder="<?php _e('Previous','tooltipy-lang');?>"><br>
 	<?php
-	_e('<b>Next</b> label','tooltipy-lang'); ?> : <input  type="text" name="bluet_glossary_options[kttg_glossary_text][kttg_glossary_text_next]" value="<?php echo $options['kttg_glossary_text']['kttg_glossary_text_next']; ?>" placeholder="<?php _e('Next','tooltipy-lang');?>"><br>
+	_e('<b>Next</b> label','tooltipy-lang'); ?> : <input  type="text" name="bluet_glossary_options[kttg_glossary_text][kttg_glossary_text_next]" value="<?php echo is_array( $options['kttg_glossary_text'] ) ? $options['kttg_glossary_text']['kttg_glossary_text_next'] : ""; ?>" placeholder="<?php _e('Next','tooltipy-lang');?>"><br>
 	<?php
 
 	_e('<b>Select a family</b> label','tooltipy-lang');
