@@ -195,6 +195,14 @@ add_action( 'admin_init',function () {
 	);
 
 	add_settings_field( 
+		'bt_kw_tooltip_border_color', 					
+		__('Tooltip border color','tooltipy-lang'), 			
+		'bt_kw_tooltip_border_color_display', 		
+		'my_keywords_style',				
+		'style_section'					
+	);
+
+	add_settings_field( 
 		'bt_kw_alt_img', 					
 		__('Activate tooltips for images ?','tooltipy-lang'),
 		'bt_kw_alt_img_display',
@@ -285,6 +293,16 @@ function bt_kw_desc_font_size_display(){
 	$options = get_option( 'bluet_kw_style' );
 	?>
 			<input id="bt_kw_desc_font_size_id" type="number" min="1" max="50" name="bluet_kw_style[bt_kw_desc_font_size]" value="<?php echo $options['bt_kw_desc_font_size']; ?>"> px
+	<?php
+}
+
+function bt_kw_tooltip_border_color_display(){
+	//tooltip border color field render function
+	$options = get_option( 'bluet_kw_style' );
+	?>
+	<label for="bt_kw_tooltip_border_color_id"><?php _e('Tooltip Border Color','tooltipy-lang'); ?></label><br>
+	<input id="bt_kw_tooltip_border_color_id" type="text" class="color-field" name="bluet_kw_style[bt_kw_tooltip_border_color]" value="<?php echo isset($options['bt_kw_tooltip_border_color']) ? $options['bt_kw_tooltip_border_color'] : '#cccccc'; ?>">
+	<p class="description"><?php _e('Choose a color for the tooltip border. Default is light gray.','tooltipy-lang'); ?></p>
 	<?php
 }
 function bt_kw_desc_colour_display(){

@@ -36,6 +36,7 @@ function bluet_kw_custom_style(){
 	
 	$desc_font_size=(empty($style_options['bt_kw_desc_font_size'])? 17 : $style_options['bt_kw_desc_font_size']);
 	$desc_width=(empty($style_options['bt_kw_tooltip_width'])? 400 : $style_options['bt_kw_tooltip_width']);
+	$tooltip_border_color=(empty($style_options['bt_kw_tooltip_border_color'])? '#cccccc' : $style_options['bt_kw_tooltip_border_color']);
 	
 	$is_important="";
 	
@@ -78,6 +79,7 @@ function bluet_kw_custom_style(){
 	.bluet_tooltip_alt{
 		color: <?php echo $desc_color; ?> <?php echo($is_important)?>;
 		background-color: <?php echo $desc_bg_color; ?> <?php echo($is_important)?>;
+		border: 2px solid <?php echo $tooltip_border_color; ?> <?php echo($is_important)?>;
 	}
 	
 
@@ -89,6 +91,7 @@ function bluet_kw_custom_style(){
 		color: <?php echo $desc_color; ?> <?php echo($is_important)?>;
 		background: <?php echo $desc_bg_color; ?> <?php echo($is_important)?>;
 		box-shadow: 0px 0px 10px #717171 <?php echo($is_important)?>;
+		border: 2px solid <?php echo $tooltip_border_color; ?> <?php echo($is_important)?>;
 		font-size:<?php echo $desc_font_size; ?>px <?php echo($is_important)?>;
 	}
 	

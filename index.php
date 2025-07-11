@@ -783,6 +783,8 @@ function bluet_kw_activation(){
 		
 		'bt_kw_desc_font_size'=>'14',
 		
+		'bt_kw_tooltip_border_color'=>'#cccccc',
+		
 		'bt_kw_on_background' =>'on'
 	);
 	

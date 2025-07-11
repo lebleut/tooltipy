@@ -56,12 +56,14 @@ jQuery(document).ready(function(){
 			var bluet_keyword_color=document.getElementsByName('bluet_kw_style[bt_kw_tt_color]')[0].value;
 			var bluet_tooltip_bg=document.getElementsByName('bluet_kw_style[bt_kw_desc_bg_color]')[0].value;
 			var bluet_tooltip_color=document.getElementsByName('bluet_kw_style[bt_kw_desc_color]')[0].value;
+			var bluet_tooltip_border_color=document.getElementsByName('bluet_kw_style[bt_kw_tooltip_border_color]')[0] ? document.getElementsByName('bluet_kw_style[bt_kw_tooltip_border_color]')[0].value : '#cccccc';
 			
 			document.getElementsByClassName('bluet_tooltip')[0].style.backgroundColor=bluet_keyword_bg;
 			document.getElementsByClassName('bluet_tooltip')[0].style.color=bluet_keyword_color;
 			document.getElementsByClassName('bluet_block_container')[0].style.backgroundColor=bluet_tooltip_bg;
 			document.getElementsByClassName('bluet_block_container')[0].style.boxShadow="0px 0px 10px "+bluet_tooltip_bg;
 			document.getElementsByClassName('bluet_block_container')[0].style.color=bluet_tooltip_color;
+			document.getElementsByClassName('bluet_block_container')[0].style.border="2px solid "+bluet_tooltip_border_color;
 		},false);
 	}
 	
