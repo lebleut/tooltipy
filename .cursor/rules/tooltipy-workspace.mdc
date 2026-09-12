@@ -24,8 +24,9 @@ Repos GitHub :
 - PHP **8.1+**, WordPress **6.0+**
 - Architecture OOP namespaces `Tooltipy\`, PSR-4 sous `src/`
 - Bootstrap : `index.php` (conserve le chemin d’activation WP historique)
-- Rendu tooltips : **Tippy.js** vendored (pas de CDN)
+- Rendu tooltips : **Tippy.js** vendored — charger **Popper** (`window.Popper`) **avant** Tippy UMD
 - Matching DOM : `findAndReplaceDOMText` conservé
+- Commits : voir règle `git-commits.mdc` (pas de commit sans demande explicite)
 
 ## Rétrocompatibilité (non négociable)
 
