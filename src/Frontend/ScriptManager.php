@@ -134,6 +134,24 @@ class ScriptManager {
             true
         );
 
+        $metabox_css_ver = TOOLTIPY_VERSION . '.' . (string) filemtime( TOOLTIPY_PLUGIN_DIR . 'assets/css/tooltipy-metaboxes.css' );
+        $metabox_js_ver  = TOOLTIPY_VERSION . '.' . (string) filemtime( TOOLTIPY_PLUGIN_DIR . 'assets/js/tooltipy-metaboxes.js' );
+
+        wp_enqueue_style(
+            'tooltipy-metaboxes',
+            TOOLTIPY_PLUGIN_URL . 'assets/css/tooltipy-metaboxes.css',
+            [ 'tooltipy-admin-style' ],
+            $metabox_css_ver
+        );
+
+        wp_enqueue_script(
+            'tooltipy-metaboxes',
+            TOOLTIPY_PLUGIN_URL . 'assets/js/tooltipy-metaboxes.js',
+            [],
+            $metabox_js_ver,
+            true
+        );
+
         if ( $this->is_tooltipy_settings_page() ) {
             $settings_css_ver = TOOLTIPY_VERSION . '.' . (string) filemtime( TOOLTIPY_PLUGIN_DIR . 'assets/css/tooltipy-settings.css' );
             $settings_js_ver  = TOOLTIPY_VERSION . '.' . (string) filemtime( TOOLTIPY_PLUGIN_DIR . 'assets/js/tooltipy-settings.js' );
