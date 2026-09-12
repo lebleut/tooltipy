@@ -1,6 +1,6 @@
 /**
  * Tippy.js bridge for Tooltipy.
- * Keeps legacy CSS classes (bluet_tooltip, bluet_block_to_show, …) while Tippy handles positioning.
+ * Keeps legacy CSS classes on keyword markup while Tippy handles positioning.
  */
 (function (window, $) {
 	'use strict';
@@ -19,15 +19,33 @@
 		}
 	}
 
+	/**
+	 * Build tippy content from the AJAX/source blocks.
+	 * Do NOT wrap with .bluet_block_to_show — that class is display:none in legacy CSS.
+	 */
 	function getContentForKeyword(id) {
-		var $block = $('#tooltip_blocks_to_show').children('[data-tooltip="' + id + '"]').first();
-		if (!$block.length) {
-			$block = $('#tooltip_blocks_to_show').children('#loading_tooltip, [data-tooltip="0"]').first();
+		var $source = $('#tooltip_blocks_to_show').children('[data-tooltip="' + id + '"]').first();
+		if (!$source.length) {
+			$source = $('#tooltip_blocks_to_show').children('#loading_tooltip, [data-tooltip="0"]').first();
 		}
-		if (!$block.length) {
+		if (!$source.length) {
 			return '';
 		}
-		return $block.find('.bluet_block_container').first().clone(true, true).get(0);
+
+		var $container = $source.find('.bluet_block_container').first();
+		if ($container.length) {
+			return $container.clone(true, true).get(0);
+		}
+
+		// Fallback: clone inner HTML without the hidden wrapper class.
+		var $clone = $source.clone(true, true);
+		$clone.removeClass('bluet_block_to_show').css({
+			display: 'block',
+			opacity: '1',
+			position: 'relative',
+			visibility: 'visible',
+		});
+		return $clone.get(0);
 	}
 
 	function destroyInstances() {
@@ -69,20 +87,29 @@
 			trigger: trigger,
 			theme: 'tooltipy',
 			animation: 'fade',
-			maxWidth: 'none',
+			maxWidth: 400,
 			zIndex: 999999,
 			content: function (reference) {
 				var id = reference.getAttribute('data-tooltip');
-				var node = getContentForKeyword(id);
-				return node || '';
+				return getContentForKeyword(id) || '…';
 			},
 			onShow: function (instance) {
 				if (window.currentHoveredKeyword !== 'done') {
 					window.currentHoveredKeyword = $(instance.reference);
 				}
+
+				// Refresh content each show (AJAX may have filled blocks after first init).
+				var id = instance.reference.getAttribute('data-tooltip');
+				var fresh = getContentForKeyword(id);
+				if (fresh) {
+					instance.setContent(fresh);
+				}
+
 				var box = instance.popper && instance.popper.querySelector('.tippy-content');
 				if (box) {
-					box.classList.add('bluet_block_to_show', 'tooltipy-pop');
+					// Keep tooltipy-pop for styling hooks — never bluet_block_to_show (display:none).
+					box.classList.add('tooltipy-pop');
+					box.classList.remove('bluet_block_to_show');
 				}
 			},
 			onHide: function (instance) {
