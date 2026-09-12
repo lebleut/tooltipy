@@ -6,8 +6,9 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 use Tooltipy\Plugin;
 
 /**
- * Handles the [tooltip_glossary] shortcode.
- * Replaces glossary-shortcode.php.
+ * Handles glossary shortcodes.
+ * Canonical: [tooltip_glossary] (TLTPY_GLOSSARY_SHORTCODE).
+ * Legacy aliases: [kttg_glossary], [tooltipy_glossary].
  */
 class GlossaryShortcode {
 
@@ -18,9 +19,10 @@ class GlossaryShortcode {
     }
 
     public function init(): void {
-        add_shortcode( 'tooltipy_glossary',       [ $this, 'render' ] );
-        add_shortcode( 'tooltip_glossary',        [ $this, 'render' ] );
-        add_shortcode( 'kttg_glossary',           [ $this, 'render' ] ); // legacy alias
+        // Canonical + historical names — all kept for existing content.
+        add_shortcode( TLTPY_GLOSSARY_SHORTCODE, [ $this, 'render' ] ); // tooltip_glossary
+        add_shortcode( 'kttg_glossary',          [ $this, 'render' ] );
+        add_shortcode( 'tooltipy_glossary',      [ $this, 'render' ] );
     }
 
     /**

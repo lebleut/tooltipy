@@ -22,7 +22,7 @@ Automatically creates tooltip boxes for your technical keywords to explain them 
 * Synonyms support (pipe-separated)
 * Case-sensitive matching option
 * Prefix matching (e.g. "photo" matches "photography")
-* Glossary shortcode: `[tooltip_glossary]`
+* Glossary shortcode: `[tooltip_glossary]` (aliases: `[kttg_glossary]`, `[tooltipy_glossary]`)
 * Manual shortcode: `[tooltip]`
 * Keyword families / categories
 * AJAX loading of tooltip content
@@ -53,7 +53,7 @@ Yes. All database options, post meta, CSS classes, and shortcodes are identical.
 Go to **Tooltipy > Add New**. The title is the keyword; the content is the tooltip body.
 
 = How do I add a glossary? =
-Create a page and add the shortcode `[tooltip_glossary]`.
+Create a page and add `[tooltip_glossary]` (or the legacy `[kttg_glossary]`).
 
 == Changelog ==
 
