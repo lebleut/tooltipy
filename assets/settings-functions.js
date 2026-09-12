@@ -1,228 +1,265 @@
-jQuery(document).ready(function(){
+/**
+ * Tooltipy admin settings: tabs, easy_tags, style preview helpers.
+ */
+(function (window, $) {
+	'use strict';
 
-	if(jQuery('.bluet_tooltip').length==0)
-	return;
-
-	bleutExcludeKwStyle();	
-
-	//add listener to checkboxes
-	jQuery("#bluet_kw_admin_div_terms li input").each(function(ind){
-		jQuery(this).change(function(){
-			bleutExcludeKwStyle();
-		});
-	});
-	hideIfChecked('bluet_kw_admin_exclude_post_from_matching_id','bluet_kw_admin_div_terms');
-
-	//array contains tabs to show
-	var bluet_tab=['bluet_style_tab','bluet_settings_tab','bluet_excluded_tab','bluet_glossary_tab','bluet_advanced_tab'];
-
-	for(var i=0;i<bluet_tab.length;i++){
-
-		//remove active class from all elements
-		jQuery('#'+bluet_tab[i]).removeClass('nav-tab-active');
-		
-		var tabular=document.getElementById(bluet_tab[i]).addEventListener('click',function(e){
-			for(var i=0;i<bluet_tab.length;i++){
-				jQuery('#'+bluet_tab[i]).removeClass('nav-tab-active');
-
-			}
-			
-			//tab we want to show
-			var tabToShow=e.target.dataset.tab
-			
-			bluetShowTab(tabToShow);
-			
-			jQuery(e.target).addClass('nav-tab-active');
-		},false);
-	}
-
-	//begin by displaying the style div
-	bluetShowTab("bluet-section-style");
-	jQuery('#bluet_style_tab').addClass('nav-tab-active');
-	
-	//
-	bluet_hide_bg();		
-	document.getElementById("bluet_kw_no_background").addEventListener("change",bluet_hide_bg,false);
-		
-	for(var i=0;i<document.getElementsByClassName('wp-picker-holder').length;i++){
-		document.getElementsByClassName('wp-picker-holder')[i].addEventListener('mousemove',function(e){
-			
-			if(!document.getElementById("bluet_kw_no_background").checked){
-				var bluet_keyword_bg=document.getElementsByName('bluet_kw_style[bt_kw_tt_bg_color]')[0].value;
-			}else{
-				var bluet_keyword_bg='initial';
-			}
-			
-			var bluet_keyword_color=document.getElementsByName('bluet_kw_style[bt_kw_tt_color]')[0].value;
-			var bluet_tooltip_bg=document.getElementsByName('bluet_kw_style[bt_kw_desc_bg_color]')[0].value;
-			var bluet_tooltip_color=document.getElementsByName('bluet_kw_style[bt_kw_desc_color]')[0].value;
-			
-			document.getElementsByClassName('bluet_tooltip')[0].style.backgroundColor=bluet_keyword_bg;
-			document.getElementsByClassName('bluet_tooltip')[0].style.color=bluet_keyword_color;
-			document.getElementsByClassName('bluet_block_container')[0].style.backgroundColor=bluet_tooltip_bg;
-			document.getElementsByClassName('bluet_block_container')[0].style.boxShadow="0px 0px 10px "+bluet_tooltip_bg;
-			document.getElementsByClassName('bluet_block_container')[0].style.color=bluet_tooltip_color;
-		},false);
-	}
-	
-	//fetch mode
-	//init
-	if(jQuery("#bt_kw_fetch_mode-icon").is(":checked")){
-	   jQuery("#tooltip_highlight_fetch_mode").hide();		
-	}
-	//listeners
-	jQuery("#bt_kw_fetch_mode-highlight").change(function(){
-	   jQuery("#tooltip_highlight_fetch_mode").show();
-	});
-	
-	jQuery("#bt_kw_fetch_mode-icon").change(function(){
-	   jQuery("#tooltip_highlight_fetch_mode").hide();
-	});	
-});
-/**/
-
-//
-function bluetShowTab(tabId){
-	var mybluet_my_div_settings=document.getElementById('bluet-sections-div');
-	var mybluet_children=mybluet_my_div_settings.childNodes;
-
-	for(var i=0;i<mybluet_children.length-1;i++){
-		mybluet_children[i].style.display='none';
-	}
-	
-	document.getElementById(tabId).style.display='block';
-}
-
-function bluet_hide_bg(){
-		elem=document.getElementsByClassName('bluet_tooltip')[0];
-		txt_color=elem.style.color;
-	if(document.getElementById("bluet_kw_no_background").checked){
-		elem.style.backgroundColor='initial';		
-		elem.style.borderBottom =txt_color+" 1px dotted";
-		elem.style.borderRadius="0px";
-
-		document.getElementById('bluet_kw_bg_hide').style.display='none';
-	}else{
-		elem.style.backgroundColor=document.getElementsByName('bluet_kw_style[bt_kw_tt_bg_color]')[0].value;
-		document.getElementById('bluet_kw_bg_hide').style.display='block';
-		elem.style.borderBottom="0px";
-	}
-}
-
-//for the edit page 
-
-function hideIfChecked(myId,idToDeal){
-	if(jQuery("#"+myId).attr('checked')){
-		jQuery("#"+idToDeal).hide();
-	}else{
-		jQuery("#"+idToDeal).show();
-	}
-}
-
-function bleutExcludeKwStyle(){
-	//if no checkbox is checked exit
-	checked_ones=0;
-	jQuery("#bluet_kw_admin_div_terms li input").each(function(ind){
-		if(jQuery(this).attr("checked"))
-			checked_ones++;
-	});
-	
-	if(checked_ones < 1){
-		jQuery("#bluet_kw_admin_div_terms li").css("text-decoration","initial");
-		return;
-	}
-
-   jQuery("#bluet_kw_admin_div_terms li").css("text-decoration","line-through")
-   
-   jQuery("#bluet_kw_admin_div_terms li").each(function(ind){
-		if(jQuery("#bluet_kw_admin_div_terms li input").eq(ind).attr("checked")){
-			jQuery("#bluet_kw_admin_div_terms li").eq(ind).css("text-decoration","initial");
+	function bluetShowTab(tabId) {
+		var container = document.getElementById('bluet-sections-div');
+		if (!container || !tabId) {
+			return;
 		}
-   })
-}
 
+		$(container)
+			.children('.bluet-section')
+			.removeClass('is-active')
+			.attr('hidden', true)
+			.hide();
 
-var easy_tags={
-/*Easy_tags an object contains function to perform easy tags (dinamic add tags)*/
+		var $target = $('#' + tabId);
+		if ($target.length) {
+			$target.addClass('is-active').removeAttr('hidden').show();
+		}
+	}
 
-	delimiter:" ", //dilimiteur par defaut
+	function initSettingsTabs() {
+		// Settings navigation is handled by assets/js/tooltipy-settings.js
+	}
 
-	construct:function(deli){
-		this.delimiter=deli;
-		return this;
-	},
+	function bluet_hide_bg() {
+		var elem = document.getElementsByClassName('bluet_tooltip')[0];
+		var noBg = document.getElementById('bluet_kw_no_background');
+		var bgHide = document.getElementById('bluet_kw_bg_hide');
+		if (!elem || !noBg) {
+			return;
+		}
 
-	add_to_send:function(element){
-		var field=jQuery(element).find(".easy_tags-field");
-		var to_send=jQuery(element).find(".easy_tags-to_send");
-		var add=jQuery(element).find(".easy_tags-add");
-		var list=jQuery(element).find(".easy_tags-list");
+		var txt_color = elem.style.color;
+		if (noBg.checked) {
+			elem.style.backgroundColor = 'initial';
+			elem.style.borderBottom = txt_color + ' 1px dotted';
+			elem.style.borderRadius = '0px';
+			if (bgHide) {
+				bgHide.style.display = 'none';
+			}
+		} else {
+			var bgInput = document.getElementsByName('bluet_kw_style[bt_kw_tt_bg_color]')[0];
+			elem.style.backgroundColor = bgInput ? bgInput.value : '';
+			if (bgHide) {
+				bgHide.style.display = 'block';
+			}
+			elem.style.borderBottom = '0px';
+		}
+	}
 
-		var res="";
+	function hideIfChecked(myId, idToDeal) {
+		if ($('#' + myId).prop('checked')) {
+			$('#' + idToDeal).hide();
+		} else {
+			$('#' + idToDeal).show();
+		}
+	}
 
-		list.find('.elem_class').each(function(index){			
-			res+=jQuery(this).find('.class_val').html()+easy_tags.delimiter;
-		});
-
-		to_send.val(res);
-	},
-
-
-	init:function(element_class){
-		var element=jQuery(element_class);
-
-		element.each(function(index){
-			var field=jQuery(this).find(".easy_tags-field");
-			var to_send=jQuery(this).find(".easy_tags-to_send");
-			var add=jQuery(this).find(".easy_tags-add");
-			var list=jQuery(this).find(".easy_tags-list");
-
-			var tab_tmp=to_send.val().split(easy_tags.delimiter);
-			for(var i=0;i<tab_tmp.length;i++){
-				if(tab_tmp[i]!=""){
-					elem=document.createElement("span");
-					elem.className="elem_class";
-					elem.innerHTML="<a class='ntdelbutton' onclick='sup_elem=jQuery(this).parent().parent().parent().get(); jQuery(this).parent().remove(); easy_tags.add_to_send(sup_elem,\""+easy_tags.delimiter+"\");'>X</a> <span class='class_val'>"+tab_tmp[i]+"</span>";
-					
-					list.append(elem);  
-				}
+	function bleutExcludeKwStyle() {
+		var checked_ones = 0;
+		$('#bluet_kw_admin_div_terms li input').each(function () {
+			if ($(this).prop('checked')) {
+				checked_ones++;
 			}
 		});
 
-		//delete last classes if field empty and delete
-		jQuery(".easy_tags-field").keydown(function(e){
-		  if(jQuery(this).val()=="" && e.keyCode==8){//backspace keyCode : 8
-		    jQuery(this).parent().parent().parent().find('.elem_class').last().remove();
-		    easy_tags.add_to_send(jQuery(this).parent().get(),easy_tags.delimiter);
-		  }
+		if (checked_ones < 1) {
+			$('#bluet_kw_admin_div_terms li').css('text-decoration', 'initial');
+			return;
+		}
+
+		$('#bluet_kw_admin_div_terms li').css('text-decoration', 'line-through');
+		$('#bluet_kw_admin_div_terms li').each(function (ind) {
+			if ($('#bluet_kw_admin_div_terms li input').eq(ind).prop('checked')) {
+				$('#bluet_kw_admin_div_terms li').eq(ind).css('text-decoration', 'initial');
+			}
 		});
-	},
-
-	fill_classes:function(element_class){
-		var element=jQuery(element_class);
-
-		element.each(function(index){
-			var field=jQuery(this).find(".easy_tags-field");
-			var to_send=jQuery(this).find(".easy_tags-to_send");
-			var add=jQuery(this).find(".easy_tags-add");
-			var list=jQuery(this).find(".easy_tags-list");
-
-				add.click(function(){
-				   // user has pressed space
-				  if(field.val().trim()!=""){
-					elem=document.createElement("span");
-					elem.className="elem_class";
-					elem.innerHTML="<a class='ntdelbutton' onclick='sup_elem=jQuery(this).parent().parent().parent().get(); jQuery(this).parent().remove(); easy_tags.add_to_send(sup_elem,\""+easy_tags.delimiter+"\");'>X</a> <span class='class_val'>"+field.val().trim()+"</span>";
-				
-					list.append(elem);        
-				  }
-
-				  field.val("");
-				  easy_tags.add_to_send(jQuery(this).parent().get(),easy_tags.delimiter);
-				  field.focus();
-				});
-		});
-		
 	}
-};
-/**/
+
+	function resolveEasyTagsDelimiter($root) {
+		var attr = $root.attr('data-easy-tags-delimiter');
+		if (typeof attr !== 'undefined') {
+			return attr;
+		}
+		return easy_tags.delimiter || ' ';
+	}
+
+	var easy_tags = {
+		delimiter: ' ',
+
+		construct: function (deli) {
+			this.delimiter = deli;
+			return this;
+		},
+
+		add_to_send: function (element) {
+			var $el = $(element);
+			var delimiter = resolveEasyTagsDelimiter($el);
+			var list = $el.find('.easy_tags-list');
+			var to_send = $el.find('.easy_tags-to_send');
+			var res = '';
+
+			list.find('.elem_class').each(function () {
+				res += $(this).find('.class_val').html() + delimiter;
+			});
+
+			to_send.val(res);
+		},
+
+		init: function (element_class) {
+			var element = element_class && element_class.jquery ? element_class : $(element_class);
+
+			element.each(function () {
+				var $root = $(this);
+				var delimiter = resolveEasyTagsDelimiter($root);
+				var to_send = $root.find('.easy_tags-to_send');
+				var list = $root.find('.easy_tags-list');
+				var tab_tmp = to_send.val().split(delimiter);
+
+				for (var i = 0; i < tab_tmp.length; i++) {
+					if (tab_tmp[i] !== '') {
+						var elem = document.createElement('span');
+						elem.className = 'elem_class';
+						elem.innerHTML =
+							"<a class='ntdelbutton' href='#' onclick=\"var p=this.parentNode.parentNode.parentNode; this.parentNode.remove(); easy_tags.add_to_send(p); return false;\">X</a> <span class='class_val'>" +
+							tab_tmp[i] +
+							'</span>';
+						list.append(elem);
+					}
+				}
+
+				$root
+					.find('.easy_tags-field')
+					.off('keydown.tooltipyEasyTags')
+					.on('keydown.tooltipyEasyTags', function (e) {
+						if ($(this).val() === '' && e.keyCode === 8) {
+							$(this).closest('.easy_tags').find('.elem_class').last().remove();
+							easy_tags.add_to_send($(this).closest('.easy_tags').get(0));
+						}
+					});
+			});
+		},
+
+		fill_classes: function (element_class) {
+			var element = element_class && element_class.jquery ? element_class : $(element_class);
+
+			element.each(function () {
+				var root = $(this);
+				var field = root.find('.easy_tags-field');
+				var add = root.find('.easy_tags-add');
+				var list = root.find('.easy_tags-list');
+
+				add.off('click.tooltipyEasyTags').on('click.tooltipyEasyTags', function () {
+					if (field.val().trim() !== '') {
+						var elem = document.createElement('span');
+						elem.className = 'elem_class';
+						elem.innerHTML =
+							"<a class='ntdelbutton' href='#' onclick=\"var p=this.parentNode.parentNode.parentNode; this.parentNode.remove(); easy_tags.add_to_send(p); return false;\">X</a> <span class='class_val'>" +
+							field.val().trim() +
+							'</span>';
+						list.append(elem);
+					}
+
+					field.val('');
+					easy_tags.add_to_send(root.get(0));
+					field.focus();
+				});
+			});
+		},
+	};
+
+	// Global aliases (legacy inline scripts + metaboxes).
+	window.easy_tags = easy_tags;
+	window.bluetShowTab = bluetShowTab;
+	window.bluet_hide_bg = bluet_hide_bg;
+	window.hideIfChecked = hideIfChecked;
+	window.bleutExcludeKwStyle = bleutExcludeKwStyle;
+
+	function initStylePreviewHelpers() {
+		var noBg = document.getElementById('bluet_kw_no_background');
+		if (noBg) {
+			bluet_hide_bg();
+			noBg.addEventListener('change', bluet_hide_bg, false);
+		}
+
+		var holders = document.getElementsByClassName('wp-picker-holder');
+		for (var i = 0; i < holders.length; i++) {
+			holders[i].addEventListener('mousemove', function () {
+				var tip = document.getElementsByClassName('bluet_tooltip')[0];
+				var block = document.getElementsByClassName('bluet_block_container')[0];
+				if (!tip || !block) {
+					return;
+				}
+
+				var noBgEl = document.getElementById('bluet_kw_no_background');
+				var bluet_keyword_bg =
+					noBgEl && noBgEl.checked
+						? 'initial'
+						: (document.getElementsByName('bluet_kw_style[bt_kw_tt_bg_color]')[0] || {}).value;
+				var bluet_keyword_color = (document.getElementsByName('bluet_kw_style[bt_kw_tt_color]')[0] || {}).value;
+				var bluet_tooltip_bg = (document.getElementsByName('bluet_kw_style[bt_kw_desc_bg_color]')[0] || {}).value;
+				var bluet_tooltip_color = (document.getElementsByName('bluet_kw_style[bt_kw_desc_color]')[0] || {}).value;
+
+				tip.style.backgroundColor = bluet_keyword_bg;
+				tip.style.color = bluet_keyword_color;
+				block.style.backgroundColor = bluet_tooltip_bg;
+				block.style.boxShadow = '0px 0px 10px ' + bluet_tooltip_bg;
+				block.style.color = bluet_tooltip_color;
+			});
+		}
+
+		if ($('#bt_kw_fetch_mode-icon').is(':checked')) {
+			$('#tooltip_highlight_fetch_mode').hide();
+		}
+		$('#bt_kw_fetch_mode-highlight').on('change', function () {
+			$('#tooltip_highlight_fetch_mode').show();
+		});
+		$('#bt_kw_fetch_mode-icon').on('change', function () {
+			$('#tooltip_highlight_fetch_mode').hide();
+		});
+	}
+
+	function initEasyTagsWidgets() {
+		var roots = $('.easy_tags');
+		if (!roots.length) {
+			return;
+		}
+
+		roots.each(function () {
+			var $root = $(this);
+			var delimiter = $root.attr('data-easy-tags-delimiter');
+			if (typeof delimiter === 'undefined') {
+				delimiter = ' ';
+			}
+			easy_tags.construct(delimiter);
+			easy_tags.init($root);
+			easy_tags.fill_classes($root);
+		});
+	}
+
+	function initPostMetaboxHelpers() {
+		if (!$('#bluet_kw_admin_div_terms').length && !$('.bluet_tooltip').length) {
+			// Still allow exclude checkbox helper when present.
+		}
+		if ($('#bluet_kw_admin_div_terms').length) {
+			bleutExcludeKwStyle();
+			$('#bluet_kw_admin_div_terms li input').on('change', bleutExcludeKwStyle);
+			hideIfChecked('bluet_kw_admin_exclude_post_from_matching_id', 'bluet_kw_admin_div_terms');
+			$('#bluet_kw_admin_exclude_post_from_matching_id').on('change', function () {
+				hideIfChecked('bluet_kw_admin_exclude_post_from_matching_id', 'bluet_kw_admin_div_terms');
+			});
+		}
+	}
+
+	$(function () {
+		initSettingsTabs();
+		initStylePreviewHelpers();
+		initEasyTagsWidgets();
+		initPostMetaboxHelpers();
+	});
+})(window, jQuery);

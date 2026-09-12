@@ -1,24 +1,32 @@
 <?php
-//exclude
-				?>				
-					<div id="bluet_kw_excluded_posts">
-						<h3><?php _e('Excluded posts','tooltipy-lang');?></h3>
-						<p><?php _e('Posts which are excluded from being matched','tooltipy-lang');?></p>
-						<?php
-						$excluded_posts=bluet_kw_fetch_excluded_posts();
+/**
+ * Excluded posts list (settings panel).
+ *
+ * @package Tooltipy
+ */
 
-						if(empty($excluded_posts)){ 
-							echo('<p style="color:red;">');
-							_e('No posts or pages are excluded','tooltipy-lang');
-							echo('</p>');
-						}else{							
-							echo('<ul style="list-style: initial; padding-left: 25px;">');
-							foreach($excluded_posts as $k=>$excluded_post){
-								// get permalink from post id
-								$excluded_post['permalink'] = get_permalink($excluded_post['id']);
-								?>
-								<li><a href="<?php echo $excluded_post['permalink']; ?>"><?php echo $excluded_post['title']; ?></a></li>
-								<?php
-							}
-							echo("</ul>");
-						}
+defined( 'ABSPATH' ) || exit;
+
+$excluded_posts = \Tooltipy\Admin\SettingsPage::get_excluded_posts();
+?>
+<div id="bluet_kw_excluded_posts" class="tooltipy-excluded">
+	<h2><?php esc_html_e( 'Excluded posts', 'tooltipy-lang' ); ?></h2>
+	<p class="description"><?php esc_html_e( 'These posts are excluded from keyword matching. Change this from each post’s sidebar metabox.', 'tooltipy-lang' ); ?></p>
+
+	<?php if ( empty( $excluded_posts ) ) : ?>
+		<p class="tooltipy-settings__empty"><?php esc_html_e( 'No posts or pages are excluded.', 'tooltipy-lang' ); ?></p>
+	<?php else : ?>
+		<ul class="tooltipy-excluded__list">
+			<?php foreach ( $excluded_posts as $excluded_post ) : ?>
+				<li>
+					<a href="<?php echo esc_url( get_permalink( $excluded_post['id'] ) ); ?>">
+						<?php echo esc_html( $excluded_post['title'] ); ?>
+					</a>
+					<a class="tooltipy-excluded__edit" href="<?php echo esc_url( get_edit_post_link( $excluded_post['id'] ) ); ?>">
+						<?php esc_html_e( 'Edit', 'tooltipy-lang' ); ?>
+					</a>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+	<?php endif; ?>
+</div>
