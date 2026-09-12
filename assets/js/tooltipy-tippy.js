@@ -44,7 +44,7 @@
 	 * @param {string} position top|bottom|left|right
 	 */
 	window.tooltipyInitTippy = function (selector, position) {
-		if (typeof tippy !== 'function') {
+		if (typeof tippy !== 'function' || typeof window.Popper === 'undefined') {
 			return;
 		}
 
@@ -73,19 +73,20 @@
 			zIndex: 999999,
 			content: function (reference) {
 				var id = reference.getAttribute('data-tooltip');
-				return getContentForKeyword(id) || '';
+				var node = getContentForKeyword(id);
+				return node || '';
 			},
 			onShow: function (instance) {
 				if (window.currentHoveredKeyword !== 'done') {
 					window.currentHoveredKeyword = $(instance.reference);
 				}
-				var box = instance.popper.querySelector('.tippy-content');
+				var box = instance.popper && instance.popper.querySelector('.tippy-content');
 				if (box) {
 					box.classList.add('bluet_block_to_show', 'tooltipy-pop');
 				}
 			},
 			onHide: function (instance) {
-				var iframe = instance.popper.querySelector('iframe');
+				var iframe = instance.popper && instance.popper.querySelector('iframe');
 				if (iframe && typeof window.callPlayer === 'function') {
 					var wrap = iframe.parentElement;
 					if (wrap && wrap.id) {

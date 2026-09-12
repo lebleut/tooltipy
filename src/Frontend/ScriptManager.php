@@ -65,10 +65,19 @@ class ScriptManager {
             false
         );
 
+        // Tippy UMD factory expects window.Popper (@popperjs/core).
+        wp_enqueue_script(
+            'tooltipy-popper',
+            TOOLTIPY_PLUGIN_URL . 'assets/vendor/tippy/popper.min.js',
+            [],
+            TOOLTIPY_VERSION,
+            true
+        );
+
         wp_enqueue_script(
             'tooltipy-tippy',
             TOOLTIPY_PLUGIN_URL . 'assets/vendor/tippy/tippy-bundle.umd.min.js',
-            [],
+            [ 'tooltipy-popper' ],
             TOOLTIPY_VERSION,
             true
         );
@@ -158,9 +167,17 @@ class ScriptManager {
             );
 
             wp_enqueue_script(
+                'tooltipy-popper',
+                TOOLTIPY_PLUGIN_URL . 'assets/vendor/tippy/popper.min.js',
+                [],
+                TOOLTIPY_VERSION,
+                true
+            );
+
+            wp_enqueue_script(
                 'tooltipy-tippy',
                 TOOLTIPY_PLUGIN_URL . 'assets/vendor/tippy/tippy-bundle.umd.min.js',
-                [],
+                [ 'tooltipy-popper' ],
                 TOOLTIPY_VERSION,
                 true
             );
