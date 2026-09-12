@@ -16,6 +16,8 @@ use Tooltipy\Admin\StyleSettings;
 use Tooltipy\Admin\GlossarySettings;
 use Tooltipy\Admin\AdvancedSettings;
 use Tooltipy\Addon\AddonManager;
+use Tooltipy\Shortcode\ManualTooltip;
+use Tooltipy\Editor\TinyMceButton;
 
 /**
  * Central orchestrator.  Replaces all former globals.
@@ -86,6 +88,8 @@ final class Plugin {
         ( new StyleSettings( $this ) )->init();
         ( new GlossarySettings( $this ) )->init();
         ( new AdvancedSettings( $this ) )->init();
+        ( new ManualTooltip( $this ) )->init();
+        ( new TinyMceButton() )->init();
         $this->run_data_migration();
 
         add_action( 'save_post', [ $this, 'delete_keywords_transient' ] );
