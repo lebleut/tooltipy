@@ -1,5 +1,5 @@
 ---
-description: Git commit policy — propose messages, commit only on request
+description: Git commit policy — always propose a message, commit only on request
 alwaysApply: true
 ---
 
@@ -7,8 +7,10 @@ alwaysApply: true
 
 - **Do not create commits** unless the user explicitly asks in their prompt (e.g. “commit”, “crée un commit”).
 - Never commit as a side effect of finishing a task.
-- When the user asks for a commit, or when it is useful to suggest one, **propose** a short commit message in **English**:
+- **At the end of every prompt response**, propose a short commit message in **English**, even if the user did not ask to commit:
   - Clear and plain (not overly technical)
   - 1–2 short sentences max
   - Focus on why / user-facing impact, not file lists
+  - If nothing meaningful changed, say so briefly instead of inventing a fake message
+- Only run `git commit` when the user explicitly requests it; use the proposed message (or their edit of it).
 - Do not push unless the user explicitly asks.
