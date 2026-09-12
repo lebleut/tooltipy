@@ -1,14 +1,14 @@
 ﻿=== Tooltipy (tooltips for WP) ===
-Contributors: jamelzarga, lebleut
+Contributors: lebleut
 Tags: tooltip, keywords, glossary, highlight, definition
 Requires at least: 6.0
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 8.1
-Stable tag: 7.0.0-alpha
+Stable tag: 7.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Automatically creates tooltip boxes for your technical keywords to explain them to your site visitors.
+Automatically create tooltip boxes for your technical keywords to explain them to your site visitors.
 
 == Description ==
 
@@ -29,12 +29,11 @@ Automatically creates tooltip boxes for your technical keywords to explain them 
 * YouTube video tooltips
 * Image alt-text tooltips
 * Sidebar widget showing related keywords
-* Extensible addon system (`AddonInterface` / `AddonManager`)
+* Extensible addon system
 
 = Architecture (7.x) =
 
 * PHP 8.1 namespaces under `Tooltipy\`
-* PSR-4 autoloading via `spl_autoload_register`
 * Tippy.js bundled locally (no CDN)
 * Full backward compatibility: same option names, post meta keys, hooks
 
@@ -53,15 +52,17 @@ Yes. All database options, post meta, CSS classes, and shortcodes are identical.
 Go to **Tooltipy > Add New**. The title is the keyword; the content is the tooltip body.
 
 = How do I add a glossary? =
-Create a page and add `[tooltip_glossary]` (or the legacy `[kttg_glossary]`).
+Create a page and add `[tooltip_glossary]` (or the legacy `[kttg_glossary]`). Then enable the glossary footer link in Settings and paste that page URL.
+
+= What are the requirements? =
+WordPress 6.0+ and PHP 8.1+.
 
 == Changelog ==
 
-= 7.0.0-alpha =
-* Major OOP rewrite: PHP 8.1 namespaces, PSR-4 autoloading
-* Tippy.js for tooltip positioning (legacy CSS classes preserved)
-* AddonInterface + AddonManager for extensibility
-* Security: metabox nonces, escaped output, wp_enqueue for assets
+= 7.0.0 =
+* Major OOP rewrite: PHP 8.1 namespaces, Tippy.js tooltip rendering
+* Security hardening against Contributor stored XSS (CVE-2025-62917)
+* Glossary footer link only appears when enabled and a page URL is set
 * Backward compatible: all option keys, meta keys, shortcodes, and hooks preserved
 
 = 5.5.9 =
@@ -73,5 +74,5 @@ Create a page and add `[tooltip_glossary]` (or the legacy `[kttg_glossary]`).
 
 == Upgrade Notice ==
 
-= 7.0.0-alpha =
-Major architectural rewrite. Requires PHP 8.1+ and WordPress 6.0+. Existing data and settings are preserved automatically.
+= 7.0.0 =
+Major architectural rewrite. Requires PHP 8.1+ and WordPress 6.0+. Existing data and settings are preserved automatically. Includes security fixes for CVE-2025-62917.

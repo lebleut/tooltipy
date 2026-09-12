@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
 define( 'TOOLTIPY_PLUGIN_FILE', __FILE__ );
 define( 'TOOLTIPY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'TOOLTIPY_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'TOOLTIPY_VERSION', '7.0.0-alpha' );
+define( 'TOOLTIPY_VERSION', '7.0.0' );
 
 /** Canonical glossary shortcode tag (legacy constant kept for BC). */
 if ( ! defined( 'TLTPY_GLOSSARY_SHORTCODE' ) ) {
