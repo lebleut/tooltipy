@@ -43,6 +43,20 @@ class ScriptManager {
             TOOLTIPY_VERSION
         );
 
+        wp_enqueue_style(
+            'tooltipy-tippy',
+            TOOLTIPY_PLUGIN_URL . 'assets/vendor/tippy/tippy.css',
+            [],
+            TOOLTIPY_VERSION
+        );
+
+        wp_enqueue_style(
+            'tooltipy-tippy-theme',
+            TOOLTIPY_PLUGIN_URL . 'assets/css/tooltipy-tippy-theme.css',
+            [ 'tooltipy-tippy', 'tooltipy-default-style' ],
+            TOOLTIPY_VERSION
+        );
+
         wp_enqueue_script(
             'tooltipy-find-and-replace',
             TOOLTIPY_PLUGIN_URL . 'library/findandreplacedomtext.js',
@@ -52,11 +66,29 @@ class ScriptManager {
         );
 
         wp_enqueue_script(
-            'kttg-tooltips-functions-script',
-            TOOLTIPY_PLUGIN_URL . 'assets/kttg-tooltip-functions.js',
-            [ 'jquery' ],
+            'tooltipy-tippy',
+            TOOLTIPY_PLUGIN_URL . 'assets/vendor/tippy/tippy-bundle.umd.min.js',
+            [],
             TOOLTIPY_VERSION,
             true
+        );
+
+        wp_enqueue_script(
+            'tooltipy-tippy-bridge',
+            TOOLTIPY_PLUGIN_URL . 'assets/js/tooltipy-tippy.js',
+            [ 'jquery', 'tooltipy-tippy' ],
+            TOOLTIPY_VERSION,
+            true
+        );
+
+        $settings  = get_option( 'bluet_kw_settings', [] );
+        $placement = $settings['bt_kw_position'] ?? 'bottom';
+        wp_localize_script(
+            'tooltipy-tippy-bridge',
+            'tooltipyTippy',
+            [
+                'placement' => $placement,
+            ]
         );
 
         wp_enqueue_script( 'wp-mediaelement' );
@@ -67,7 +99,7 @@ class ScriptManager {
             wp_enqueue_script(
                 'kttg-functions-alt-img-script',
                 TOOLTIPY_PLUGIN_URL . 'assets/img-alt-tooltip.js',
-                [ 'jquery' ],
+                [ 'jquery', 'tooltipy-tippy-bridge' ],
                 TOOLTIPY_VERSION,
                 true
             );
@@ -111,10 +143,32 @@ class ScriptManager {
                 false
             );
 
+            wp_enqueue_style(
+                'tooltipy-tippy',
+                TOOLTIPY_PLUGIN_URL . 'assets/vendor/tippy/tippy.css',
+                [],
+                TOOLTIPY_VERSION
+            );
+
+            wp_enqueue_style(
+                'tooltipy-tippy-theme',
+                TOOLTIPY_PLUGIN_URL . 'assets/css/tooltipy-tippy-theme.css',
+                [ 'tooltipy-tippy' ],
+                TOOLTIPY_VERSION
+            );
+
             wp_enqueue_script(
-                'kttg-admin-tooltips-functions-script',
-                TOOLTIPY_PLUGIN_URL . 'assets/kttg-tooltip-functions.js',
-                [ 'jquery' ],
+                'tooltipy-tippy',
+                TOOLTIPY_PLUGIN_URL . 'assets/vendor/tippy/tippy-bundle.umd.min.js',
+                [],
+                TOOLTIPY_VERSION,
+                true
+            );
+
+            wp_enqueue_script(
+                'tooltipy-tippy-bridge',
+                TOOLTIPY_PLUGIN_URL . 'assets/js/tooltipy-tippy.js',
+                [ 'jquery', 'tooltipy-tippy' ],
                 TOOLTIPY_VERSION,
                 true
             );

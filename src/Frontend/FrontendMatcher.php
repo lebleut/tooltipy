@@ -276,14 +276,19 @@ class FrontendMatcher {
 
             $(document).ready(function(){
                 tltpy_fetch_kws();
-                bluet_placeTooltips(".bluet_tooltip, .bluet_img_tooltip","<?php echo esc_js( $position ); ?>",true);
+                window.tooltipyTippy = window.tooltipyTippy || {};
+                window.tooltipyTippy.placement = "<?php echo esc_js( $position ); ?>";
                 animation_type  = "<?php echo esc_js( $animation_type ); ?>";
                 animation_speed = "<?php echo esc_js( $animation_speed ); ?>";
-                moveTooltipElementsTop(".bluet_block_to_show");
+                if (typeof tooltipyInitTippy === "function") {
+                    tooltipyInitTippy(".bluet_tooltip, .bluet_img_tooltip", "<?php echo esc_js( $position ); ?>");
+                }
             });
 
             $(document).on("keywordsLoaded",function(){
-                bluet_placeTooltips(".bluet_tooltip, .bluet_img_tooltip","<?php echo esc_js( $position ); ?>",false);
+                if (typeof tooltipyInitTippy === "function") {
+                    tooltipyInitTippy(".bluet_tooltip, .bluet_img_tooltip", "<?php echo esc_js( $position ); ?>");
+                }
             });
 
             <?php foreach ( $custom_events as $event ) : ?>

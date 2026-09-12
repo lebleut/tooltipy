@@ -1,0 +1,25 @@
+/**
+ * Tippy theme that preserves Tooltipy / bluet_* visual hooks.
+ * Tippy wrappers sit around the cloned .bluet_block_container markup.
+ */
+.tippy-box[data-theme~='tooltipy'] {
+	background-color: transparent;
+	color: inherit;
+	border: 0;
+	box-shadow: none;
+	font-size: inherit;
+	line-height: inherit;
+}
+
+.tippy-box[data-theme~='tooltipy'] > .tippy-content {
+	padding: 0;
+}
+
+.tippy-box[data-theme~='tooltipy'] > .tippy-arrow {
+	color: var(--tooltipy-arrow-color, #5eaa0d);
+}
+
+.tippy-box[data-theme~='tooltipy'] .bluet_block_container {
+	display: block;
+	position: relative;
+}

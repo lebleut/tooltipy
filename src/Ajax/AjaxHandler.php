@@ -112,14 +112,6 @@ class AjaxHandler {
 
         wp_reset_postdata();
 
-        ?>
-        <script type="text/javascript">
-        jQuery(".bluet_block_to_show").mouseover(function(){ jQuery(this).show(); });
-        jQuery(".bluet_block_to_show").mouseout(function(){ jQuery(this).css("display","none"); });
-        jQuery(".bluet_hide_tooltip_button").click(function(){ jQuery(".bluet_block_to_show").css("display","none"); });
-        </script>
-        <?php
-
         die();
     }
 

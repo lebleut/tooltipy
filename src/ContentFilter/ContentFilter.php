@@ -29,9 +29,10 @@ class ContentFilter {
     }
 
     public function init(): void {
-        add_action( 'wp_head',    [ $this, 'register_content_filters' ] );
-        add_action( 'the_post',   [ $this, 'maybe_remove_plugin_filters' ] );
-        add_filter( 'the_content',[ $this, 'filter_image_alts' ], 101 );
+        // Keyword highlighting is handled client-side (FrontendMatcher + Tippy).
+        // Keep only image-alt tooltips and the optional "prevent plugins filters" guard.
+        add_action( 'the_post',    [ $this, 'maybe_remove_plugin_filters' ] );
+        add_filter( 'the_content', [ $this, 'filter_image_alts' ], 101 );
     }
 
     /**

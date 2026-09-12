@@ -152,8 +152,10 @@ class StyleSettings {
         }
 
         echo "\n<style type='text/css'>\n";
+        echo ":root{--tooltipy-arrow-color:{$desc_bg_color};}\n";
         echo ".bluet_tooltip{{$tt_style}}\n";
         echo ".bluet_text_content{color:{$desc_color};background-color:{$desc_bg_color};font-size:{$desc_font_size}px;{$tooltip_width}}\n";
+        echo ".tippy-box[data-theme~='tooltipy'] .bluet_text_content{color:{$desc_color};background-color:{$desc_bg_color};font-size:{$desc_font_size}px;{$tooltip_width}}\n";
         echo "</style>\n";
 
         // JS: handle "No background" checkbox toggling on the settings page
