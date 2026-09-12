@@ -23,34 +23,7 @@
 	}
 
 	function initSettingsTabs() {
-		var $wrap = $('#bluet-general');
-		if (!$wrap.length || !$('#bluet-sections-div').length) {
-			return;
-		}
-
-		// Event delegation — survives focus/hash quirks on <a class="nav-tab">.
-		$wrap
-			.off('click.tooltipyTabs', '.nav-tab-wrapper a.nav-tab[data-tab]')
-			.on('click.tooltipyTabs', '.nav-tab-wrapper a.nav-tab[data-tab]', function (e) {
-				e.preventDefault();
-				e.stopPropagation();
-
-				var $link = $(this);
-				var tabToShow = $link.attr('data-tab');
-				if (!tabToShow) {
-					return false;
-				}
-
-				$wrap.find('.nav-tab-wrapper a.nav-tab[data-tab]').removeClass('nav-tab-active');
-				$link.addClass('nav-tab-active');
-				bluetShowTab(tabToShow);
-				return false;
-			});
-
-		// Initial state: Style panel.
-		$wrap.find('.nav-tab-wrapper a.nav-tab[data-tab]').removeClass('nav-tab-active');
-		$('#bluet_style_tab').addClass('nav-tab-active');
-		bluetShowTab('bluet-section-style');
+		// Settings navigation is handled by assets/js/tooltipy-settings.js
 	}
 
 	function bluet_hide_bg() {

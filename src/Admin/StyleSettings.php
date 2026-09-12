@@ -39,8 +39,13 @@ class StyleSettings {
         register_setting( 'settings_group', 'bluet_kw_style' );
     }
 
-    public function section_style_cb(): void       { esc_html_e( 'Make your own style.', 'tooltipy-lang' ); }
-    public function section_highlight_cb(): void   { esc_html_e( 'Style for the highlight fetch mode.', 'tooltipy-lang' ); }
+    public function section_style_cb(): void {
+        echo '<p class="tooltipy-settings__lead">' . esc_html__( 'Customize how keywords and tooltips look.', 'tooltipy-lang' ) . '</p>';
+    }
+
+    public function section_highlight_cb(): void {
+        echo '<p class="tooltipy-settings__lead">' . esc_html__( 'Colors used in highlight mode.', 'tooltipy-lang' ) . '</p>';
+    }
 
     public function field_fetch_mode(): void {
         $options = get_option( 'bluet_kw_style', [] );

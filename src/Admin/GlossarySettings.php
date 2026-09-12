@@ -34,12 +34,11 @@ class GlossarySettings {
     }
 
     public function section_cb(): void {
-        esc_html_e( 'Choose settings for your glossary.', 'tooltipy-lang' );
-        echo '<div>' . esc_html__( 'Use the shortcode', 'tooltipy-lang' )
+        echo '<p class="tooltipy-settings__lead">' . esc_html__( 'Glossary page labels and shortcode options.', 'tooltipy-lang' ) . '</p>';
+        echo '<p class="description">' . esc_html__( 'Use the shortcode', 'tooltipy-lang' )
             . ' <code>[' . esc_html( TLTPY_GLOSSARY_SHORTCODE ) . ']</code>'
-            . ' ' . esc_html__( 'to add a glossary anywhere.', 'tooltipy-lang' )
-            . ' ' . esc_html__( 'Legacy aliases also work:', 'tooltipy-lang' )
-            . ' <code>[kttg_glossary]</code>, <code>[tooltipy_glossary]</code>.</div>';
+            . ' ' . esc_html__( 'or legacy', 'tooltipy-lang' )
+            . ' <code>[kttg_glossary]</code>.</p>';
     }
 
     public function field_per_page(): void {

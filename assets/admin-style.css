@@ -44,11 +44,3 @@ background-color: indianred;
 a.nav-tab{
 cursor: pointer !important;
 }
-
-/* Settings tabs */
-#bluet-sections-div > .bluet-section {
-	display: none !important;
-}
-#bluet-sections-div > .bluet-section.is-active {
-	display: block !important;
-}

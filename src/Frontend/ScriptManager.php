@@ -135,6 +135,24 @@ class ScriptManager {
         );
 
         if ( $this->is_tooltipy_settings_page() ) {
+            $settings_css_ver = TOOLTIPY_VERSION . '.' . (string) filemtime( TOOLTIPY_PLUGIN_DIR . 'assets/css/tooltipy-settings.css' );
+            $settings_js_ver  = TOOLTIPY_VERSION . '.' . (string) filemtime( TOOLTIPY_PLUGIN_DIR . 'assets/js/tooltipy-settings.js' );
+
+            wp_enqueue_style(
+                'tooltipy-settings',
+                TOOLTIPY_PLUGIN_URL . 'assets/css/tooltipy-settings.css',
+                [ 'tooltipy-admin-style' ],
+                $settings_css_ver
+            );
+
+            wp_enqueue_script(
+                'tooltipy-settings',
+                TOOLTIPY_PLUGIN_URL . 'assets/js/tooltipy-settings.js',
+                [],
+                $settings_js_ver,
+                true
+            );
+
             $options   = get_option( 'bluet_kw_settings', [] );
             $anim_type = $options['bt_kw_animation_type'] ?? '';
 
@@ -146,52 +164,6 @@ class ScriptManager {
                     TOOLTIPY_VERSION
                 );
             }
-
-            wp_enqueue_script(
-                'tooltipy-find-and-replace',
-                TOOLTIPY_PLUGIN_URL . 'library/findandreplacedomtext.js',
-                [],
-                TOOLTIPY_VERSION,
-                false
-            );
-
-            wp_enqueue_style(
-                'tooltipy-tippy',
-                TOOLTIPY_PLUGIN_URL . 'assets/vendor/tippy/tippy.css',
-                [],
-                TOOLTIPY_VERSION
-            );
-
-            wp_enqueue_style(
-                'tooltipy-tippy-theme',
-                TOOLTIPY_PLUGIN_URL . 'assets/css/tooltipy-tippy-theme.css',
-                [ 'tooltipy-tippy' ],
-                TOOLTIPY_VERSION
-            );
-
-            wp_enqueue_script(
-                'tooltipy-popper',
-                TOOLTIPY_PLUGIN_URL . 'assets/vendor/tippy/popper.min.js',
-                [],
-                TOOLTIPY_VERSION,
-                true
-            );
-
-            wp_enqueue_script(
-                'tooltipy-tippy',
-                TOOLTIPY_PLUGIN_URL . 'assets/vendor/tippy/tippy-bundle.umd.min.js',
-                [ 'tooltipy-popper' ],
-                TOOLTIPY_VERSION,
-                true
-            );
-
-            wp_enqueue_script(
-                'tooltipy-tippy-bridge',
-                TOOLTIPY_PLUGIN_URL . 'assets/js/tooltipy-tippy.js',
-                [ 'jquery', 'tooltipy-tippy' ],
-                TOOLTIPY_VERSION,
-                true
-            );
 
             wp_enqueue_style( 'wp-color-picker' );
             wp_enqueue_script(
