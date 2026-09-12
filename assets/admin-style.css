@@ -45,10 +45,10 @@ a.nav-tab{
 cursor: pointer !important;
 }
 
-/* Settings tabs: hide inactive panels until JS activates one */
+/* Settings tabs */
 #bluet-sections-div > .bluet-section {
-	display: none;
+	display: none !important;
 }
 #bluet-sections-div > .bluet-section.is-active {
-	display: block;
+	display: block !important;
 }

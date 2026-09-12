@@ -116,18 +116,21 @@ class ScriptManager {
     }
 
     public function enqueue_admin(): void {
+        $admin_css_ver = TOOLTIPY_VERSION . '.' . (string) filemtime( TOOLTIPY_PLUGIN_DIR . 'assets/admin-style.css' );
+        $admin_js_ver  = TOOLTIPY_VERSION . '.' . (string) filemtime( TOOLTIPY_PLUGIN_DIR . 'assets/settings-functions.js' );
+
         wp_enqueue_style(
             'tooltipy-admin-style',
             TOOLTIPY_PLUGIN_URL . 'assets/admin-style.css',
             [],
-            TOOLTIPY_VERSION
+            $admin_css_ver
         );
 
         wp_enqueue_script(
             'kttg-settings-functions-script',
             TOOLTIPY_PLUGIN_URL . 'assets/settings-functions.js',
             [ 'jquery' ],
-            TOOLTIPY_VERSION,
+            $admin_js_ver,
             true
         );
 

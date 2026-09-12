@@ -4,31 +4,53 @@
 (function (window, $) {
 	'use strict';
 
-	var TAB_IDS = [
-		'bluet_style_tab',
-		'bluet_settings_tab',
-		'bluet_excluded_tab',
-		'bluet_glossary_tab',
-		'bluet_advanced_tab',
-	];
-
 	function bluetShowTab(tabId) {
 		var container = document.getElementById('bluet-sections-div');
 		if (!container || !tabId) {
 			return;
 		}
 
-		var sections = container.querySelectorAll('.bluet-section');
-		sections.forEach(function (section) {
-			section.style.display = 'none';
-			section.classList.remove('is-active');
-		});
+		$(container)
+			.children('.bluet-section')
+			.removeClass('is-active')
+			.attr('hidden', true)
+			.hide();
 
-		var target = document.getElementById(tabId);
-		if (target) {
-			target.style.display = 'block';
-			target.classList.add('is-active');
+		var $target = $('#' + tabId);
+		if ($target.length) {
+			$target.addClass('is-active').removeAttr('hidden').show();
 		}
+	}
+
+	function initSettingsTabs() {
+		var $wrap = $('#bluet-general');
+		if (!$wrap.length || !$('#bluet-sections-div').length) {
+			return;
+		}
+
+		// Event delegation — survives focus/hash quirks on <a class="nav-tab">.
+		$wrap
+			.off('click.tooltipyTabs', '.nav-tab-wrapper a.nav-tab[data-tab]')
+			.on('click.tooltipyTabs', '.nav-tab-wrapper a.nav-tab[data-tab]', function (e) {
+				e.preventDefault();
+				e.stopPropagation();
+
+				var $link = $(this);
+				var tabToShow = $link.attr('data-tab');
+				if (!tabToShow) {
+					return false;
+				}
+
+				$wrap.find('.nav-tab-wrapper a.nav-tab[data-tab]').removeClass('nav-tab-active');
+				$link.addClass('nav-tab-active');
+				bluetShowTab(tabToShow);
+				return false;
+			});
+
+		// Initial state: Style panel.
+		$wrap.find('.nav-tab-wrapper a.nav-tab[data-tab]').removeClass('nav-tab-active');
+		$('#bluet_style_tab').addClass('nav-tab-active');
+		bluetShowTab('bluet-section-style');
 	}
 
 	function bluet_hide_bg() {
@@ -184,38 +206,6 @@
 	window.bluet_hide_bg = bluet_hide_bg;
 	window.hideIfChecked = hideIfChecked;
 	window.bleutExcludeKwStyle = bleutExcludeKwStyle;
-
-	function initSettingsTabs() {
-		if (!$('#bluet-sections-div').length) {
-			return;
-		}
-
-		TAB_IDS.forEach(function (id) {
-			var el = document.getElementById(id);
-			if (!el) {
-				return;
-			}
-			el.classList.remove('nav-tab-active');
-			el.addEventListener('click', function (e) {
-				e.preventDefault();
-				TAB_IDS.forEach(function (tabId) {
-					var tab = document.getElementById(tabId);
-					if (tab) {
-						tab.classList.remove('nav-tab-active');
-					}
-				});
-				var tabToShow = e.currentTarget.getAttribute('data-tab');
-				bluetShowTab(tabToShow);
-				e.currentTarget.classList.add('nav-tab-active');
-			});
-		});
-
-		bluetShowTab('bluet-section-style');
-		var styleTab = document.getElementById('bluet_style_tab');
-		if (styleTab) {
-			styleTab.classList.add('nav-tab-active');
-		}
-	}
 
 	function initStylePreviewHelpers() {
 		var noBg = document.getElementById('bluet_kw_no_background');

@@ -156,11 +156,11 @@ class SettingsPage {
             <?php settings_errors(); ?>
 
             <h2 class="nav-tab-wrapper">
-                <a class="nav-tab nav-tab-active" id="bluet_style_tab" data-tab="bluet-section-style" href="#style_tab"><?php esc_html_e( 'Style', 'tooltipy-lang' ); ?></a>
-                <a class="nav-tab" id="bluet_settings_tab" data-tab="bluet-section-settings" href="#options_tab"><?php esc_html_e( 'Options', 'tooltipy-lang' ); ?></a>
-                <a class="nav-tab" id="bluet_glossary_tab" data-tab="bluet-section-glossary" href="#glossary_tab"><?php esc_html_e( 'Glossary', 'tooltipy-lang' ); ?></a>
-                <a class="nav-tab" id="bluet_advanced_tab" data-tab="bluet-section-advanced" href="#advanced_tab"><?php esc_html_e( 'Advanced', 'tooltipy-lang' ); ?></a>
-                <a class="nav-tab" id="bluet_excluded_tab" data-tab="bluet-section-excluded" href="#excluded_tab"><?php esc_html_e( 'Excluded posts', 'tooltipy-lang' ); ?></a>
+                <a class="nav-tab nav-tab-active" id="bluet_style_tab" data-tab="bluet-section-style" href="#"><?php esc_html_e( 'Style', 'tooltipy-lang' ); ?></a>
+                <a class="nav-tab" id="bluet_settings_tab" data-tab="bluet-section-settings" href="#"><?php esc_html_e( 'Options', 'tooltipy-lang' ); ?></a>
+                <a class="nav-tab" id="bluet_glossary_tab" data-tab="bluet-section-glossary" href="#"><?php esc_html_e( 'Glossary', 'tooltipy-lang' ); ?></a>
+                <a class="nav-tab" id="bluet_advanced_tab" data-tab="bluet-section-advanced" href="#"><?php esc_html_e( 'Advanced', 'tooltipy-lang' ); ?></a>
+                <a class="nav-tab" id="bluet_excluded_tab" data-tab="bluet-section-excluded" href="#"><?php esc_html_e( 'Excluded posts', 'tooltipy-lang' ); ?></a>
                 <?php do_action( 'tooltipy_settings_tabs' ); ?>
                 <a class="nav-tab" target="_blank" style="background-color:antiquewhite;" href="https://wordpress.org/support/plugin/bluet-keywords-tooltip-generator"><?php esc_html_e( 'Help ?', 'tooltipy-lang' ); ?></a>
                 <a class="nav-tab rate-tooltipy" target="_blank" style="background-color:aliceblue;" href="https://wordpress.org/support/view/plugin-reviews/bluet-keywords-tooltip-generator"><?php esc_html_e( 'Rate', 'tooltipy-lang' ); ?></a>
@@ -171,23 +171,23 @@ class SettingsPage {
                 <?php settings_fields( 'settings_group' ); ?>
                 <div id="bluet-sections-div">
 
-                    <div class="bluet-section is-active" id="bluet-section-style" name="style_tab">
+                    <div class="bluet-section is-active" id="bluet-section-style">
                         <?php $this->load_template( 'admin/style' ); ?>
                     </div>
 
-                    <div class="bluet-section" id="bluet-section-settings" name="options_tab">
+                    <div class="bluet-section" id="bluet-section-settings" hidden>
                         <?php do_settings_sections( 'my_keywords_settings' ); ?>
                     </div>
 
-                    <div class="bluet-section" id="bluet-section-glossary" name="glossary_tab">
+                    <div class="bluet-section" id="bluet-section-glossary" hidden>
                         <?php do_settings_sections( 'my_keywords_glossary_settings' ); ?>
                     </div>
 
-                    <div class="bluet-section" id="bluet-section-advanced" name="advanced_tab">
+                    <div class="bluet-section" id="bluet-section-advanced" hidden>
                         <?php do_settings_sections( 'my_keywords_advanced_page' ); ?>
                     </div>
 
-                    <div class="bluet-section" id="bluet-section-excluded" name="excluded_tab">
+                    <div class="bluet-section" id="bluet-section-excluded" hidden>
                         <?php $this->load_template( 'admin/exclude' ); ?>
                     </div>
 
