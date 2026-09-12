@@ -44,3 +44,11 @@ background-color: indianred;
 a.nav-tab{
 cursor: pointer !important;
 }
+
+/* Settings tabs: hide inactive panels until JS activates one */
+#bluet-sections-div > .bluet-section {
+	display: none;
+}
+#bluet-sections-div > .bluet-section.is-active {
+	display: block;
+}

@@ -156,7 +156,7 @@ class SettingsPage {
             <?php settings_errors(); ?>
 
             <h2 class="nav-tab-wrapper">
-                <a class="nav-tab" id="bluet_style_tab"    data-tab="bluet-section-style"    href="#style_tab"><?php esc_html_e( 'Style', 'tooltipy-lang' ); ?></a>
+                <a class="nav-tab nav-tab-active" id="bluet_style_tab" data-tab="bluet-section-style" href="#style_tab"><?php esc_html_e( 'Style', 'tooltipy-lang' ); ?></a>
                 <a class="nav-tab" id="bluet_settings_tab" data-tab="bluet-section-settings" href="#options_tab"><?php esc_html_e( 'Options', 'tooltipy-lang' ); ?></a>
                 <a class="nav-tab" id="bluet_glossary_tab" data-tab="bluet-section-glossary" href="#glossary_tab"><?php esc_html_e( 'Glossary', 'tooltipy-lang' ); ?></a>
                 <a class="nav-tab" id="bluet_advanced_tab" data-tab="bluet-section-advanced" href="#advanced_tab"><?php esc_html_e( 'Advanced', 'tooltipy-lang' ); ?></a>
@@ -171,7 +171,7 @@ class SettingsPage {
                 <?php settings_fields( 'settings_group' ); ?>
                 <div id="bluet-sections-div">
 
-                    <div class="bluet-section" id="bluet-section-style" name="style_tab">
+                    <div class="bluet-section is-active" id="bluet-section-style" name="style_tab">
                         <?php $this->load_template( 'admin/style' ); ?>
                     </div>
 

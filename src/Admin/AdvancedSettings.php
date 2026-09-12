@@ -116,7 +116,7 @@ class AdvancedSettings {
         $options = get_option( 'bluet_kw_advanced', [] );
         $val     = $options['kttg_cover_areas'] ?? '';
         ?>
-        <div class="easy_tags">
+        <div class="easy_tags" data-easy-tags-delimiter=" ">
             <div class="easy_tags-content" onclick="jQuery('#bluet_cover_areas_id').focus()">
                 <div class="easy_tags-list tagchecklist" id="cover_areas_list"></div>
                 <input class="easy_tags-field" type="text" style="max-width:250px;" id="bluet_cover_areas_id" placeholder="<?php esc_attr_e( 'class ...', 'tooltipy-lang' ); ?>">
@@ -125,7 +125,6 @@ class AdvancedSettings {
             <input class="easy_tags-add button tagadd" type="button" value="<?php esc_attr_e( 'Add' ); ?>" id="cover_class_add">
         </div>
         <p style="color:green;"><?php esc_html_e( 'Choose CSS classes to cover with tooltips', 'tooltipy-lang' ); ?></p>
-        <script>jQuery(document).ready(function(){ var f=easy_tags.construct(" "); f.init(".easy_tags"); f.fill_classes(".easy_tags"); });</script>
         <?php
     }
 
@@ -133,7 +132,7 @@ class AdvancedSettings {
         $options = get_option( 'bluet_kw_advanced', [] );
         $val     = $options['kttg_cover_tags'] ?? '';
         ?>
-        <div class="easy_tags">
+        <div class="easy_tags" data-easy-tags-delimiter=" ">
             <div class="easy_tags-content" onclick="jQuery('#bluet_cover_tags_id').focus()">
                 <div class="easy_tags-list tagchecklist" id="cover_tags_list"></div>
                 <input class="easy_tags-field" type="text" style="max-width:250px;" id="bluet_cover_tags_id" placeholder="<?php esc_attr_e( 'HTML tag ...', 'tooltipy-lang' ); ?>">
@@ -149,7 +148,7 @@ class AdvancedSettings {
         $options = get_option( 'bluet_kw_advanced', [] );
         $val     = $options['kttg_exclude_areas'] ?? '';
         ?>
-        <div class="easy_tags">
+        <div class="easy_tags" data-easy-tags-delimiter=" ">
             <div class="easy_tags-content" onclick="jQuery('#bluet_exclude_areas_id').focus()">
                 <div class="easy_tags-list tagchecklist" id="exclude_areas_list"></div>
                 <input class="easy_tags-field" type="text" style="max-width:250px;" id="bluet_exclude_areas_id" placeholder="<?php esc_attr_e( 'class ...', 'tooltipy-lang' ); ?>">

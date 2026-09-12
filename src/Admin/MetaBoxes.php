@@ -153,22 +153,14 @@ class MetaBoxes {
                 <?php endif; ?>
 
                 <h3><?php esc_html_e( 'Keywords to exclude', 'tooltipy-lang' ); ?></h3>
-                <div class="easy_tags">
-                    <div class="easy_tags-content" onclick="jQuery('#bluet_cover_areas_id').focus()">
-                        <div class="easy_tags-list tagchecklist" id="cover_areas_list"></div>
-                        <input class="easy_tags-field" type="text" style="max-width:250px;" id="bluet_cover_areas_id" placeholder="<?php esc_attr_e( 'keyword...', 'tooltipy-lang' ); ?>">
+                <div class="easy_tags" data-easy-tags-delimiter=",">
+                    <div class="easy_tags-content" onclick="jQuery('#bluet_exclude_keywords_field_id').focus()">
+                        <div class="easy_tags-list tagchecklist" id="exclude_keywords_list"></div>
+                        <input class="easy_tags-field" type="text" style="max-width:250px;" id="bluet_exclude_keywords_field_id" placeholder="<?php esc_attr_e( 'keyword...', 'tooltipy-lang' ); ?>">
                         <input class="easy_tags-to_send" type="hidden" name="bluet_exclude_keywords_from_matching_name" id="exclude-keywords-field" value="<?php echo esc_attr( $exclude_kws_string ); ?>">
                     </div>
-                    <input class="easy_tags-add button tagadd" type="button" value="<?php esc_attr_e( 'Add' ); ?>" id="cover_class_add">
+                    <input class="easy_tags-add button tagadd" type="button" value="<?php esc_attr_e( 'Add' ); ?>" id="exclude_keywords_add">
                 </div>
-                <script>
-                jQuery(document).ready(function(){
-                    var field = easy_tags.construct(",");
-                    field.init(".easy_tags");
-                    field.fill_classes(".easy_tags");
-                });
-                </script>
-
                 <p><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . $pt_name ) ); ?>">
                     <?php echo esc_html__( 'Manage KeyWords', 'tooltipy-lang' ) . ' >>'; ?>
                 </a></p>
