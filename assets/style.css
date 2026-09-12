@@ -225,5 +225,20 @@ span.kttg_glossary_nav {
 }
 
 .bluet_block_footer {
-	padding: 0 10px;
+	padding: 0 15px 8px;
+	color: inherit;
+	font-size: inherit;
+}
+
+.bluet_block_glossary_link {
+	margin: 0;
+	padding: 0;
+	color: inherit;
+	font-size: inherit;
+}
+
+.bluet_block_glossary_link a {
+	color: inherit;
+	font-size: inherit;
+	text-decoration: underline;
 }

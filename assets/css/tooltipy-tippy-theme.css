@@ -30,8 +30,35 @@
 	position: relative;
 	opacity: 1 !important;
 	visibility: visible !important;
+	overflow: hidden;
+	border-radius: 2px;
 }
 
 .tippy-box[data-theme~='tooltipy'] .bluet_text_content {
 	display: block;
+	background: transparent;
+}
+
+.tippy-box[data-theme~='tooltipy'] .bluet_block_footer {
+	display: block;
+	padding: 0 15px 10px;
+	color: inherit;
+	font-size: inherit;
+	line-height: inherit;
+}
+
+.tippy-box[data-theme~='tooltipy'] .bluet_block_glossary_link {
+	margin: 0;
+	padding: 0;
+	color: inherit;
+	font-size: inherit;
+}
+
+.tippy-box[data-theme~='tooltipy'] .bluet_block_glossary_link a {
+	color: inherit !important;
+	font-size: inherit !important;
+	font-weight: inherit;
+	line-height: inherit;
+	text-decoration: underline;
+	background: transparent;
 }

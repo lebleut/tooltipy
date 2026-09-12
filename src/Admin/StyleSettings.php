@@ -172,8 +172,13 @@ class StyleSettings {
         echo "\n<style type='text/css'>\n";
         echo ':root{--tooltipy-arrow-color:' . esc_attr( $desc_bg_color ) . ";}\n";
         echo '.bluet_tooltip{' . esc_html( $tt_style ) . "}\n";
-        echo '.bluet_text_content{color:' . esc_attr( $desc_color ) . ';background-color:' . esc_attr( $desc_bg_color ) . ';font-size:' . $desc_font_size . 'px;' . esc_attr( $tooltip_width ) . "}\n";
-        echo '.tippy-box[data-theme~=\'tooltipy\'] .bluet_text_content{color:' . esc_attr( $desc_color ) . ';background-color:' . esc_attr( $desc_bg_color ) . ';font-size:' . $desc_font_size . 'px;' . esc_attr( $tooltip_width ) . "}\n";
+        // Match legacy 5.x: colours live on .bluet_block_container so footer/glossary stay inside the panel.
+        echo '.bluet_block_container{color:' . esc_attr( $desc_color ) . ';background-color:' . esc_attr( $desc_bg_color ) . ';font-size:' . $desc_font_size . 'px;' . esc_attr( $tooltip_width ) . "}\n";
+        echo '.tippy-box[data-theme~=\'tooltipy\'] .bluet_block_container{color:' . esc_attr( $desc_color ) . ';background-color:' . esc_attr( $desc_bg_color ) . ';font-size:' . $desc_font_size . 'px;' . esc_attr( $tooltip_width ) . "}\n";
+        echo ".bluet_text_content{color:inherit;background:transparent;font-size:inherit;}\n";
+        echo ".tippy-box[data-theme~='tooltipy'] .bluet_text_content{color:inherit;background:transparent;font-size:inherit;}\n";
+        echo ".bluet_block_footer,.bluet_block_glossary_link{color:inherit;font-size:inherit;}\n";
+        echo ".bluet_block_glossary_link a{color:inherit;font-size:inherit;text-decoration:underline;}\n";
         echo "</style>\n";
 
         // JS: handle "No background" checkbox toggling on the settings page
