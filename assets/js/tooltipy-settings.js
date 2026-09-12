@@ -57,6 +57,30 @@
 		}
 
 		activatePanel(root, initial);
+		initGlossaryLinkFields(root);
+	}
+
+	function initGlossaryLinkFields(root) {
+		var toggle = root.querySelector('[data-tooltipy-glossary-toggle]');
+		var fields = root.querySelector('[data-tooltipy-glossary-fields]');
+		var urlInput = root.querySelector('[data-tooltipy-glossary-url]');
+		var warning = root.querySelector('[data-tooltipy-glossary-url-warning]');
+
+		if (!toggle || !fields || !urlInput || !warning) {
+			return;
+		}
+
+		function sync() {
+			var enabled = toggle.checked;
+			fields.hidden = !enabled;
+			var missingUrl = enabled && urlInput.value.trim() === '';
+			warning.hidden = !missingUrl;
+		}
+
+		toggle.addEventListener('change', sync);
+		urlInput.addEventListener('input', sync);
+		urlInput.addEventListener('change', sync);
+		sync();
 	}
 
 	if (document.readyState === 'loading') {

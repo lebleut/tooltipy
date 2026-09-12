@@ -92,13 +92,13 @@ class TooltipRenderer {
 
         $glossary_options = get_option( 'bluet_glossary_options', [] );
         $show_link        = ! empty( $glossary_options['bluet_kttg_show_glossary_link'] ) && $glossary_options['bluet_kttg_show_glossary_link'] === 'on';
+        $url              = esc_url( (string) ( $glossary_options['kttg_link_glossary_page_link'] ?? '' ) );
 
-        if ( ! $show_link ) {
+        if ( ! $show_link || $url === '' ) {
             return '';
         }
 
-        $url   = esc_url( $glossary_options['kttg_link_glossary_page_link'] ?? '' );
-        $label = esc_html( $glossary_options['kttg_link_glossary_label'] ?? '' );
+        $label = esc_html( (string) ( $glossary_options['kttg_link_glossary_label'] ?? '' ) );
         if ( $label === '' ) {
             $label = esc_html__( 'View glossary', 'tooltipy-lang' );
         }
@@ -137,10 +137,17 @@ class TooltipRenderer {
                     <?php endif; ?>
                     <?php echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- kses_post applied ?>
                 </div>
-                <?php if ( ! empty( $glossary_opt['bluet_kttg_show_glossary_link'] ) && $glossary_opt['bluet_kttg_show_glossary_link'] === 'on' ) : ?>
+                <?php
+                $glossary_url = esc_url( (string) ( $glossary_opt['kttg_link_glossary_page_link'] ?? '' ) );
+                if (
+                    ! empty( $glossary_opt['bluet_kttg_show_glossary_link'] )
+                    && $glossary_opt['bluet_kttg_show_glossary_link'] === 'on'
+                    && $glossary_url !== ''
+                ) :
+                    ?>
                     <div class="bluet_block_footer">
                         <p class="bluet_block_glossary_link">
-                            <a href="<?php echo esc_url( $glossary_opt['kttg_link_glossary_page_link'] ?? '' ); ?>">
+                            <a href="<?php echo esc_url( $glossary_url ); ?>">
                                 <?php echo esc_html( ! empty( $glossary_opt['kttg_link_glossary_label'] ) ? $glossary_opt['kttg_link_glossary_label'] : __( 'View glossary', 'tooltipy-lang' ) ); ?>
                             </a>
                         </p>

@@ -126,7 +126,10 @@ class ContentFilter {
         $match_all    = ! empty( $settings['bt_kw_match_all'] ) && $settings['bt_kw_match_all'] === 'on';
         $limit        = $match_all ? -1 : 1;
 
-        $show_glossary_link = ! empty( $settings['bluet_kttg_show_glossary_link'] );
+        $glossary_opt       = get_option( 'bluet_glossary_options', [] );
+        $show_glossary_link = ! empty( $glossary_opt['bluet_kttg_show_glossary_link'] )
+            && $glossary_opt['bluet_kttg_show_glossary_link'] === 'on'
+            && esc_url( (string) ( $glossary_opt['kttg_link_glossary_page_link'] ?? '' ) ) !== '';
 
         // Determine which keywords to match
         $keyword_ids = $this->repo->get_related_ids( $post_id );

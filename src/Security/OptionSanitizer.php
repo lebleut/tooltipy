@@ -79,7 +79,7 @@ final class OptionSanitizer {
 		$out['tltpy_glossary_show_thumb']      = Sanitizer::on_off( $input['tltpy_glossary_show_thumb'] ?? '' );
 		$out['bluet_kttg_show_glossary_link']  = Sanitizer::on_off( $input['bluet_kttg_show_glossary_link'] ?? '' );
 		$out['link_titles']                    = Sanitizer::on_off( $input['link_titles'] ?? '' );
-		$out['kttg_link_glossary_page_link']   = esc_url_raw( (string) ( $input['kttg_link_glossary_page_link'] ?? '' ), [ 'http', 'https' ] );
+		$out['kttg_link_glossary_page_link'] = self::glossary_page_url( (string) ( $input['kttg_link_glossary_page_link'] ?? '' ) );
 		$out['kttg_link_glossary_label']       = sanitize_text_field( (string) ( $input['kttg_link_glossary_label'] ?? '' ) );
 
 		$out['kttg_glossary_text'] = [];
@@ -157,6 +157,24 @@ final class OptionSanitizer {
 		];
 
 		return $out;
+	}
+
+	/**
+	 * Accept absolute http(s) URLs and site-relative paths.
+	 */
+	private static function glossary_page_url( string $url ): string {
+		$url = trim( $url );
+		if ( $url === '' ) {
+			return '';
+		}
+
+		if ( str_starts_with( $url, '/' ) && ! str_starts_with( $url, '//' ) ) {
+			$path = esc_url_raw( $url );
+			return is_string( $path ) ? $path : '';
+		}
+
+		$absolute = esc_url_raw( $url, [ 'http', 'https' ] );
+		return is_string( $absolute ) ? $absolute : '';
 	}
 
 	private static function html_tag_list( string $raw ): string {

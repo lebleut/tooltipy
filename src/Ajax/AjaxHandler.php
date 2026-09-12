@@ -96,10 +96,17 @@ class AjaxHandler {
 							<?php endif; ?>
 							<?php echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- kses_post applied ?>
 						</div>
-						<?php if ( ! empty( $glossary_opt['bluet_kttg_show_glossary_link'] ) && $glossary_opt['bluet_kttg_show_glossary_link'] === 'on' ) : ?>
+						<?php
+						$glossary_url = esc_url( (string) ( $glossary_opt['kttg_link_glossary_page_link'] ?? '' ) );
+						if (
+							! empty( $glossary_opt['bluet_kttg_show_glossary_link'] )
+							&& $glossary_opt['bluet_kttg_show_glossary_link'] === 'on'
+							&& $glossary_url !== ''
+						) :
+							?>
 							<div class="bluet_block_footer">
 								<p class="bluet_block_glossary_link">
-									<a href="<?php echo esc_url( $glossary_opt['kttg_link_glossary_page_link'] ?? '' ); ?>">
+									<a href="<?php echo esc_url( $glossary_url ); ?>">
 										<?php echo esc_html( ! empty( $glossary_opt['kttg_link_glossary_label'] ) ? $glossary_opt['kttg_link_glossary_label'] : __( 'View glossary', 'tooltipy-lang' ) ); ?>
 									</a>
 								</p>

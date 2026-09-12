@@ -87,22 +87,50 @@ class GlossarySettings {
     }
 
     public function field_glossary_link(): void {
-        $options     = get_option( 'bluet_glossary_options', [] );
-        $show        = $options['bluet_kttg_show_glossary_link']  ?? '';
-        $link        = $options['kttg_link_glossary_page_link']   ?? '';
-        $label       = $options['kttg_link_glossary_label']       ?? '';
+        $options = get_option( 'bluet_glossary_options', [] );
+        $show    = $options['bluet_kttg_show_glossary_link'] ?? '';
+        $link    = $options['kttg_link_glossary_page_link'] ?? '';
+        $label   = $options['kttg_link_glossary_label'] ?? '';
+        $enabled = $show === 'on';
         ?>
-        <div>
-            <label for="bt_kw_show_glossary_link_id"><?php esc_html_e( 'Add glossary link page in the tooltips footer', 'tooltipy-lang' ); ?></label>
-            <input type="checkbox" id="bt_kw_show_glossary_link_id" name="bluet_glossary_options[bluet_kttg_show_glossary_link]" <?php checked( $show, 'on' ); ?> />
-        </div>
-        <div>
-            <label for="bt_kw_glossary_page_link"><?php esc_html_e( 'Glossary page link', 'tooltipy-lang' ); ?></label>
-            <input type="text" id="bt_kw_glossary_page_link" name="bluet_glossary_options[kttg_link_glossary_page_link]" value="<?php echo esc_attr( $link ); ?>" placeholder="http://...">
-        </div>
-        <div>
-            <label for="bt_kw_glossary_link_label_id"><?php esc_html_e( 'Glossary link label', 'tooltipy-lang' ); ?></label>
-            <input type="text" id="bt_kw_glossary_link_label_id" name="bluet_glossary_options[kttg_link_glossary_label]" value="<?php echo esc_attr( $label ); ?>" placeholder="<?php esc_attr_e( 'View glossary', 'tooltipy-lang' ); ?>">
+        <div class="tooltipy-glossary-link-settings">
+            <label class="tooltipy-settings__check" for="bt_kw_show_glossary_link_id">
+                <input
+                    type="checkbox"
+                    id="bt_kw_show_glossary_link_id"
+                    name="bluet_glossary_options[bluet_kttg_show_glossary_link]"
+                    <?php checked( $show, 'on' ); ?>
+                    data-tooltipy-glossary-toggle
+                />
+                <span><?php esc_html_e( 'Add glossary link page in the tooltips footer', 'tooltipy-lang' ); ?></span>
+            </label>
+
+            <div class="tooltipy-glossary-link-settings__fields" data-tooltipy-glossary-fields<?php echo $enabled ? '' : ' hidden'; ?>>
+                <div class="tooltipy-glossary-link-settings__field">
+                    <label for="bt_kw_glossary_page_link"><?php esc_html_e( 'Glossary page link', 'tooltipy-lang' ); ?></label>
+                    <input
+                        type="url"
+                        id="bt_kw_glossary_page_link"
+                        name="bluet_glossary_options[kttg_link_glossary_page_link]"
+                        value="<?php echo esc_attr( $link ); ?>"
+                        placeholder="https://…"
+                        data-tooltipy-glossary-url
+                    />
+                    <p class="tooltipy-settings__warn" data-tooltipy-glossary-url-warning<?php echo ( $enabled && $link === '' ) ? '' : ' hidden'; ?>>
+                        <?php esc_html_e( 'Please add the glossary page URL, otherwise the link will not appear in tooltips.', 'tooltipy-lang' ); ?>
+                    </p>
+                </div>
+                <div class="tooltipy-glossary-link-settings__field">
+                    <label for="bt_kw_glossary_link_label_id"><?php esc_html_e( 'Glossary link label', 'tooltipy-lang' ); ?></label>
+                    <input
+                        type="text"
+                        id="bt_kw_glossary_link_label_id"
+                        name="bluet_glossary_options[kttg_link_glossary_label]"
+                        value="<?php echo esc_attr( $label ); ?>"
+                        placeholder="<?php esc_attr_e( 'View glossary', 'tooltipy-lang' ); ?>"
+                    />
+                </div>
+            </div>
         </div>
         <?php
     }

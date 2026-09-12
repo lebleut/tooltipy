@@ -180,6 +180,35 @@
 .tooltipy-settings__warn {
 	color: #b32d2e;
 	margin-top: 8px;
+	font-weight: 500;
+}
+
+.tooltipy-glossary-link-settings__fields {
+	margin-top: 12px;
+	padding: 12px 14px;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	background: #f6f7f7;
+}
+
+.tooltipy-glossary-link-settings__field {
+	margin-bottom: 12px;
+}
+
+.tooltipy-glossary-link-settings__field:last-child {
+	margin-bottom: 0;
+}
+
+.tooltipy-glossary-link-settings__field label {
+	display: block;
+	margin-bottom: 4px;
+	font-weight: 600;
+}
+
+.tooltipy-glossary-link-settings__field input[type="url"],
+.tooltipy-glossary-link-settings__field input[type="text"] {
+	width: 100%;
+	max-width: 420px;
 }
 
 .tooltipy-settings__empty {
