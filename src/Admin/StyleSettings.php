@@ -4,6 +4,8 @@ namespace Tooltipy\Admin;
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 use Tooltipy\Plugin;
+use Tooltipy\Security\OptionSanitizer;
+use Tooltipy\Security\Sanitizer;
 
 /**
  * Registers style settings fields and outputs custom CSS/JS.
@@ -36,7 +38,15 @@ class StyleSettings {
         add_settings_field( 'bt_kw_tt_colour',      __( 'Keyword style', 'tooltipy-lang' ),                 [ $this, 'field_kw_colour' ],      'my_highlight_fetch_mode', 'highlight_fetch_mode_section' );
         add_settings_field( 'bt_kw_desc_colour',    __( 'Description tooltip style', 'tooltipy-lang' ),     [ $this, 'field_desc_colour' ],    'my_highlight_fetch_mode', 'highlight_fetch_mode_section' );
 
-        register_setting( 'settings_group', 'bluet_kw_style' );
+        register_setting(
+            'settings_group',
+            'bluet_kw_style',
+            [
+                'type'              => 'array',
+                'sanitize_callback' => [ OptionSanitizer::class, 'style' ],
+                'default'           => [],
+            ]
+        );
     }
 
     public function section_style_cb(): void {
@@ -140,11 +150,14 @@ class StyleSettings {
     public function output_custom_style(): void {
         $options = get_option( 'bluet_kw_style', [] );
 
-        $tt_color       = esc_attr( $options['bt_kw_tt_color']      ?? 'inherit' );
-        $tt_bg_color    = esc_attr( $options['bt_kw_tt_bg_color']    ?? '#0D45AA' );
-        $desc_color     = esc_attr( $options['bt_kw_desc_color']     ?? '#ffffff' );
-        $desc_bg_color  = esc_attr( $options['bt_kw_desc_bg_color']  ?? '#5eaa0d' );
-        $desc_font_size = esc_attr( $options['bt_kw_desc_font_size'] ?? '14' );
+        $tt_color       = Sanitizer::css_color( (string) ( $options['bt_kw_tt_color'] ?? 'inherit' ), 'inherit' );
+        $tt_bg_color    = Sanitizer::css_color( (string) ( $options['bt_kw_tt_bg_color'] ?? '#0D45AA' ), '#0D45AA' );
+        $desc_color     = Sanitizer::css_color( (string) ( $options['bt_kw_desc_color'] ?? '#ffffff' ), '#ffffff' );
+        $desc_bg_color  = Sanitizer::css_color( (string) ( $options['bt_kw_desc_bg_color'] ?? '#5eaa0d' ), '#5eaa0d' );
+        $desc_font_size = (int) ( $options['bt_kw_desc_font_size'] ?? 14 );
+        if ( $desc_font_size < 1 || $desc_font_size > 50 ) {
+            $desc_font_size = 14;
+        }
         $tooltip_width  = isset( $options['bt_kw_tooltip_width'] ) && $options['bt_kw_tooltip_width'] !== ''
             ? 'width:' . (int) $options['bt_kw_tooltip_width'] . 'px !important;'
             : '';
@@ -157,10 +170,10 @@ class StyleSettings {
         }
 
         echo "\n<style type='text/css'>\n";
-        echo ":root{--tooltipy-arrow-color:{$desc_bg_color};}\n";
-        echo ".bluet_tooltip{{$tt_style}}\n";
-        echo ".bluet_text_content{color:{$desc_color};background-color:{$desc_bg_color};font-size:{$desc_font_size}px;{$tooltip_width}}\n";
-        echo ".tippy-box[data-theme~='tooltipy'] .bluet_text_content{color:{$desc_color};background-color:{$desc_bg_color};font-size:{$desc_font_size}px;{$tooltip_width}}\n";
+        echo ':root{--tooltipy-arrow-color:' . esc_attr( $desc_bg_color ) . ";}\n";
+        echo '.bluet_tooltip{' . esc_html( $tt_style ) . "}\n";
+        echo '.bluet_text_content{color:' . esc_attr( $desc_color ) . ';background-color:' . esc_attr( $desc_bg_color ) . ';font-size:' . $desc_font_size . 'px;' . esc_attr( $tooltip_width ) . "}\n";
+        echo '.tippy-box[data-theme~=\'tooltipy\'] .bluet_text_content{color:' . esc_attr( $desc_color ) . ';background-color:' . esc_attr( $desc_bg_color ) . ';font-size:' . $desc_font_size . 'px;' . esc_attr( $tooltip_width ) . "}\n";
         echo "</style>\n";
 
         // JS: handle "No background" checkbox toggling on the settings page

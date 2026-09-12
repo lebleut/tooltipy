@@ -7,6 +7,7 @@ use Tooltipy\Plugin;
 use Tooltipy\Keyword\KeywordRepository;
 use Tooltipy\Keyword\KeywordData;
 use Tooltipy\Frontend\TooltipRenderer;
+use Tooltipy\Security\Sanitizer;
 
 /**
  * Handles server-side keyword highlighting in post content (the_content filter).
@@ -164,11 +165,11 @@ class ContentFilter {
                 $keywords_terms[] = new KeywordData( [
                     'kw_id'   => get_the_id(),
                     'term'    => $title,
-                    'syns'    => (string) get_post_meta( get_the_id(), 'bluet_synonyms_keywords', true ),
+                    'syns'    => Sanitizer::synonyms( (string) get_post_meta( get_the_id(), 'bluet_synonyms_keywords', true ) ),
                     'case'    => get_post_meta( get_the_id(), 'bluet_case_sensitive_word', true ) === 'on',
                     'pref'    => get_post_meta( get_the_id(), 'bluet_prefix_keywords', true ) === 'on',
-                    'youtube' => (string) get_post_meta( get_the_id(), 'bluet_youtube_video_id', true ),
-                    'dfn'     => get_the_content(),
+                    'youtube' => Sanitizer::youtube_id( (string) get_post_meta( get_the_id(), 'bluet_youtube_video_id', true ) ),
+                    'dfn'     => Sanitizer::tooltip_html( (string) get_the_content() ),
                     'img'     => get_the_post_thumbnail( get_the_id(), 'medium' ),
                 ] );
             }
@@ -194,6 +195,7 @@ class ContentFilter {
 
             foreach ( $terms_arr as $term_occ ) {
                 $term_occ = $this->eliminate_apostrophes( $term_occ );
+                $term_occ = preg_quote( $term_occ, '#' );
                 $content  = $this->eliminate_apostrophes( $content );
                 $content  = preg_replace(
                     '#((\W)(' . $term_occ . $kw_after . ')(\W))#u' . $case_flag,
@@ -213,7 +215,7 @@ class ContentFilter {
             $terms_arr = explode( '|', $kw->get_full_term() );
             usort( $terms_arr, fn( $a, $b ) => strlen( $b ) - strlen( $a ) );
 
-            $html_replace = '<span class="bluet_tooltip" data-tooltip="' . $kw->id . '">$2</span>';
+            $html_replace = '<span class="bluet_tooltip" data-tooltip="' . esc_attr( (string) $kw->id ) . '">$2</span>';
 
             if ( $kw->has_video() ) {
                 $html_blocks .= $this->renderer->render_tooltip_block( $kw, $show_glossary_link );
@@ -223,6 +225,7 @@ class ContentFilter {
 
             foreach ( $terms_arr as $term_occ ) {
                 $term_occ = $this->eliminate_apostrophes( $term_occ );
+                $term_occ = preg_quote( $term_occ, '#' );
                 $content  = $this->eliminate_apostrophes( $content );
                 $content  = preg_replace(
                     '#(__(' . $term_occ . $kw_after . ')__)#u' . $case_flag,

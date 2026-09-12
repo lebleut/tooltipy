@@ -92,8 +92,8 @@ class KeywordWidget extends \WP_Widget {
                             $families_cls = implode( ' ', array_map( fn( $fid ) => 'tooltipy-kw-cat-' . $fid, $families_arr ) );
                         }
 
-                        $youtube     = (string) get_post_meta( $kw_id, 'bluet_youtube_video_id', true );
-                        $video_class = strlen( $youtube ) > 5 ? 'tooltipy-kw-youtube' : '';
+                        $youtube     = \Tooltipy\Security\Sanitizer::youtube_id( (string) get_post_meta( $kw_id, 'bluet_youtube_video_id', true ) );
+                        $video_class = $youtube !== '' ? 'tooltipy-kw-youtube' : '';
                     }
                 }
 

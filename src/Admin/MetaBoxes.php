@@ -5,6 +5,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Tooltipy\Plugin;
 use Tooltipy\Keyword\KeywordRepository;
+use Tooltipy\Security\Sanitizer;
 
 /**
  * Metaboxes for keyword posts and content posts.
@@ -216,15 +217,13 @@ class MetaBoxes {
 
 		if ( ( $_POST['post_type'] ?? '' ) === $pt_name ) {
 			$syns = isset( $_POST['bluet_synonyms_name'] )
-				? sanitize_text_field( wp_unslash( $_POST['bluet_synonyms_name'] ) )
+				? Sanitizer::synonyms( wp_unslash( $_POST['bluet_synonyms_name'] ) )
 				: '';
-			$syns = (string) preg_replace( '(\|{2,100})', '|', $syns );
-			$syns = (string) preg_replace( '(^\||\|$|[\s]{2,100})', '', $syns );
 
 			$case    = isset( $_POST['bluet_case_sensitive_name'] ) ? 'on' : '';
 			$prefix  = isset( $_POST['bluet_prefix_name'] ) ? 'on' : '';
 			$youtube = isset( $_POST['bluet_video_id_name'] )
-				? sanitize_text_field( wp_unslash( $_POST['bluet_video_id_name'] ) )
+				? Sanitizer::youtube_id( wp_unslash( $_POST['bluet_video_id_name'] ) )
 				: '';
 
 			update_post_meta( $post_id, 'bluet_synonyms_keywords', $syns );

@@ -4,6 +4,7 @@ namespace Tooltipy\Frontend;
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 use Tooltipy\Plugin;
+use Tooltipy\Security\Sanitizer;
 
 /**
  * Enqueues all front-end and admin scripts/styles.
@@ -206,17 +207,21 @@ class ScriptManager {
             true
         );
 
+
         $adv = get_option( 'bluet_kw_advanced', [] );
         if (
             ! empty( $adv['bt_kw_adv_style']['apply_custom_style_sheet'] )
             && ! empty( $adv['bt_kw_adv_style']['custom_style_sheet'] )
         ) {
-            wp_enqueue_style(
-                'kttg-custom-style-sheet',
-                esc_url_raw( $adv['bt_kw_adv_style']['custom_style_sheet'] ),
-                [],
-                TOOLTIPY_VERSION
-            );
+            $sheet = Sanitizer::stylesheet_url( (string) $adv['bt_kw_adv_style']['custom_style_sheet'] );
+            if ( $sheet !== '' ) {
+                wp_enqueue_style(
+                    'kttg-custom-style-sheet',
+                    $sheet,
+                    [],
+                    TOOLTIPY_VERSION
+                );
+            }
         }
     }
 

@@ -4,6 +4,7 @@ namespace Tooltipy\Keyword;
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 use Tooltipy\Plugin;
+use Tooltipy\Security\Sanitizer;
 
 /**
  * Fetches keyword posts from the database, with transient cache.
@@ -76,17 +77,11 @@ class KeywordRepository {
 
         $result = [];
         foreach ( $posts as $kw ) {
-            $syn      = get_post_meta( $kw->ID, 'bluet_synonyms_keywords', true );
+            $syn       = Sanitizer::synonyms( (string) get_post_meta( $kw->ID, 'bluet_synonyms_keywords', true ) );
             $is_prefix = (bool) get_post_meta( $kw->ID, 'bluet_prefix_keywords', true );
-            $kw_after = $is_prefix ? '\w*' : '';
+            $kw_after  = $is_prefix ? '\w*' : '';
 
-            $syn_part = '';
-            if ( ! empty( $syn ) ) {
-                $syn_part = '|' . $syn . $kw_after;
-            }
-
-            $title    = $kw->post_title;
-            $title    = preg_replace( '/([-[\]{}()*+?.,\\/^$|#\s])/', '$1', $title );
+            $title    = (string) $kw->post_title;
             $text_sep = '(\W)';
 
             $jc_re = "/[\x{3000}-\x{303F}]|[\x{3040}-\x{309F}]|[\x{30A0}-\x{30FF}]|[\x{FF00}-\x{FFEF}]|[\x{4E00}-\x{9FAF}]/u";
@@ -94,7 +89,14 @@ class KeywordRepository {
                 $text_sep = '';
             }
 
-            $result[ $kw->ID ] = '/' . $text_sep . '(' . $title . $kw_after . $syn_part . ')' . $text_sep . '/iu';
+            $pattern = preg_quote( $title, '/' ) . $kw_after;
+            if ( $syn !== '' ) {
+                foreach ( array_filter( array_map( 'trim', explode( '|', $syn ) ) ) as $syn_term ) {
+                    $pattern .= '|' . preg_quote( $syn_term, '/' ) . $kw_after;
+                }
+            }
+
+            $result[ $kw->ID ] = '/' . $text_sep . '(' . $pattern . ')' . $text_sep . '/iu';
         }
 
         return $result;
@@ -139,24 +141,24 @@ class KeywordRepository {
 
             if ( ! empty( $choose_icon ) ) {
                 if ( $choose_icon === 'url' ) {
-                    $icon_url = $kttg_icon_url;
+                    $icon_url = esc_url_raw( $kttg_icon_url, [ 'http', 'https' ] );
                 } else {
                     $tmp = wp_get_attachment_image_src( (int) $kttg_icon_id, 'full' );
-                    $icon_url = $tmp[0] ?? '';
+                    $icon_url = esc_url_raw( (string) ( $tmp[0] ?? '' ), [ 'http', 'https' ] );
                 }
             }
 
             $result[] = new KeywordData( [
                 'kw_id'         => $kw_id,
                 'term'          => $title,
-                'syns'          => (string) get_post_meta( $kw_id, 'bluet_synonyms_keywords', true ),
+                'syns'          => Sanitizer::synonyms( (string) get_post_meta( $kw_id, 'bluet_synonyms_keywords', true ) ),
                 'case'          => get_post_meta( $kw_id, 'bluet_case_sensitive_word', true ) === 'on',
                 'pref'          => get_post_meta( $kw_id, 'bluet_prefix_keywords', true ) === 'on',
                 'families_class'=> $families_cls,
-                'youtube'       => (string) get_post_meta( $kw_id, 'bluet_youtube_video_id', true ),
+                'youtube'       => Sanitizer::youtube_id( (string) get_post_meta( $kw_id, 'bluet_youtube_video_id', true ) ),
                 'icon'          => $icon_url,
                 'img'           => get_the_post_thumbnail( $kw_id, 'medium' ),
-                'dfn'           => get_the_content(),
+                'dfn'           => Sanitizer::tooltip_html( (string) get_the_content() ),
             ] );
         }
 

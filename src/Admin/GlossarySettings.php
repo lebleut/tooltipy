@@ -4,6 +4,7 @@ namespace Tooltipy\Admin;
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 use Tooltipy\Plugin;
+use Tooltipy\Security\OptionSanitizer;
 
 /**
  * Glossary settings section.
@@ -30,7 +31,15 @@ class GlossarySettings {
         add_settings_field( 'bluet_kttg_show_glossary_link', __( 'Glossary link page', 'tooltipy-lang' ), [ $this, 'field_glossary_link' ],  'my_keywords_glossary_settings', 'glossary_section' );
         add_settings_field( 'tltpy_titles',               __( 'Titles', 'tooltipy-lang' ),               [ $this, 'field_titles' ],          'my_keywords_glossary_settings', 'glossary_section' );
 
-        register_setting( 'settings_group', 'bluet_glossary_options' );
+        register_setting(
+            'settings_group',
+            'bluet_glossary_options',
+            [
+                'type'              => 'array',
+                'sanitize_callback' => [ OptionSanitizer::class, 'glossary' ],
+                'default'           => [],
+            ]
+        );
     }
 
     public function section_cb(): void {

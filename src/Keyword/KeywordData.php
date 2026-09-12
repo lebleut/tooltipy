@@ -41,7 +41,7 @@ final class KeywordData {
     }
 
     public function has_video(): bool {
-        return strlen( $this->youtube_id ) > 5;
+        return $this->youtube_id !== '';
     }
 
     public function has_icon(): bool {

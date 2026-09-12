@@ -4,6 +4,7 @@ namespace Tooltipy\Admin;
 defined( 'ABSPATH' ) || exit;
 
 use Tooltipy\Plugin;
+use Tooltipy\Security\OptionSanitizer;
 
 /**
  * Settings page UI + Options tab fields.
@@ -39,7 +40,15 @@ class SettingsPage {
 		add_settings_field( 'bt_kw_position', __( 'Tooltip position', 'tooltipy-lang' ), [ $this, 'field_position' ], 'my_keywords_settings', 'concern_section' );
 		add_settings_field( 'bt_kw_animation_type', __( 'Animation', 'tooltipy-lang' ), [ $this, 'field_animation_type' ], 'my_keywords_settings', 'concern_section' );
 
-		register_setting( 'settings_group', 'bluet_kw_settings' );
+		register_setting(
+			'settings_group',
+			'bluet_kw_settings',
+			[
+				'type'              => 'array',
+				'sanitize_callback' => [ OptionSanitizer::class, 'settings' ],
+				'default'           => [],
+			]
+		);
 	}
 
 	public function add_submenu(): void {

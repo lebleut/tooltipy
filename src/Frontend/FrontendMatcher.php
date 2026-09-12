@@ -6,6 +6,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 use Tooltipy\Plugin;
 use Tooltipy\Keyword\KeywordRepository;
 use Tooltipy\Keyword\KeywordData;
+use Tooltipy\Security\Sanitizer;
 
 /**
  * Outputs the JavaScript block that uses findAndReplaceDOMText to highlight keywords.
@@ -48,8 +49,8 @@ class FrontendMatcher {
         $animation_speed= $settings['bt_kw_animation_speed'] ?? '';
         $match_all      = ! empty( $settings['bt_kw_match_all'] ) && $settings['bt_kw_match_all'] === 'on';
 
-        $css_kw  = $style_opt['bt_kw_add_css_classes']['keyword'] ?? '';
-        $css_pop = $style_opt['bt_kw_add_css_classes']['popup']   ?? '';
+        $css_kw  = Sanitizer::css_classes( (string) ( $style_opt['bt_kw_add_css_classes']['keyword'] ?? '' ) );
+        $css_pop = Sanitizer::css_classes( (string) ( $style_opt['bt_kw_add_css_classes']['popup'] ?? '' ) );
         $fetch_mode = $style_opt['bt_kw_fetch_mode'] ?? 'highlight';
 
         // Excluded keywords for this post
@@ -76,20 +77,42 @@ class FrontendMatcher {
         $exclude_areas  = [];
 
         if ( ! empty( $adv['kttg_cover_areas'] ) ) {
-            $cover_classes = array_filter( explode( ' ', $adv['kttg_cover_areas'] ) );
+            $cover_classes = array_filter( explode( ' ', Sanitizer::css_classes( (string) $adv['kttg_cover_areas'] ) ) );
         }
         if ( ! empty( $adv['kttg_cover_tags'] ) ) {
-            $cover_tags = array_filter( explode( ' ', $adv['kttg_cover_tags'] ) );
+            $cover_tags = array_filter(
+                array_map(
+                    static function ( string $tag ): string {
+                        return (string) preg_replace( '/[^a-z0-9]/', '', strtolower( $tag ) );
+                    },
+                    explode( ' ', (string) $adv['kttg_cover_tags'] )
+                )
+            );
         }
         if ( ! empty( $adv['kttg_exclude_areas'] ) ) {
-            $exclude_areas = array_filter( explode( ' ', $adv['kttg_exclude_areas'] ) );
+            $exclude_areas = array_filter( explode( ' ', Sanitizer::css_classes( (string) $adv['kttg_exclude_areas'] ) ) );
         }
 
         $exclude_anchors = ! empty( $adv['kttg_exclude_anchor_tags'] ) && $adv['kttg_exclude_anchor_tags'] === 'on';
         $exclude_headings = $adv['kttg_exclude_heading_tags'] ?? [];
         $exclude_common   = $adv['kttg_exclude_common_tags']  ?? [];
 
-        $custom_events = ! empty( $adv['kttg_custom_events'] ) ? array_filter( explode( ',', $adv['kttg_custom_events'] ) ) : [];
+        $custom_events = [];
+        if ( ! empty( $adv['kttg_custom_events'] ) ) {
+            foreach ( array_filter( explode( ',', (string) $adv['kttg_custom_events'] ) ) as $event ) {
+                $event = trim( $event );
+                if ( preg_match( '/^[A-Za-z][A-Za-z0-9_-]{0,63}$/', $event ) ) {
+                    $custom_events[] = $event;
+                }
+            }
+        }
+
+        $position        = sanitize_key( (string) $position );
+        if ( ! in_array( $position, [ 'top', 'bottom', 'left', 'right' ], true ) ) {
+            $position = 'bottom';
+        }
+        $animation_type  = sanitize_html_class( (string) $animation_type );
+        $animation_speed = sanitize_html_class( (string) $animation_speed );
 
         $icon_mode = ( $fetch_mode === 'icon' );
         $fetch_all_flag = $match_all ? 'g' : '';
@@ -101,33 +124,36 @@ class FrontendMatcher {
         <script type="text/javascript">
         jQuery(function($) {
             window.tltpy_fetch_kws = function(){
-                window.kttg_tab = [
-                    <?php foreach ( $keywords as $kw ) : ?>
-                    [
-                        "<?php
-                            $term_js = preg_replace( '/\&#8217;/', '\'', $kw->term );
-                            $syns_js = preg_replace( '/\&#8217;/', '\'', $kw->synonyms );
-                            echo addslashes( preg_replace( '/([-[\]{}()*+?.,\/^$|#\s])/', '\\\\$1', $term_js ) );
-                            if ( $kw->synonyms !== '' ) {
-                                echo '|' . addslashes( preg_replace( '/([-[\]{}()*+?.,\/^$#\s])/', '\\\\$1', $syns_js ) );
-                            }
-                        ?>",
-                        <?php echo $kw->case_sensitive ? 'true' : 'false'; ?>,
-                        <?php echo $kw->is_prefix      ? 'true' : 'false'; ?>,
-                        "<?php echo esc_js( $kw->families_class ); ?>",
-                        "<?php echo $kw->has_video() ? 'tooltipy-kw-youtube' : ''; ?>",
-                        "<?php echo esc_js( $kw->icon_url ); ?>",
-                        0
-                    ],
-                    <?php endforeach; ?>
-                ];
+                window.kttg_tab = <?php
+					$tab_rows = [];
+					foreach ( $keywords as $kw ) {
+						$term = html_entity_decode( $kw->term, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+						$syns = html_entity_decode( $kw->synonyms, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+						$pattern = preg_quote( $term, '/' );
+						if ( $syns !== '' ) {
+							foreach ( array_filter( array_map( 'trim', explode( '|', $syns ) ) ) as $syn ) {
+								$pattern .= '|' . preg_quote( $syn, '/' );
+							}
+						}
+						$tab_rows[] = [
+							$pattern,
+							$kw->case_sensitive,
+							$kw->is_prefix,
+							$kw->families_class,
+							$kw->has_video() ? 'tooltipy-kw-youtube' : '',
+							esc_url_raw( $kw->icon_url ),
+							0,
+						];
+					}
+					echo wp_json_encode( $tab_rows, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE );
+				?>;
 
-                window.tooltipIds = [
-                    <?php foreach ( $keywords as $kw ) : ?>
-                    "<?php echo esc_js( (string) $kw->id ); ?>",
-                    <?php endforeach; ?>
-                ];
-
+                window.tooltipIds = <?php
+					echo wp_json_encode(
+						array_map( static fn( $kw ) => (string) $kw->id, array_values( $keywords ) ),
+						JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+					);
+				?>;
                 var class_to_cover = [<?php
                     foreach ( $cover_classes as $cls ) {
                         if ( $cls !== '' ) { echo '".' . esc_js( $cls ) . '",'; }

@@ -148,9 +148,10 @@ class GlossaryShortcode {
                 }
 
                 $families_list   = wp_get_post_terms( get_the_id(), $cat_name, [ 'fields' => 'slugs' ] );
+                $safe_title      = esc_html( get_the_title() );
                 $title_wrap      = $link_titles
-                    ? '<a href="' . esc_url( get_permalink() ) . '">' . get_the_title() . '</a>'
-                    : get_the_title();
+                    ? '<a href="' . esc_url( get_permalink() ) . '">' . $safe_title . '</a>'
+                    : $safe_title;
 
                 $thumb = '';
                 if ( $show_thumb && has_post_thumbnail() ) {
@@ -163,7 +164,8 @@ class GlossaryShortcode {
                 if ( count( $families_list ) > 0 ) {
                     $ret .= '<sub>[';
                     foreach ( $families_list as $key => $fam_slug ) {
-                        $fam_link = add_query_arg( 'cat', trim( $fam_slug ), $current_glossary_url );
+                        $fam_slug = sanitize_title( (string) $fam_slug );
+                        $fam_link = add_query_arg( 'cat', $fam_slug, $current_glossary_url );
                         $ret .= ' <a href="' . esc_url( $fam_link ) . '">' . esc_html( $fam_slug ) . '</a>';
                         $ret .= ( $key + 1 === count( $families_list ) ) ? ' ' : ', ';
                     }
@@ -171,7 +173,8 @@ class GlossaryShortcode {
                 }
 
                 $ret .= '</h2>';
-                $ret .= '<div class="kttg_glossary_element_content">' . $thumb . get_the_content() . '</div>';
+                $content = wp_kses_post( (string) apply_filters( 'the_content', get_post_field( 'post_content', get_the_ID() ) ) );
+                $ret .= '<div class="kttg_glossary_element_content">' . $thumb . $content . '</div>';
                 $ret .= '</li>';
             }
 

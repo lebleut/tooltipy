@@ -29,8 +29,10 @@ class KeywordPostType {
         $pt_name    = $this->plugin->get_post_type_name();
         $capability = $this->plugin->get_capability();
 
+        // Always map CPT caps to the filtered capability (default manage_options).
+        // Without this, capability_type "post" lets Contributor+ create keywords (CVE-2025-62917 vector).
         $args = [
-            'labels'    => [
+            'labels'       => [
                 'name'               => __( 'My KeyWords', 'tooltipy-lang' ),
                 'singular_name'      => __( 'KeyWord', 'tooltipy-lang' ),
                 'menu_name'          => __( 'Tooltipy', 'tooltipy-lang' ),
@@ -46,19 +48,22 @@ class KeywordPostType {
                 'not_found_in_trash' => __( 'KeyWords not found in trash', 'tooltipy-lang' ),
                 'parent_item_colon'  => __( 'Parent KeyWords colon', 'tooltipy-lang' ),
             ],
-            'public'    => true,
-            'supports'  => [ 'title', 'editor', 'thumbnail', 'author' ],
-            'menu_icon' => TOOLTIPY_PLUGIN_URL . 'assets/ico_16x16.png',
+            'public'       => true,
+            'supports'     => [ 'title', 'editor', 'thumbnail', 'author' ],
+            'menu_icon'    => TOOLTIPY_PLUGIN_URL . 'assets/ico_16x16.png',
+            'capabilities' => [
+                'edit_post'          => $capability,
+                'read_post'          => $capability,
+                'delete_post'        => $capability,
+                'edit_posts'         => $capability,
+                'edit_others_posts'  => $capability,
+                'publish_posts'      => $capability,
+                'read_private_posts' => $capability,
+                'delete_posts'       => $capability,
+                'create_posts'       => $capability,
+            ],
+            'map_meta_cap' => false,
         ];
-
-        if ( $capability !== 'manage_options' ) {
-            $args['capabilities'] = [
-                'edit_post'     => $capability,
-                'edit_posts'    => $capability,
-                'publish_posts' => $capability,
-                'delete_post'   => $capability,
-            ];
-        }
 
         $args = apply_filters( 'tltpy_post_type_args', $args );
 
@@ -113,8 +118,8 @@ class KeywordPostType {
                         ? '✔'
                         : '';
                 } elseif ( $column_name === 'is_video' ) {
-                    $yt = (string) get_post_meta( $post_id, 'bluet_youtube_video_id', true );
-                    echo strlen( $yt ) > 5 ? '🎬' : '';
+                    $yt = \Tooltipy\Security\Sanitizer::youtube_id( (string) get_post_meta( $post_id, 'bluet_youtube_video_id', true ) );
+                    echo $yt !== '' ? '🎬' : '';
                 }
             },
             10,

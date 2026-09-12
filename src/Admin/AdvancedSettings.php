@@ -4,6 +4,7 @@ namespace Tooltipy\Admin;
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 use Tooltipy\Plugin;
+use Tooltipy\Security\OptionSanitizer;
 
 /**
  * Advanced settings section (cover areas, exclude areas, headings, MCE, etc.)
@@ -48,7 +49,15 @@ class AdvancedSettings {
         // Post types / custom fields configuration
         add_settings_field( 'bt_kw_in_concern_custom_posts', __( 'Post types to filter', 'tooltipy-lang' ), [ $this, 'field_post_types_filter' ], 'my_keywords_advanced_page', 'advanced_section' );
 
-        register_setting( 'settings_group', 'bluet_kw_advanced' );
+        register_setting(
+            'settings_group',
+            'bluet_kw_advanced',
+            [
+                'type'              => 'array',
+                'sanitize_callback' => [ OptionSanitizer::class, 'advanced' ],
+                'default'           => [],
+            ]
+        );
     }
 
     public function register_mce_buttons(): void {
